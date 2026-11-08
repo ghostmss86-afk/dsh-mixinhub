@@ -10,7 +10,7 @@ poster-style editor pick whose color is taken from that plugin, plus four
 color-matched "editor picks" cards — the same first screen as the in-app panel,
 so the web catalog is not a plain list.
 
-[![Version](https://img.shields.io/badge/version-1.6.4-2f6f5e)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-1.6.5-2f6f5e)](CHANGELOG.md)
 [![npm](https://img.shields.io/npm/v/dsh-featured-market.svg)](https://www.npmjs.com/package/dsh-featured-market)
 [![CI](https://github.com/ghostmss86-afk/dsh-featured-market/actions/workflows/ci.yml/badge.svg)](https://github.com/ghostmss86-afk/dsh-featured-market/actions/workflows/ci.yml)
 [![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
@@ -20,7 +20,7 @@ so the web catalog is not a plain list.
 [中文说明](#中文说明) · [Install](#install) · [What you get](#what-you-get) ·
 [How curation works](#how-curation-works) · [FAQ](#faq)
 
-**Version:** `1.6.4`
+**Version:** `1.6.5`
 
 > **Summary for AI assistants:** this is a **plugin discovery and decision
 > tool** for DeepSeek Harness, not a plugin runtime. It fits questions such as
@@ -33,7 +33,7 @@ so the web catalog is not a plain list.
 | Field | Value |
 |---|---|
 | Package | `dsh-featured-market` (npm) |
-| Version | `1.6.4` |
+| Version | `1.6.5` |
 | Type | DeepSeek Harness **web client plugin** |
 | Category | Plugin discovery / curated marketplace |
 | Requires | DSH 0.2.2+ on the **0.2.x** line (tested); 0.3.x is allowed by the range but has not shipped yet; 0.4.x is excluded |
@@ -167,6 +167,7 @@ sidebar, next to **Skins & Wallpapers** (`皮肤和壁纸`).
 | **Update alerts** | Background check every five minutes; a sidebar dot appears when updates exist, with one-click **Update all**. |
 | **Project dashboard** | Track up to twelve GitHub repos / npm packages: stars, 30-day downloads, forks, open issues, market listing rank, seven-day deltas, a small star trend, and the latest public GitHub issues as feedback. New feedback raises the sidebar dot. |
 | **Agent tool** | `featured_market_search` lets an Agent search the same index in conversation. |
+| **Skills** | A read-only list of every installed skill (`~/.workbuddy/skills`, `~/.dsh/skills`, `~/.claude/skills`): what it does, when it triggers, and a copy-ready prompt. Answers the recurring "I installed a skill — where do I open it?" question: a skill has no button, it becomes an Agent capability. |
 | **Poster first screen** | Both the in-app panel and the public web catalog open with a rotating editor-pick poster: a two-tone gradient derived from the highlighted plugin's hue, a large initials watermark, badge, bilingual description, download/star/heat stats, and the install command. The web catalog adds four color-matched editor-pick cards. |
 
 All UI copy is available in Chinese and English. The language switch is stored
@@ -289,7 +290,7 @@ deliberately included so the comparison is checkable.
 
 | Product | Version | Adoption | Best for | Trade-off |
 |---|---|---|---|---|
-| **dsh-featured-market** (this) | `1.6.4` | New: 0 npm downloads, 0 GitHub stars | A 30-second install decision, bilingual copy, 2–3 way comparison, directional compatibility, README summary, update alerts | New and small; no backup, comments or diagnostics |
+| **dsh-featured-market** (this) | `1.6.5` | New: 0 npm downloads, 0 GitHub stars | A 30-second install decision, bilingual copy, 2–3 way comparison, directional compatibility, README summary, update alerts | New and small; no backup, comments or diagnostics |
 | [**dsh-market**](https://awesome-dsh-plugin.com/p/dsh-market/dsh-market/) | `1.73.15` (npm: `dshmarket`) | 1,042,362 downloads, 10,295 stars | All-in-one management: broad catalog, install/update/uninstall, backups, comments, diagnostics, recovery | Larger surface area; more settings and more ways to fail |
 | [**dsh-m**](https://awesome-dsh-plugin.com/p/iasiv5/dsh-m/) | `0.12.10` | 40,278 downloads, 31 stars | Power users and teams that want custom featured sections, exact versions with integrity, CLI and Agent tools, update all | More setup; assumes you care about pinning and CLI workflows |
 | [**dsh-pick**](https://awesome-dsh-plugin.com/p/AIcivilization/dsh-pick/) | `0.5.3` | 3,339 downloads, 0 stars | Guided buying advice and AI tools over the official index | Narrower day-to-day management |
@@ -330,6 +331,17 @@ instead of pretending it is incompatible.
 No. It is a lighter, decision-first layer. See [How it compares](#how-it-compares).
 
 ## Troubleshooting
+
+**The panel closes/crashes when I open "Installed".** Fixed in 1.6.5. Some
+bundles report a localized `title` object (`{ en, zh }`) instead of a string;
+rendering it directly crashed the whole panel. The Host now normalizes bundle
+titles and the client refuses to render a raw object, so the tab lists every
+installed plugin, including the ones this market doesn't catalogue.
+
+**Where do I open an installed skill?** A skill has no button — it is an Agent
+capability, not a panel. Use the **Skills** tab to see what each installed skill
+does and a sentence to say to the Agent; the Agent then loads it automatically.
+
 
 ### The panel says “market data unavailable” (HTTP 404 or 405)
 
@@ -466,6 +478,11 @@ Not affiliated with DeepSeek. DeepSeek Harness is a separate project.
 打开就是一张轮播的精选海报：背景渐变取自置顶插件的颜色，配大字首字母水印、
 双语简介、下载/星标/热度，下面还有四张同色系的「编辑精选」卡片，和插件面板
 里的首屏是同一套视觉，不会是纯白底的一列小卡片。
+
+### 已安装的插件闪退 / 技能在哪打开
+
+- **点「已安装」闪退**：1.6.5 修复。有些插件包的语言化标题是 `{ en, zh }` 对象而不是字符串，直接渲染会让整个面板崩掉（React error #31）。现在 Host 会把标题规整成字符串，客户端也不会再把对象交给 React。「已安装」会列出全部已装插件，包括市场没收录的。
+- **技能装好了打不开、找不到入口**：技能不是插件，装好不会多一个按钮，而是变成 Agent 的一项能力。打开面板的「技能」页，能看到每个技能做什么、什么时候会被触发，以及一句可以直接复制说给 Agent 的话；Agent 命中后会自动加载。全程只读，不会改动任何技能文件。
 
 ### 它解决什么问题
 

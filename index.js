@@ -329,6 +329,140 @@ export function apply(ctx) {
     return snapshot;
   }
 
+  // ---------- installed skills (read-only) ----------
+  // Skills are a different concept from plugins: a skill file under a skills
+  // directory gives the Agent a capability and never adds a button. Users keep
+  // asking where to "open" them, so this endpoint lists every installed skill
+  // with what it does, when it triggers, and a prompt the user can say. It is
+  // strictly read-only: it parses SKILL.md front matter and nothing else.
+  const SKILL_DIRS = [
+    path.join(os.homedir(), '.workbuddy', 'skills'),
+    path.join(os.homedir(), '.dsh', 'skills'),
+    path.join(os.homedir(), '.claude', 'skills')
+  ];
+
+  function parseFrontMatter(text) {
+    const match = /^---\r?\n([\s\S]*?)\r?\n---/.exec(text || '');
+    if (!match) return {};
+    const data = {};
+    const listKeys = new Set();
+    const lines = match[1].split(/\r?\n/);
+    let key = null;
+    for (const line of lines) {
+      if (/^-\s+/.test(line) && key) {
+        listKeys.add(key);
+        data[key] = `${data[key] || ''} ${line.replace(/^-\s+/, '').trim()}`.trim();
+        continue;
+      }
+      const kv = /^([A-Za-z0-9_-]+):\s*(.*)$/.exec(line);
+      if (kv) {
+        key = kv[1];
+        let value = kv[2].trim();
+        if ((value.startsWith('"') && value.endsWith('"')) || (value.startsWith("'") && value.endsWith("'"))) {
+          value = value.slice(1, -1);
+        }
+        data[key] = value;
+      } else if (key && /^\s+\S/.test(line)) {
+        data[key] = `${data[key] || ''} ${line.trim()}`.trim();
+      }
+    }
+    for (const listKey of listKeys) {
+      if (!data[listKey]) delete data[listKey];
+    }
+    return data;
+  }
+
+  function firstParagraph(body) {
+    const stripped = String(body || '')
+      .replace(/^---[\s\S]*?---/, '')
+      .replace(/```[\s\S]*?```/g, ' ')
+      .split(/\r?\n/);
+    const parts = [];
+    for (const line of stripped) {
+      const trimmed = line.trim();
+      if (!trimmed) { if (parts.length) break; continue; }
+      if (trimmed.startsWith('#') || trimmed.startsWith('|') || trimmed.startsWith('- ') || trimmed.startsWith('* ')) {
+        if (parts.length) break;
+        continue;
+      }
+      parts.push(trimmed.replace(/[*_`]/g, ''));
+    }
+    return parts.join(' ').slice(0, 320);
+  }
+
+  function skillDirectories() {
+    const dirs = [];
+    for (const base of SKILL_DIRS) {
+      let entries = [];
+      try { entries = fs.readdirSync(base, { withFileTypes: true }); } catch { continue; }
+      for (const entry of entries) {
+        if (!entry.isDirectory() && !entry.isSymbolicLink()) continue;
+        const skillFile = path.join(base, entry.name, 'SKILL.md');
+        try {
+          if (!fs.statSync(skillFile).isFile()) continue;
+        } catch { continue; }
+        dirs.push({ base, name: entry.name, skillFile });
+      }
+    }
+    return dirs;
+  }
+
+  function readSkills() {
+    const items = [];
+    const seen = new Set();
+    for (const entry of skillDirectories()) {
+      if (seen.has(entry.name)) continue;
+      seen.add(entry.name);
+      let text = '';
+      try { text = fs.readFileSync(entry.skillFile, 'utf8'); } catch { continue; }
+      const meta = parseFrontMatter(text);
+      const cleanDesc = (value) =>
+        String(value || '')
+          .replace(/^\s*\|\s*/, '')
+          .replace(/\s*-\s*(Read|Write|Edit|Bash|Glob|Grep|WebFetch|WebSearch|AskUserQuestion|Task|TodoWrite|NotebookEdit|MultiEdit)\b.*$/i, '')
+          .replace(/\s+/g, ' ')
+          .trim();
+      const description = cleanDesc(meta.description_en || meta.description);
+      const descriptionZh = cleanDesc(meta.description_zh);
+      // A "say this" prompt derived from the skill's own trigger words, so the
+      // user has something concrete to copy instead of a vague description.
+      // Pull trigger words from the description's quoted phrases or its
+      // "Use when …" clause; fall back to the skill name so there is always a
+      // concrete sentence the user can paste.
+      const quoted = (String(meta.description || '') + ' ' + description).match(/[""“”]([^""“”]{2,20})[""“”]/g);
+      let triggerList = (quoted || []).map((t) => t.replace(/[""“”]/g, '').trim()).filter(Boolean).slice(0, 8);
+      if (!triggerList.length) {
+        const useWhen = /(?:use when|当用户)[^.。]*/i.exec(String(meta.description || '') + ' ' + description);
+        if (useWhen) {
+          triggerList = useWhen[0]
+            .replace(/^(?:use when|当用户)\s*/i, '')
+            .split(/[,，、;；]|\bor\b|或/)
+            .map((t) => t.trim().replace(/[.。]$/, ''))
+            .filter((t) => t.length >= 2 && t.length <= 24)
+            .slice(0, 5);
+        }
+      }
+      const prompt = triggerList.length
+        ? `请用「${entry.name}」技能帮我：${triggerList.slice(0, 3).join('、')}`
+        : `请用「${entry.name}」技能帮我处理这个任务`;
+      items.push({
+        name: meta.name || entry.name,
+        dir: entry.name,
+        description,
+        descriptionEn: description,
+        descriptionZh,
+        whenToUse: firstParagraph(text),
+        triggers: triggerList,
+        prompt,
+        path: entry.skillFile,
+        docUrl: `file://${entry.skillFile}`,
+        source: path.basename(entry.base)
+      });
+    }
+    items.sort((a, b) => a.name.localeCompare(b.name));
+    return items;
+  }
+
   async function bundles() {
     const pluginManager = get('pluginManager');
     if (!pluginManager || typeof pluginManager.listBundles !== 'function') return [];
@@ -391,6 +525,20 @@ export function apply(ctx) {
     const version = base ? String(base.version) : null;
     runtimeCache = { at: Date.now(), version };
     return version;
+  }
+
+  // Bundle meta titles can be a plain string or a { en, zh } object. The
+  // client renders the title directly, so a raw object crashes React
+  // (error #31 "objects are not valid as a React child"). Normalise to a
+  // bilingual object so the client can pick by language.
+  function plainTitle(value) {
+    if (typeof value === 'string') return value;
+    if (value && typeof value === 'object' && !Array.isArray(value)) {
+      const en = typeof value.en === 'string' ? value.en : '';
+      const zh = typeof value.zh === 'string' ? value.zh : '';
+      if (en || zh) return { en: en || zh, zh: zh || en };
+    }
+    return undefined;
   }
 
   function boundsOf(range) {
@@ -575,7 +723,7 @@ export function apply(ctx) {
           name: bundle.name,
           version: bundle.version || null,
           enabled: Boolean(bundle.enabled),
-          title: bundle.meta && bundle.meta.title ? bundle.meta.title : undefined
+          title: plainTitle(bundle.meta && bundle.meta.title)
         }))
     };
   }
@@ -985,6 +1133,22 @@ export function apply(ctx) {
   effect(() =>
     webServer.register({
       kind: 'exact',
+      path: '/featured-market/skills',
+      handler: (request, response) => {
+        if (request.method !== 'GET' && request.method !== 'HEAD') return send(response, 405, { error: 'method-not-allowed' });
+        try {
+          const items = readSkills();
+          send(response, 200, { ok: true, count: items.length, items, scanned: SKILL_DIRS });
+        } catch (error) {
+          send(response, 500, { ok: false, error: error && error.message ? error.message : 'skills-unavailable' });
+        }
+      }
+    })
+  );
+
+  effect(() =>
+    webServer.register({
+      kind: 'exact',
       path: '/featured-market/bundles',
       handler: async (request, response) => {
         if (request.method !== 'GET') return send(response, 405, { error: 'method-not-allowed' });
@@ -996,7 +1160,7 @@ export function apply(ctx) {
             enabled: Boolean(bundle.enabled),
             installed: Boolean(bundle.installed),
             official: Boolean(bundle.official),
-            title: bundle.meta && bundle.meta.title ? bundle.meta.title : undefined,
+            title: plainTitle(bundle.meta && bundle.meta.title),
             description: bundle.description || undefined
           }))
         });

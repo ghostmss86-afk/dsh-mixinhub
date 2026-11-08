@@ -4,6 +4,23 @@ All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project uses
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.6.5] - 2026-11-09
+
+### Fixed
+
+- Opening the "Installed" tab could close the whole panel: some bundles report a
+  localized `title` object (`{ en, zh }`) and React rejected it as a child
+  (error #31). The Host now normalises bundle titles to a string and the client
+  guards against object titles everywhere it renders one.
+
+### Added
+
+- A **Skills** tab: a read-only list of every installed skill
+  (`~/.workbuddy/skills`, `~/.dsh/skills`, `~/.claude/skills`) with what it does,
+  when it triggers, and a copy-ready prompt. It answers "I installed a skill,
+  where do I open it?" — a skill has no button, it is an Agent capability.
+- New read-only endpoint `GET /featured-market/skills`.
+
 ## [1.6.4] - 2026-11-08
 
 ### Changed

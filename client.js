@@ -26,6 +26,7 @@ window.__ModuleLoader__.load({
       'tab.featured': '精选',
       'tab.heat': '热度榜',
       'tab.installed': '已安装',
+      'tab.skills': '技能',
 
       'tab.projects': '项目看板',
       'dash.title': '我的项目',
@@ -61,6 +62,29 @@ window.__ModuleLoader__.load({
       'dash.listed': '已收录 #{rank}',
       'dash.unlisted': '未进精选目录',
       'dash.limit': '最多跟踪 12 个项目',
+      'skills.title': '技能',
+      'skills.desc': '技能不是插件。装好之后不会多一个按钮，而是变成 Agent 的一项能力：你用大白话提出需求，Agent 自己判断该不该用它。点开一个技能，可以看到它做什么、什么时候会被触发，以及一句可以直接说给 Agent 的话。',
+      'skills.dir': '技能目录',
+      'skills.count': '共 {n} 个',
+      'skills.search': '搜索技能名、说明或触发词',
+      'skills.empty.title': '没有找到匹配的技能',
+      'skills.empty.desc': '换一个关键词，或清空搜索。',
+      'skills.loading': '正在读取技能目录…',
+      'skills.error': '读取技能目录失败：{err}',
+      'skills.open': '打开说明',
+      'skills.close': '收起',
+      'skills.when': '什么时候会用到它',
+      'skills.raw': '打开原始 SKILL.md',
+      'skills.prompt': '可以直接这样说',
+      'skills.copy': '复制这句话',
+      'skills.copied': '已复制',
+      'skills.copyFailed': '复制失败，请手动选中',
+      'skills.location': '存放位置',
+      'skills.how.title': '技能怎么用（没有按钮，这就是入口）',
+      'skills.how.step1': '在这个列表里找到你要的技能，点「打开说明」看它做什么。',
+      'skills.how.step2': '回到对话，用括号里那句「可以直接这样说」的话对大模型描述需求。',
+      'skills.how.step3': 'Agent 命中的技能会自动加载，不需要你手动启动或配置。',
+      'skills.countNote': '只读：这里不会改动或删除任何技能文件。',
       'tab.favorites': '收藏',
       'section.favorites': '我的收藏',
       'favorites.count': '已收藏 {n} 个',
@@ -254,6 +278,7 @@ window.__ModuleLoader__.load({
       'tab.featured': 'Featured',
       'tab.heat': 'Leaderboard',
       'tab.installed': 'Installed',
+      'tab.skills': 'Skills',
 
       'tab.projects': 'Dashboard',
       'dash.title': 'My projects',
@@ -289,6 +314,29 @@ window.__ModuleLoader__.load({
       'dash.listed': 'Listed #{rank}',
       'dash.unlisted': 'Not in the curated index',
       'dash.limit': 'Track up to 12 projects',
+      'skills.title': 'Skills',
+      'skills.desc': 'Skills are not plugins. Installing one adds no button — it gives the Agent a capability. You ask in plain language and the Agent decides whether to use the skill. Open one to see what it does, when it triggers, and a ready-to-say prompt.',
+      'skills.dir': 'Skills directory',
+      'skills.count': '{n} installed',
+      'skills.search': 'Search skill name, description or trigger',
+      'skills.empty.title': 'No matching skill',
+      'skills.empty.desc': 'Try another keyword, or clear the search.',
+      'skills.loading': 'Reading skills…',
+      'skills.error': 'Could not read skills: {err}',
+      'skills.open': 'Open',
+      'skills.close': 'Close',
+      'skills.when': 'When it is used',
+      'skills.raw': 'Open the raw SKILL.md',
+      'skills.prompt': 'You can say',
+      'skills.copy': 'Copy this prompt',
+      'skills.copied': 'Copied',
+      'skills.copyFailed': 'Copy failed; select the text manually',
+      'skills.location': 'Location',
+      'skills.how.title': 'How to use a skill (there is no button — this list is the entry)',
+      'skills.how.step1': 'Find the skill here and press Open to read what it does.',
+      'skills.how.step2': 'Go back to the chat and describe your need with the "You can say" sentence.',
+      'skills.how.step3': 'The Agent loads the matching skill automatically; nothing to start or configure.',
+      'skills.countNote': 'Read-only: this never edits or deletes any skill file.',
       'tab.favorites': 'Saved',
       'section.favorites': 'Saved plugins',
       'favorites.count': '{n} saved',
@@ -669,12 +717,30 @@ window.__ModuleLoader__.load({
     }
 
     function initialsOf(entry) {
-      const source = String(entry.title || entry.name || '?');
+      const source = String(titleText(entry && entry.title, entry && entry.lang) || (entry && entry.name) || '?');
       const words = source.split(/[\s\-_.]+/).filter(Boolean);
       if (!words.length) return '?';
       if (/[\u4e00-\u9fa5]/.test(source)) return source.slice(0, 1);
       if (words.length === 1) return words[0].slice(0, 2).toUpperCase();
       return (words[0][0] + words[1][0]).toUpperCase();
+    }
+
+    // Bundle titles may arrive as plain strings or { en, zh } objects. Never
+    // hand a raw object to React (error #31). Prefer the active language, then
+    // fall back to the other language, then "".
+    function titleText(value, lang) {
+      if (value == null) return '';
+      if (typeof value === 'string') return value;
+      if (typeof value === 'object' && !Array.isArray(value)) {
+        const primary = lang === 'en' ? value.en : value.zh;
+        const secondary = lang === 'en' ? value.zh : value.en;
+        if (typeof primary === 'string' && primary) return primary;
+        if (typeof secondary === 'string' && secondary) return secondary;
+        for (const key of Object.keys(value)) {
+          if (typeof value[key] === 'string' && value[key]) return value[key];
+        }
+      }
+      return '';
     }
 
     function dateLabel(iso) {
@@ -1021,6 +1087,37 @@ window.__ModuleLoader__.load({
 .fm-feedback-meta{font-size:9.5px;color:var(--dsw-alias-label-secondary);}
 .fm-dash-empty{font-size:10.5px;line-height:1.5;color:var(--dsw-alias-label-secondary);}
 .fm-dash-error{margin-top:2px;font-size:10px;color:var(--dsw-alias-error, #b42318);}
+.fm-skill-count{margin-left:8px;padding:1px 7px;border-radius:999px;background:var(--dsw-alias-bg-layer-2);color:var(--dsw-alias-label-secondary);font-size:10px;font-weight:600;vertical-align:middle;}
+.fm-skill-note{margin:0;font-size:10.5px;color:var(--dsw-alias-label-secondary);}
+.fm-skill-how{margin:4px 0 12px;padding:12px 14px;border-radius:12px;border:1px solid var(--dsw-alias-border-l1);background:linear-gradient(135deg,color-mix(in srgb,var(--dsw-alias-brand-primary) 8%,var(--dsw-alias-bg-layer-1)),var(--dsw-alias-bg-layer-1));}
+.fm-skill-how-title{font-size:12.5px;font-weight:750;}
+.fm-skill-how-desc{margin:6px 0 0;font-size:11.5px;line-height:1.6;color:var(--dsw-alias-label-secondary);}
+.fm-skill-how ol{margin:8px 0 0;padding-left:18px;font-size:11.5px;line-height:1.65;color:var(--dsw-alias-label-secondary);}
+.fm-skill-how li{margin:2px 0;}
+.fm-skill-search{margin:0 0 10px;display:flex;align-items:center;gap:8px;padding:0 10px;height:34px;border:1px solid var(--dsw-alias-border-l1);border-radius:10px;background:var(--dsw-alias-bg-layer-1);}
+.fm-skill-search input{flex:1;min-width:0;border:0;outline:0;background:transparent;color:var(--dsw-alias-label-primary);font:inherit;font-size:12px;}
+.fm-skill-list{gap:8px;}
+.fm-skill{border:1px solid var(--dsw-alias-border-l1);border-radius:12px;background:var(--dsw-alias-bg-layer-1);overflow:hidden;}
+.fm-skill.is-open{border-color:color-mix(in srgb,var(--dsw-alias-brand-primary) 40%,var(--dsw-alias-border-l1));}
+.fm-skill-head{display:flex;align-items:center;gap:10px;width:100%;padding:11px 12px;background:transparent;border:0;cursor:pointer;text-align:left;color:inherit;font:inherit;}
+.fm-skill-head:hover{background:var(--dsw-alias-bg-layer-2);}
+.fm-skill-mark{display:flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:9px;flex:none;font-size:11px;font-weight:750;color:#fff;background:linear-gradient(140deg,#2F6BFF,#7A3FE0);}
+.fm-skill-headmain{display:flex;flex-direction:column;gap:2px;min-width:0;flex:1;}
+.fm-skill-name{font-size:13px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.fm-skill-desc{font-size:11px;color:var(--dsw-alias-label-secondary);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.fm-skill-chevron{flex:none;width:22px;text-align:center;font-size:16px;color:var(--dsw-alias-label-secondary);}
+.fm-skill-body{padding:0 14px 14px;display:flex;flex-direction:column;gap:10px;}
+.fm-skill-bodydesc{margin:0;font-size:12px;line-height:1.65;color:var(--dsw-alias-label-primary);}
+.fm-skill-when{font-size:11.5px;line-height:1.6;color:var(--dsw-alias-label-secondary);display:flex;flex-direction:column;gap:2px;}
+.fm-skill-when strong{font-size:10.5px;text-transform:uppercase;letter-spacing:.03em;color:var(--dsw-alias-label-secondary);}
+.fm-skill-prompt{display:flex;flex-direction:column;gap:6px;padding:10px 12px;border-radius:10px;background:var(--dsw-alias-bg-layer-2);}
+.fm-skill-prompt-label{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.03em;color:var(--dsw-alias-label-secondary);}
+.fm-skill-prompt code{display:block;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11.5px;line-height:1.6;white-space:pre-wrap;word-break:break-word;color:var(--dsw-alias-label-primary);}
+.fm-skill-prompt .fm-btn{align-self:flex-start;}
+.fm-skill-links{display:flex;flex-wrap:wrap;gap:10px;align-items:center;font-size:10.5px;}
+.fm-skill-links a{color:var(--dsw-alias-brand-primary);text-decoration:none;}
+.fm-skill-links a:hover{text-decoration:underline;}
+.fm-skill-path{color:var(--dsw-alias-label-secondary);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:100%;}
 
 `;
 
@@ -1780,6 +1877,206 @@ window.__ModuleLoader__.load({
         'span',
         { className: 'fm-delta' + (value > 0 ? ' is-up' : ' is-down'), title: props.t('dash.delta') },
         `${value > 0 ? '+' : ''}${compact(value)}`
+      );
+    }
+
+    // Skills are a different concept from plugins: installing one adds no
+    // button, it gives the Agent a capability. This panel is the "entry point"
+    // people keep looking for — it lists every installed skill and, for each,
+    // what it does, when it triggers, and a prompt the user can say verbatim.
+    function fallbackCopy(text) {
+      try {
+        const area = document.createElement('textarea');
+        area.value = text;
+        area.setAttribute('readonly', '');
+        area.style.position = 'fixed';
+        area.style.opacity = '0';
+        document.body.appendChild(area);
+        area.select();
+        const ok = document.execCommand('copy');
+        area.remove();
+        return ok;
+      } catch { return false; }
+    }
+
+    function clip(value, max) {
+      const text = String(value || '').replace(/\s+/g, ' ').trim();
+      const limit = max || 140;
+      if (text.length <= limit) return text;
+      return text.slice(0, limit - 1).trimEnd() + '…';
+    }
+
+    function useSkills() {
+      const [state, setState] = useState({ status: 'loading', items: [], error: '' });
+      const load = () => {
+        setState((prev) => ({ ...prev, status: prev.items.length ? prev.status : 'loading' }));
+        fetch(`${API}/skills`, { cache: 'no-store' })
+          .then((response) => {
+            if (!response.ok) throw new Error(`HTTP ${response.status}`);
+            return response.json();
+          })
+          .then((body) => setState({ status: 'ready', items: Array.isArray(body.items) ? body.items : [], error: '' }))
+          .catch((cause) => setState({ status: 'error', items: [], error: cause && cause.message ? cause.message : 'error' }));
+      };
+      useEffect(() => { load(); }, []);
+      return { ...state, reload: load };
+    }
+
+    function SkillsPanel(props) {
+      const { t, lang } = props;
+      const skills = useSkills();
+      const [query, setQuery] = useState('');
+      const [openName, setOpenName] = useState(null);
+      const [copied, setCopied] = useState('');
+
+      const needle = query.trim().toLowerCase();
+      const items = needle
+        ? skills.items.filter((item) =>
+            [item.name, item.description, item.descriptionZh, item.descriptionEn, (item.triggers || []).join(' ')]
+              .filter(Boolean)
+              .some((value) => String(value).toLowerCase().includes(needle))
+          )
+        : skills.items;
+
+      const copyPrompt = (item) => {
+        const text = item.prompt || '';
+        const done = () => { setCopied(item.name); setTimeout(() => setCopied(''), 1600); };
+        const fail = () => props.onToast && props.onToast('error', t('skills.copyFailed'));
+        try {
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text).then(done).catch(() => {
+              const ok = fallbackCopy(text);
+              ok ? done() : fail();
+            });
+          } else {
+            fallbackCopy(text) ? done() : fail();
+          }
+        } catch { fail(); }
+      };
+
+      const head = h(
+        'div',
+        { className: 'fm-section-head' },
+        h(
+          'div',
+          { className: 'fm-section-title' },
+          t('skills.title'),
+          h('span', { className: 'fm-skill-count' }, t('skills.count').replace('{n}', skills.items.length))
+        ),
+        h(
+          'div',
+          { className: 'fm-result-tools' },
+          h('p', { className: 'fm-skill-note' }, t('skills.countNote'))
+        )
+      );
+
+      const howto = h(
+        'div',
+        { className: 'fm-skill-how' },
+        h('div', { className: 'fm-skill-how-title' }, t('skills.how.title')),
+        h('p', { className: 'fm-skill-how-desc' }, t('skills.desc')),
+        h('ol', null,
+          h('li', null, t('skills.how.step1')),
+          h('li', null, t('skills.how.step2')),
+          h('li', null, t('skills.how.step3'))
+        )
+      );
+
+      if (skills.status === 'loading') {
+        return h('div', null, head, h('div', { className: 'fm-empty' }, h('span', { className: 'fm-spin' }), h('div', { className: 'fm-empty-title' }, t('skills.loading'))));
+      }
+      if (skills.status === 'error') {
+        return h(
+          'div',
+          null,
+          head,
+          h('div', { className: 'fm-empty' },
+            h(IconStore, { size: 26 }),
+            h('div', { className: 'fm-empty-title' }, t('skills.error').replace('{err}', skills.error)),
+            h('button', { type: 'button', className: 'fm-btn is-primary', style: { marginTop: 8 }, onClick: skills.reload }, t('action.retry'))
+          )
+        );
+      }
+
+      return h(
+        'div',
+        null,
+        head,
+        howto,
+        h(
+          'label',
+          { className: 'fm-search fm-skill-search' },
+          h(IconSearch, { size: 14 }),
+          h('input', {
+            type: 'search',
+            value: query,
+            placeholder: t('skills.search'),
+            'aria-label': t('skills.search'),
+            onChange: (event) => setQuery(event.target.value)
+          })
+        ),
+        items.length
+          ? h(
+              'div',
+              { className: 'fm-list fm-skill-list' },
+              items.map((item) => {
+                const open = openName === item.name;
+                const desc = (lang === 'zh' && (item.descriptionZh || item.description)) || item.descriptionEn || item.description || '';
+                return h(
+                  'div',
+                  { key: item.name, className: 'fm-skill' + (open ? ' is-open' : '') },
+                  h(
+                    'button',
+                    {
+                      type: 'button',
+                      className: 'fm-skill-head',
+                      'aria-expanded': open ? 'true' : 'false',
+                      onClick: () => setOpenName(open ? null : item.name)
+                    },
+                    h('span', { className: 'fm-skill-mark', 'aria-hidden': 'true' }, initialsOf({ title: item.name })),
+                    h(
+                      'span',
+                      { className: 'fm-skill-headmain' },
+                      h('span', { className: 'fm-skill-name' }, item.name),
+                      desc ? h('span', { className: 'fm-skill-desc' }, clip(desc, 110)) : null
+                    ),
+                    h('span', { className: 'fm-skill-chevron', 'aria-hidden': 'true' }, open ? '−' : '+')
+                  ),
+                  open
+                    ? h(
+                        'div',
+                        { className: 'fm-skill-body' },
+                        desc ? h('p', { className: 'fm-skill-bodydesc' }, desc) : null,
+                        item.whenToUse ? h('div', { className: 'fm-skill-when' }, h('strong', null, t('skills.when')), h('span', null, item.whenToUse)) : null,
+                        item.prompt
+                          ? h(
+                              'div',
+                              { className: 'fm-skill-prompt' },
+                              h('div', { className: 'fm-skill-prompt-label' }, t('skills.prompt')),
+                              h('code', null, item.prompt),
+                              h(
+                                'button',
+                                { type: 'button', className: 'fm-btn is-small' + (copied === item.name ? ' is-primary' : ''), onClick: () => copyPrompt(item) },
+                                copied === item.name ? t('skills.copied') : t('skills.copy')
+                              )
+                            )
+                          : null,
+                        h(
+                          'div',
+                          { className: 'fm-skill-links' },
+                          item.docUrl ? h('a', { href: item.docUrl, target: '_blank', rel: 'noreferrer' }, t('skills.raw')) : null,
+                          item.path ? h('span', { className: 'fm-skill-path', title: item.path }, t('skills.location') + ' · ' + item.path) : null
+                        )
+                      )
+                    : null
+                );
+              })
+            )
+          : h('div', { className: 'fm-empty' },
+              h(IconStore, { size: 26 }),
+              h('div', { className: 'fm-empty-title' }, t('skills.empty.title')),
+              h('div', { className: 'fm-empty-desc' }, t('skills.empty.desc'))
+            )
       );
     }
 
@@ -2704,9 +3001,10 @@ window.__ModuleLoader__.load({
                   const info = updates && updates[bundle.name];
                   const canUpdate = Boolean(info && info.latest && info.current && info.latest !== info.current);
                   const fallbackTitle = String(bundle.name || '').replace(/^@[^/]+\//, '');
+                  const bundleTitle = titleText(bundle.title, lang) || fallbackTitle;
                   const display = entry || {
                     name: bundle.name,
-                    title: bundle.title || fallbackTitle,
+                    title: bundleTitle,
                     owner: '',
                     hue: 215
                   };
@@ -2717,7 +3015,7 @@ window.__ModuleLoader__.load({
                     h(
                       'div',
                       { className: 'fm-row-main' },
-                      h('div', { className: 'fm-row-name' }, h('span', null, bundle.title || String(bundle.name || '').replace(/^@[^/]+\//, ''))),
+                      h('div', { className: 'fm-row-name' }, h('span', null, bundleTitle)),
                       h(
                         'div',
                         { className: 'fm-row-desc' },
@@ -2761,7 +3059,7 @@ window.__ModuleLoader__.load({
                           type: 'button',
                           role: 'switch',
                           'aria-checked': bundle.enabled ? 'true' : 'false',
-                          'aria-label': bundle.title || bundle.name,
+                          'aria-label': bundleTitle || bundle.name,
                           title: bundle.enabled ? t('toggle.on') : t('toggle.off'),
                           className: 'fm-switch' + (bundle.enabled ? ' is-on' : ''),
                           disabled: Boolean(toggling[bundle.name]) || SELF_NAMES.has(bundle.name),
@@ -2864,7 +3162,7 @@ window.__ModuleLoader__.load({
               h(
                 'div',
                 { className: 'fm-tabs' },
-                [['featured', t('tab.featured')], ['heat', t('tab.heat')], ['projects', t('tab.projects')], ['favorites', t('tab.favorites')], ['installed', t('tab.installed')]].map(([id, label]) =>
+                [['featured', t('tab.featured')], ['heat', t('tab.heat')], ['projects', t('tab.projects')], ['favorites', t('tab.favorites')], ['installed', t('tab.installed')], ['skills', t('tab.skills')]].map(([id, label]) =>
                   h(
                     'button',
                     {
@@ -2936,7 +3234,9 @@ window.__ModuleLoader__.load({
                       ? h(ProjectDashboard, { t, lang, onToast: (kind, text) => setToast({ kind, text }) })
                       : tab === 'favorites'
                         ? renderFavorites()
-                        : renderInstalled()
+                        : tab === 'skills'
+                          ? h(SkillsPanel, { t, lang, onToast: (kind, text) => setToast({ kind, text }) })
+                          : renderInstalled()
             ),
             compare.length && !detail && !comparing
               ? h(
