@@ -1,0 +1,40 @@
+{
+  "meta": {
+    "title": "精选插件市场",
+    "author": "ghostmss86-afk",
+    "date": "2026.11.09",
+    "reading_time": "约 6 分钟",
+    "tags": ["DSH 插件", "产品说明", "插件市场"],
+    "subtitle": "三十秒知道装什么，装完知道怎么用，下次还知道去哪找。",
+    "lang": null,
+    "theme": "ink-classic"
+  },
+  "upgrades": [
+    { "type": "def-card", "lines": [23] },
+    {
+      "type": "process",
+      "lines": [27, 28, 29],
+      "items": [
+        { "title": "算分", "desc": "按下载、星标、新鲜度三项加权，得到一个可解释的热度分，每天重算。" },
+        { "title": "分类限额", "desc": "编辑精选每个分类最多两款，避免榜单被同一类插件占满。" },
+        { "title": "人工校对", "desc": "入选条目的中英文说明经过润色，而不是机器翻译直接上线。" }
+      ]
+    },
+    {
+      "type": "checklist",
+      "lines": [86, 87, 88, 89]
+    },
+    {
+      "type": "summary-card",
+      "line": 100,
+      "label": "速查",
+      "items": [
+        { "title": "精选", "desc": "每天 04:00 重算，14 款编辑精选，每个分类最多 2 款。" },
+        { "title": "热度", "desc": "下载 52% + 星标 33% + 新鲜度 15%，详情页可展开看每一项。" },
+        { "title": "对比", "desc": "最多 3 款并排，九项指标同屏，含方向性兼容建议。" },
+        { "title": "技能", "desc": "只读列出本机技能，给出可直接说给 Agent 的话。" }
+      ]
+    },
+    { "type": "highlight", "line": 103, "label": "一句话" }
+  ]
+}

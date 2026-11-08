@@ -1,0 +1,48 @@
+{
+  "meta": {
+    "title": "使用指南",
+    "author": "ghostmss86-afk",
+    "date": "2026.11.09",
+    "reading_time": "约 5 分钟",
+    "tags": ["DSH 插件", "使用指南", "教程"],
+    "subtitle": "从安装到第一次对比，大概需要三分钟。",
+    "lang": null,
+    "theme": "indigo-porcelain"
+  },
+  "upgrades": [
+    { "type": "highlight", "line": 9, "label": "开始之前" },
+    {
+      "type": "process",
+      "lines": [33, 34, 35, 36, 37, 38],
+      "items": [
+        { "title": "精选", "desc": "当天的编辑推荐，顶部是轮播海报卡，往下是四张分类精选。" },
+        { "title": "热度榜", "desc": "按热度分排序的前三十名，带七日变化。" },
+        { "title": "项目看板", "desc": "盯你自己仓库的 star、下载、issue 和反馈，最多十二个项目。" },
+        { "title": "收藏", "desc": "点过星的插件，可写备注、导出与导入清单。" },
+        { "title": "已安装", "desc": "本机全部插件，可启停、检查更新、更新、卸载。" },
+        { "title": "技能", "desc": "本机技能列表，只读，告诉你每个技能做什么和怎么说。" }
+      ]
+    },
+    {
+      "type": "process",
+      "lines": [42, 43, 44, 45],
+      "items": [
+        { "title": "看精选", "desc": "没有明确目标时，从当天精选开始。" },
+        { "title": "搜关键词", "desc": "中英文都行，同时匹配名称、作者和说明。" },
+        { "title": "比一比", "desc": "最多三款并排，九项指标同屏。" },
+        { "title": "看兼容性", "desc": "绿色是真兼容，灰色只是作者没声明。" }
+      ]
+    },
+    {
+      "type": "summary-card",
+      "line": 84,
+      "label": "三分钟速查",
+      "items": [
+        { "title": "装", "desc": "dsh plugin add dsh-featured-market" },
+        { "title": "开", "desc": "点左下角商店图标" },
+        { "title": "选", "desc": "精选 → 搜索 → 对比 → 看兼容性" },
+        { "title": "问", "desc": "直接对 Agent 说「帮我找几个做记忆管理的插件」" }
+      ]
+    }
+  ]
+}

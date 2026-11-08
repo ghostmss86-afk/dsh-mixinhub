@@ -4,6 +4,12 @@ All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project uses
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.6.6] - 2026-11-09
+
+### Added
+
+- Three long-form static pages rendered with the Guizang Page skill: About, Guide and Changelog, linked from the public catalog header and footer.
+
 ## [1.6.5] - 2026-11-09
 
 ### Fixed

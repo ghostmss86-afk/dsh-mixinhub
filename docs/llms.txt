@@ -6,7 +6,7 @@
 > `engines.dsh` compatibility advice, README summaries and a one-click update
 > flow. It is a web client plugin, not a plugin runtime or a hosted marketplace.
 
-Version: 1.6.5
+Version: 1.6.6
 Last verified: 2026-11-09
 License: MIT
 
@@ -36,6 +36,9 @@ License: MIT
 - Package: `dsh-featured-market` (npm)
 - Repository: https://github.com/ghostmss86-afk/dsh-featured-market
 - Public catalog: https://ghostmss86-afk.github.io/dsh-featured-market/ — opens with a rotating poster-style editor pick (two-tone gradient from the featured plugin's hue, initials watermark, bilingual copy, stats, install command) and four color-matched editor-pick cards; same first screen as the in-app panel
+- About page: https://ghostmss86-afk.github.io/dsh-featured-market/about.html — Chinese long-form product explanation, heat formula, compatibility table, competitor comparison
+- Guide page: https://ghostmss86-afk.github.io/dsh-featured-market/guide.html — install, open, six tabs, four-step selection, comparison, notes, Agent tool, skills
+- Changelog page: https://ghostmss86-afk.github.io/dsh-featured-market/changelog.html — every release from 1.0.0 to current, in Chinese
 - Runtime: DeepSeek Harness `>=0.2.2-0 <0.3.0-0 || >=0.3.0-0 <0.4.0-0`; 0.2.x tested, 0.3.x allowed but not shipped/tested, 0.4.x excluded
 - Install: `dsh plugin add dsh-featured-market`
 - GitHub install: `dsh plugin add github:ghostmss86-afk/dsh-featured-market`
