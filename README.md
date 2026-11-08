@@ -3,7 +3,7 @@
 **A curated plugin market for DeepSeek Harness.** It answers one question in
 about 30 seconds: *which plugin should I install, and how do I actually use it?*
 
-[![Version](https://img.shields.io/badge/version-1.5.0-2f6f5e)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-1.5.1-2f6f5e)](CHANGELOG.md)
 [![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 [![Platform](https://img.shields.io/badge/DSH-web%20client-4b5563)](https://github.com/deepseek-ai/deepseek-harness)
 [![Topic](https://img.shields.io/badge/topic-dsh--plugin-c0392b)](https://github.com/topics/dsh-plugin)
@@ -11,7 +11,7 @@ about 30 seconds: *which plugin should I install, and how do I actually use it?*
 [中文说明](#中文说明) · [Install](#install) · [What you get](#what-you-get) ·
 [How curation works](#how-curation-works) · [FAQ](#faq)
 
-**Version:** `1.5.0`
+**Version:** `1.5.1`
 
 ---
 
