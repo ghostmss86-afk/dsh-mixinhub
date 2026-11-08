@@ -28,7 +28,12 @@ const date = new Date().toISOString().slice(0, 10);
 let readme = readFileSync('README.md', 'utf8');
 readme = readme.replace(/badge\/version-[0-9]+\.[0-9]+\.[0-9]+-/, `badge/version-${version}-`);
 readme = readme.replace(/\*\*Version:\*\* `[^`]+`/, `**Version:** \`${version}\``);
+readme = readme.replace(/\| Version \| `[^`]+` \|/, `| Version | \`${version}\` |`);
 writeFileSync('README.md', readme);
+
+let llms = readFileSync('llms.txt', 'utf8');
+llms = llms.replace(/^Version: .*$/m, `Version: ${version}`);
+writeFileSync('llms.txt', llms);
 
 let changelog = readFileSync('CHANGELOG.md', 'utf8');
 if (!changelog.includes(`## [${version}]`)) {

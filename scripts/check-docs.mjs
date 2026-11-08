@@ -18,12 +18,19 @@ const changelog = read('CHANGELOG.md');
 const version = pkg.version;
 
 const requiredHeadings = [
+  '## Quick facts',
   '## Install',
+  '## Who it is for',
+  '## When it fits',
   '## What you get',
   '## How curation works',
+  '## Troubleshooting',
+  '## Verification',
   '## FAQ',
   '## 中文说明',
 ];
+
+const llms = read('llms.txt');
 
 const checks = [
   ['package name', pkg.name === 'dsh-featured-market', pkg.name],
@@ -32,6 +39,8 @@ const checks = [
   ['README version line', readme.includes(`**Version:** \`${version}\``), version],
   ['README version badge', readme.includes(`version-${version}-`), version],
   ['CHANGELOG entry', changelog.includes(`## [${version}]`), version],
+  ['llms.txt version', llms.includes(`Version: ${version}`), version],
+  ['llms.txt install command', llms.includes('dsh plugin add dsh-featured-market'), 'missing'],
   ...requiredHeadings.map((heading) => [
     `README section ${heading}`,
     readme.includes(heading),

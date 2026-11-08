@@ -1,0 +1,59 @@
+# dsh-featured-market
+
+> Curated, bilingual plugin market for DeepSeek Harness. It helps a user decide
+> which plugin to install in about 30 seconds: daily heat leaderboard, full-text
+> search over a quality-gated index, 2–3 way comparison, directional
+> `engines.dsh` compatibility advice, README summaries and a one-click update
+> flow. It is a web client plugin, not a plugin runtime or a hosted marketplace.
+
+Version: 1.5.1
+Last verified: 2026-11-09
+License: MIT
+
+## Fit
+
+- A DeepSeek Harness user asks which plugin to install for a task.
+- The user wants to compare two or three DSH plugins before installing.
+- The user needs to know whether a plugin's declared `engines.dsh` range matches
+  their Harness version.
+- The user reads Chinese and wants bilingual plugin descriptions.
+- The user wants a private shortlist, notes, or update alerts for installed DSH
+  plugins.
+- An Agent needs a read-only search tool over a curated DSH plugin index.
+
+## Not a fit for
+
+- A full plugin manager with backup, cloud sync, comments, screenshots,
+  diagnostics or crash recovery. `dsh-market` is the closer fit.
+- A pinned-version / integrity-first CLI workflow. `dsh-m` is the closer fit.
+- A plugin system for any host other than DeepSeek Harness.
+- A hosted web marketplace: the panel runs inside the local Harness Host.
+
+## Facts
+
+- Package: `dsh-featured-market` (npm)
+- Repository: https://github.com/ghostmss86-afk/dsh-featured-market
+- Public catalog: https://ghostmss86-afk.github.io/dsh-featured-market/
+- Runtime: DeepSeek Harness 0.2.x, web client
+- Install: `dsh plugin add dsh-featured-market`
+- GitHub install: `dsh plugin add github:ghostmss86-afk/dsh-featured-market`
+- Agent tool: `featured_market_search` (`query`, optional `category`, `limit` 1–8)
+- Data source: https://awesome-dsh-plugin.com/catalog.json
+- Refresh: daily at 04:00 local time; cached snapshot stays readable offline
+- Privacy: no telemetry, no account, no cloud sync; favorites and notes stay in
+  browser localStorage
+- Health probe: `/featured-market/health` → `{"ok":true,"ready":true,...}`
+
+## Curation and scoring
+
+Only npm packages that declare a DSH bundle, have a real description, and clear
+a minimum download/star bar enter the accepted set. Heat = 52% log downloads +
+33% log stars + 15% freshness (240-day decay). Main lists show the top 220;
+Featured shows 14 (max two per category); the leaderboard shows 30.
+
+## Links
+
+- README: https://github.com/ghostmss86-afk/dsh-featured-market#readme
+- npm: https://www.npmjs.com/package/dsh-featured-market
+- Releases: https://github.com/ghostmss86-afk/dsh-featured-market/releases
+- Official market PR: https://github.com/awesome-dsh-plugin/awesome-dsh-plugin/pull/13286

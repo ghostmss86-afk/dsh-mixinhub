@@ -5,7 +5,7 @@
   "type": "module",
   "license": "MIT",
   "author": "ghostmss86-afk",
-  "homepage": "https://github.com/ghostmss86-afk/dsh-featured-market#readme",
+  "homepage": "https://ghostmss86-afk.github.io/dsh-featured-market/",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ghostmss86-afk/dsh-featured-market.git"
@@ -21,7 +21,10 @@
     "plugin-manager",
     "marketplace",
     "curation",
-    "compatibility"
+    "compatibility",
+    "bilingual",
+    "plugin-discovery",
+    "plugin-curation"
   ],
   "engines": {
     "dsh": ">=0.2.2-0 <0.3.0-0 || >=0.3.0-0 <0.4.0-0"
@@ -41,7 +44,8 @@
     "locale/*.json",
     "icon.svg",
     "CHANGELOG.md",
-    "icon-180.png"
+    "icon-180.png",
+    "llms.txt"
   ],
   "scripts": {
     "check": "node --check index.js && node --check client.js && node scripts/check-docs.mjs",
