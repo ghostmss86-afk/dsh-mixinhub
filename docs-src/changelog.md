@@ -154,3 +154,7 @@ status: 1.6.5
 7. **1.6.6** 能读。
 
 完整英文日志在 [GitHub 仓库](https://github.com/ghostmss86-afk/dsh-featured-market/blob/main/CHANGELOG.md)。
+
+---
+
+[← 返回精选目录](index.html)
