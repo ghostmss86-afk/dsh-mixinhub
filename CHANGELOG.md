@@ -4,6 +4,12 @@ All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project uses
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.6.2] - 2026-11-08
+
+### Changed
+
+- Open the store through host modal masks, ship all 2,147 Chinese descriptions, and make the public catalog reflect the installed plugin version.
+
 ## [1.6.1] - 2026-11-08
 
 ### Changed
