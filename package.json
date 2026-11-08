@@ -1,7 +1,7 @@
 {
   "name": "dsh-featured-market",
   "version": "1.5.5",
-  "description": "Curated plugin market for DeepSeek Harness: daily heat leaderboard, bilingual notes, side-by-side comparison, directional compatibility advice and README summaries.",
+  "description": "Curated plugin market for DeepSeek Harness: daily heat leaderboard, bilingual notes, side-by-side comparison, directional compatibility advice, README summaries and a local maintainer dashboard for stars, downloads and feedback.",
   "type": "module",
   "license": "MIT",
   "author": "ghostmss86-afk",
@@ -23,7 +23,10 @@
     "compatibility",
     "bilingual",
     "plugin-discovery",
-    "plugin-curation"
+    "plugin-curation",
+    "project-dashboard",
+    "github-stars",
+    "npm-downloads"
   ],
   "engines": {
     "dsh": ">=0.2.2-0 <0.3.0-0 || >=0.3.0-0 <0.4.0-0"

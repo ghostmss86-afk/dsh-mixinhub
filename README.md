@@ -162,6 +162,7 @@ sidebar, next to **Skins & Wallpapers** (`皮肤和壁纸`).
 | **Import / export** | Move favorites and notes as one JSON file. |
 | **Installed** | Install, update, enable/disable and uninstall the plugins it surfaces; it is not a profile-wide backup, diagnostics or recovery tool. |
 | **Update alerts** | Background check every five minutes; a sidebar dot appears when updates exist, with one-click **Update all**. |
+| **Project dashboard** | Track up to five GitHub repos / npm packages: stars, 30-day downloads, forks, open issues, seven-day deltas, a small star trend, and the latest public GitHub issues as feedback. New feedback raises the sidebar dot. |
 | **Agent tool** | `featured_market_search` lets an Agent search the same index in conversation. |
 
 All UI copy is available in Chinese and English. The language switch is stored
@@ -174,6 +175,20 @@ locally.
 3. Select up to three candidates and press **Compare**.
 4. Check the compatibility row and the README summary.
 5. Copy the install command, or press **Get**.
+
+## Project dashboard
+
+Open **Dashboard** in the panel to watch the projects you maintain. Add an
+`owner/repo` or an npm package name (up to five). The card shows GitHub stars,
+30-day npm downloads, forks and open issues, a seven-day delta and a star
+sparkline. The latest public GitHub issues appear as feedback; a new issue
+raises the same sidebar dot used for updates, and **Mark all read** clears it.
+
+The dashboard is local-first: project choices and history live in
+`~/.dsh/featured-market/projects.json`, and it reads the public GitHub and npm
+APIs. If the `gh` CLI is signed in, its token is used for GitHub requests to
+avoid the anonymous rate limit; the token is never sent anywhere except
+`api.github.com`.
 
 ## How curation works
 
@@ -232,7 +247,11 @@ uses the local snapshot; installing still requires your confirmation.
 
 - The market runs on your local Harness host. It does not send telemetry.
 - Network requests go only to: the public catalog, the npm registry, unpkg or
-  jsDelivr (README), and Google Translate / MyMemory (translation fallback).
+  jsDelivr (README), Google Translate / MyMemory (translation fallback), and —
+  only when you open the Dashboard — `api.github.com` and `api.npmjs.org`.
+- The Dashboard stores tracked projects and metric history in
+  `~/.dsh/featured-market/projects.json`. If `gh` is signed in, its token is
+  used for `api.github.com` rate limits; it is not sent to any other host.
 - No account, cloud sync or analytics service is involved.
 - Local storage keys: `dsh.featured-market.lang`,
   `dsh.featured-market.favorites`, `dsh.featured-market.notes`.
@@ -252,6 +271,7 @@ uses the local snapshot; installing still requires your confirmation.
 | Comparison | 2–3 plugins, nine rows | Rare |
 | Compatibility | Directional advice | Often yes/no |
 | Backups / cloud sync | No (by design) | Often yes |
+| Maintainer dashboard | Stars, downloads, issues, 7-day delta | Rare |
 | Failure surface | Small | Larger |
 
 Neither approach is wrong. This one is for people who want a short, trustworthy
@@ -513,6 +533,7 @@ Release tarball 同样可用。
 - 备注与清单导入导出：数据只存在本机。
 - 已安装管理：启用、停用、更新、卸载；不会停用自己。
 - 更新提醒：每 5 分钟自动检查，有更新时侧栏出现圆点，已安装页可一键全部更新。
+- 项目看板：最多 5 个 GitHub 仓库 / npm 包，查看星标、30 天下载、Fork、开放 issue、7 日变化、星标趋势和最新反馈；新反馈会点亮侧栏圆点。
 - Agent 工具：`featured_market_search`，在对话里直接搜。
 
 ### 精选规则（会随版本调整）

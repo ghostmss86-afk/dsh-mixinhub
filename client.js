@@ -24,6 +24,38 @@ window.__ModuleLoader__.load({
       'tab.featured': '精选',
       'tab.heat': '热度榜',
       'tab.installed': '已安装',
+
+      'tab.projects': '项目看板',
+      'dash.title': '我的项目',
+      'dash.hint': '跟踪 GitHub 星标、npm 下载和公开反馈；每 5 分钟自动刷新。数据只存在这台设备。',
+      'dash.addPlaceholder': 'owner/repo 或 npm 包名',
+      'dash.add': '添加',
+      'dash.adding': '添加中…',
+      'dash.added': '已开始跟踪',
+      'dash.exists': '已经在看板里了',
+      'dash.limit': '最多跟踪 5 个项目',
+      'dash.invalid': '请输入 owner/repo 或 npm 包名',
+      'dash.stars': '星标',
+      'dash.downloads': '30 天下载',
+      'dash.forks': 'Fork',
+      'dash.issues': '开放 issue',
+      'dash.delta': '较 7 天前',
+      'dash.noHistory': '再刷新几次就有趋势了',
+      'dash.feedback': '最新反馈',
+      'dash.noFeedback': '暂无公开反馈。有人开 issue 时会在这里出现。',
+      'dash.unread': '{n} 条新反馈',
+      'dash.markSeen': '全部已读',
+      'dash.marked': '已标记为已读',
+      'dash.refresh': '刷新',
+      'dash.refreshing': '刷新中…',
+      'dash.remove': '移除',
+      'dash.confirmRemove': '再点一次移除',
+      'dash.removed': '已从看板移除',
+      'dash.openRepo': '打开仓库',
+      'dash.updated': '更新于 {time}',
+      'dash.failed': '项目数据暂时不可用',
+      'dash.empty': '还没有项目',
+      'dash.comments': '{n} 条评论',
       'tab.favorites': '收藏',
       'section.favorites': '我的收藏',
       'favorites.count': '已收藏 {n} 个',
@@ -215,6 +247,38 @@ window.__ModuleLoader__.load({
       'tab.featured': 'Featured',
       'tab.heat': 'Leaderboard',
       'tab.installed': 'Installed',
+
+      'tab.projects': 'Dashboard',
+      'dash.title': 'My projects',
+      'dash.hint': 'Track GitHub stars, npm downloads and public feedback; refreshed every 5 minutes. Stored on this device only.',
+      'dash.addPlaceholder': 'owner/repo or npm package',
+      'dash.add': 'Add',
+      'dash.adding': 'Adding…',
+      'dash.added': 'Now tracking',
+      'dash.exists': 'Already on the dashboard',
+      'dash.limit': 'Track up to 5 projects',
+      'dash.invalid': 'Enter owner/repo or an npm package name',
+      'dash.stars': 'Stars',
+      'dash.downloads': '30-day downloads',
+      'dash.forks': 'Forks',
+      'dash.issues': 'Open issues',
+      'dash.delta': 'vs 7 days ago',
+      'dash.noHistory': 'Refresh a few more times to see a trend',
+      'dash.feedback': 'Latest feedback',
+      'dash.noFeedback': 'No public feedback yet. New issues will show up here.',
+      'dash.unread': '{n} new',
+      'dash.markSeen': 'Mark all read',
+      'dash.marked': 'Marked as read',
+      'dash.refresh': 'Refresh',
+      'dash.refreshing': 'Refreshing…',
+      'dash.remove': 'Remove',
+      'dash.confirmRemove': 'Click again to remove',
+      'dash.removed': 'Removed from dashboard',
+      'dash.openRepo': 'Open repository',
+      'dash.updated': 'Updated {time}',
+      'dash.failed': 'Project data is temporarily unavailable',
+      'dash.empty': 'No projects yet',
+      'dash.comments': '{n} comments',
       'tab.favorites': 'Saved',
       'section.favorites': 'Saved plugins',
       'favorites.count': '{n} saved',
@@ -468,6 +532,51 @@ window.__ModuleLoader__.load({
         }
       })();
       return updatesBus.inflight;
+    }
+
+
+    // ---------- project dashboard feed: sidebar badge + dashboard tab ----------
+
+    const projectsBus = {
+      state: { items: [], unread: 0, ready: false, updatedAt: null },
+      listeners: new Set(),
+      inflight: null
+    };
+
+    function publishProjects(patch) {
+      projectsBus.state = { ...projectsBus.state, ...patch };
+      projectsBus.listeners.forEach((listener) => listener());
+    }
+
+    function useProjectFeed() {
+      return useSyncExternalStore(
+        (listener) => {
+          projectsBus.listeners.add(listener);
+          return () => {
+            projectsBus.listeners.delete(listener);
+          };
+        },
+        () => projectsBus.state,
+        () => projectsBus.state
+      );
+    }
+
+    async function loadProjectsFeed(force = false) {
+      if (projectsBus.inflight) return projectsBus.inflight;
+      projectsBus.inflight = (async () => {
+        try {
+          const response = await fetch(`${API}/projects${force ? '?force=1' : ''}`, { cache: 'no-store' });
+          if (!response.ok) throw new Error(`HTTP ${response.status}`);
+          const body = await response.json();
+          const items = body && Array.isArray(body.items) ? body.items : [];
+          const unread = items.reduce((sum, item) => sum + (Number(item.unread) || 0), 0);
+          publishProjects({ items, unread, ready: true, updatedAt: (body && body.updatedAt) || new Date().toISOString() });
+          return projectsBus.state;
+        } finally {
+          projectsBus.inflight = null;
+        }
+      })();
+      return projectsBus.inflight;
     }
 
     const LANG_KEY = 'dsh.featured-market.lang';
@@ -851,6 +960,42 @@ window.__ModuleLoader__.load({
 .fm-heat-info strong{font-size:12px;}
 .fm-heat-info p{margin:6px 0 0;font-size:11.5px;line-height:1.6;color:var(--dsw-alias-label-secondary);}
 .fm-advice{margin:8px 0 0;padding:8px 10px;border-radius:9px;background:var(--dsw-alias-bg-layer-2);font-size:11.5px;line-height:1.55;color:var(--dsw-alias-label-secondary);}
+.fm-dash{display:flex;flex-direction:column;gap:14px;}
+.fm-dash-add{display:flex;gap:8px;align-items:center;}
+.fm-dash-add input{flex:1;min-width:0;height:32px;padding:0 10px;border:1px solid var(--dsw-alias-border-l1);border-radius:9px;background:var(--dsw-alias-bg-layer-1);color:var(--dsw-alias-label-primary);font:inherit;font-size:12px;}
+.fm-dash-add input:focus{outline:2px solid var(--dsw-alias-brand-primary);outline-offset:-1px;border-color:transparent;}
+.fm-project-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(360px,1fr));gap:12px;}
+.fm-project{padding:14px;border:1px solid var(--dsw-alias-border-l1);border-radius:14px;background:var(--dsw-alias-bg-layer-1);display:flex;flex-direction:column;gap:10px;min-width:0;}
+.fm-project-head{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;}
+.fm-project-title{min-width:0;}
+.fm-project-name{font-size:14px;font-weight:750;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.fm-project-repo{margin-top:3px;font-size:10.5px;color:var(--dsw-alias-label-secondary);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.fm-project-repo a{color:var(--dsw-alias-label-secondary);text-decoration:none;}
+.fm-project-repo a:hover{color:var(--dsw-alias-brand-primary);text-decoration:underline;}
+.fm-project-actions{display:flex;gap:6px;flex-shrink:0;}
+.fm-project-metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;}
+.fm-metric{display:flex;flex-direction:column;gap:2px;padding:7px 8px;border-radius:9px;background:var(--dsw-alias-bg-layer-2);min-width:0;}
+.fm-metric-label{font-size:9.5px;letter-spacing:.02em;text-transform:uppercase;color:var(--dsw-alias-label-secondary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.fm-metric-value{font-size:16px;font-weight:750;line-height:1.1;}
+.fm-delta{align-self:flex-start;margin-top:1px;padding:1px 5px;border-radius:999px;font-size:9.5px;font-weight:700;}
+.fm-delta.is-up{color:var(--dsw-alias-success, #1a7f37);background:color-mix(in srgb, var(--dsw-alias-success, #1a7f37) 14%, transparent);}
+.fm-delta.is-down{color:var(--dsw-alias-error, #b42318);background:color-mix(in srgb, var(--dsw-alias-error, #b42318) 14%, transparent);}
+.fm-spark{width:100%;height:40px;overflow:visible;}
+.fm-spark polyline{stroke:var(--dsw-alias-brand-primary);}
+.fm-dash-nohistory{font-size:10.5px;color:var(--dsw-alias-label-secondary);}
+.fm-feedback-head{display:flex;align-items:center;gap:8px;font-size:11px;font-weight:700;color:var(--dsw-alias-label-secondary);}
+.fm-unread-badge{padding:1px 6px;border-radius:999px;background:var(--dsw-alias-brand-primary);color:#fff;font-size:9.5px;font-weight:700;}
+.fm-feedback-list{display:flex;flex-direction:column;gap:5px;}
+.fm-feedback{display:flex;gap:8px;align-items:flex-start;padding:7px 8px;border-radius:8px;text-decoration:none;color:inherit;background:var(--dsw-alias-bg-layer-2);}
+.fm-feedback:hover{background:var(--dsw-alias-bg-layer-3,var(--dsw-alias-bg-layer-2));}
+.fm-feedback.is-unread{background:color-mix(in srgb, var(--dsw-alias-brand-primary) 9%, var(--dsw-alias-bg-layer-2));}
+.fm-feedback-dot{width:6px;height:6px;margin-top:4px;border-radius:50%;background:var(--dsw-alias-border-l1);flex-shrink:0;}
+.fm-feedback.is-unread .fm-feedback-dot{background:var(--dsw-alias-brand-primary);}
+.fm-feedback-main{display:flex;flex-direction:column;gap:2px;min-width:0;}
+.fm-feedback-title{font-size:11.5px;font-weight:600;line-height:1.35;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;}
+.fm-feedback-meta{font-size:9.5px;color:var(--dsw-alias-label-secondary);}
+.fm-dash-empty{font-size:10.5px;line-height:1.5;color:var(--dsw-alias-label-secondary);}
+.fm-dash-error{margin-top:2px;font-size:10px;color:var(--dsw-alias-error, #b42318);}
 
 `;
 
@@ -1580,6 +1725,257 @@ window.__ModuleLoader__.load({
     }
 
     // ---------- the market panel ----------
+
+
+    function Sparkline(props) {
+      const points = (props.points || []).filter((point) => typeof point.stars === 'number');
+      if (points.length < 2) return h('div', { className: 'fm-dash-nohistory' }, props.t('dash.noHistory'));
+      const width = 220;
+      const height = 40;
+      const values = points.map((point) => point.stars);
+      const min = Math.min(...values);
+      const max = Math.max(...values);
+      const span = max - min || 1;
+      const coords = values.map((value, index) => {
+        const x = (index / (values.length - 1)) * width;
+        const y = height - 4 - ((value - min) / span) * (height - 8);
+        return `${x.toFixed(1)},${y.toFixed(1)}`;
+      });
+      return h(
+        'svg',
+        { className: 'fm-spark', viewBox: `0 0 ${width} ${height}`, role: 'img', 'aria-label': 'stars trend' },
+        h('polyline', { points: coords.join(' '), fill: 'none', strokeWidth: '2', strokeLinejoin: 'round', strokeLinecap: 'round' })
+      );
+    }
+
+    function DeltaBadge(props) {
+      const value = props.value;
+      if (typeof value !== 'number' || value === 0) return null;
+      return h(
+        'span',
+        { className: 'fm-delta' + (value > 0 ? ' is-up' : ' is-down'), title: props.t('dash.delta') },
+        `${value > 0 ? '+' : ''}${compact(value)}`
+      );
+    }
+
+    function ProjectDashboard(props) {
+      const { t, lang, onToast } = props;
+      const feed = useProjectFeed();
+      const [input, setInput] = useState('');
+      const [adding, setAdding] = useState(false);
+      const [busy, setBusy] = useState(false);
+      const [confirming, setConfirming] = useState(null);
+      const lastUnread = useRef(0);
+
+      useEffect(() => {
+        loadProjectsFeed().catch(() => {});
+      }, []);
+
+      useEffect(() => {
+        if (feed.ready && feed.unread > lastUnread.current) {
+          lastUnread.current = feed.unread;
+          onToast('ok', t('dash.unread').replace('{n}', feed.unread));
+        }
+        if (feed.unread < lastUnread.current) lastUnread.current = feed.unread;
+      }, [feed.ready, feed.unread]);
+
+      const reload = async () => {
+        setBusy(true);
+        try {
+          await loadProjectsFeed(true);
+        } catch {
+          onToast('error', t('dash.failed'));
+        } finally {
+          setBusy(false);
+        }
+      };
+
+      const add = async () => {
+        const raw = input.trim();
+        if (!raw || adding) return;
+        let repo = '';
+        let npmName = '';
+        if (/^https?:\/\/github\.com\//i.test(raw)) {
+          repo = raw.replace(/^https?:\/\/github\.com\//i, '').replace(/\/+$/, '').split('/').slice(0, 2).join('/');
+        } else if (raw.includes('/')) {
+          repo = raw.replace(/^\/+|\/+$/g, '');
+        } else {
+          npmName = raw;
+        }
+        setAdding(true);
+        try {
+          const response = await fetch(`${API}/projects`, {
+            method: 'POST',
+            headers: writeHeaders(),
+            body: JSON.stringify({ repo, npm: npmName })
+          });
+          if (response.status === 409) {
+            onToast('error', t('dash.exists'));
+            return;
+          }
+          if (response.status === 400) {
+            onToast('error', t('dash.limit'));
+            return;
+          }
+          if (!response.ok) throw new Error(`HTTP ${response.status}`);
+          setInput('');
+          await loadProjectsFeed(true);
+          onToast('ok', t('dash.added'));
+        } catch {
+          onToast('error', t('dash.invalid'));
+        } finally {
+          setAdding(false);
+        }
+      };
+
+      const markSeen = async (id) => {
+        try {
+          await fetch(`${API}/projects/seen`, {
+            method: 'POST',
+            headers: writeHeaders(),
+            body: JSON.stringify({ id })
+          });
+          await loadProjectsFeed(true);
+          onToast('ok', t('dash.marked'));
+        } catch {
+          onToast('error', t('dash.failed'));
+        }
+      };
+
+      const remove = async (id) => {
+        if (confirming !== id) {
+          setConfirming(id);
+          return;
+        }
+        setConfirming(null);
+        try {
+          await fetch(`${API}/projects/remove`, {
+            method: 'POST',
+            headers: writeHeaders(),
+            body: JSON.stringify({ id })
+          });
+          await loadProjectsFeed(true);
+          onToast('ok', t('dash.removed'));
+        } catch {
+          onToast('error', t('dash.failed'));
+        }
+      };
+
+      const items = feed.items || [];
+      return h(
+        'div',
+        { className: 'fm-dash' },
+        h(
+          'div',
+          { className: 'fm-section-head' },
+          h('div', null, h('div', { className: 'fm-section-title' }, t('dash.title')), h('div', { className: 'fm-section-desc' }, t('dash.hint'))),
+          h(
+            'button',
+            { type: 'button', className: 'fm-btn is-small', onClick: reload, disabled: busy },
+            busy ? t('dash.refreshing') : t('dash.refresh')
+          )
+        ),
+        h(
+          'div',
+          { className: 'fm-dash-add' },
+          h('input', {
+            type: 'text',
+            value: input,
+            placeholder: t('dash.addPlaceholder'),
+            'aria-label': t('dash.addPlaceholder'),
+            onChange: (event) => setInput(event.target.value),
+            onKeyDown: (event) => {
+              if (event.key === 'Enter') add();
+            }
+          }),
+          h('button', { type: 'button', className: 'fm-btn is-primary', onClick: add, disabled: adding }, adding ? t('dash.adding') : t('dash.add'))
+        ),
+        !feed.ready
+          ? h('div', { className: 'fm-empty' }, h('span', { className: 'fm-spin' }), h('div', { className: 'fm-empty-title' }, t('loading')))
+          : !items.length
+            ? h('div', { className: 'fm-empty' }, h('div', { className: 'fm-empty-title' }, t('dash.empty')))
+            : h(
+                'div',
+                { className: 'fm-project-list' },
+                items.map((item) => {
+                  const feedback = item.feedback || [];
+                  const unread = Number(item.unread) || 0;
+                  return h(
+                    'div',
+                    { key: item.id, className: 'fm-project' },
+                    h(
+                      'div',
+                      { className: 'fm-project-head' },
+                      h(
+                        'div',
+                        { className: 'fm-project-title' },
+                        h('div', { className: 'fm-project-name' }, item.title || item.repo || item.npm),
+                        h(
+                          'div',
+                          { className: 'fm-project-repo' },
+                          item.repo
+                            ? h('a', { href: item.repoUrl, target: '_blank', rel: 'noreferrer' }, item.repo)
+                            : item.npm ? h('span', null, `npm: ${item.npm}`) : null,
+                          item.lastUpdated
+                            ? h('span', null, ` · ${t('dash.updated').replace('{time}', new Date(item.lastUpdated).toLocaleTimeString(lang === 'zh' ? 'zh-CN' : 'en-US', { hour: '2-digit', minute: '2-digit' }))}`)
+                            : null
+                        )
+                      ),
+                      h(
+                        'div',
+                        { className: 'fm-project-actions' },
+                        unread
+                          ? h('button', { type: 'button', className: 'fm-btn is-small', onClick: () => markSeen(item.id) }, t('dash.markSeen'))
+                          : null,
+                        h('button', { type: 'button', className: 'fm-btn is-small', onClick: () => remove(item.id), title: t('dash.remove') }, confirming === item.id ? t('dash.confirmRemove') : t('dash.remove'))
+                      )
+                    ),
+                    h(
+                      'div',
+                      { className: 'fm-project-metrics' },
+                      h('div', { className: 'fm-metric' }, h('span', { className: 'fm-metric-label' }, t('dash.stars')), h('span', { className: 'fm-metric-value' }, item.stars == null ? '—' : compact(item.stars)), h(DeltaBadge, { value: item.starsDelta, t })),
+                      h('div', { className: 'fm-metric' }, h('span', { className: 'fm-metric-label' }, t('dash.downloads')), h('span', { className: 'fm-metric-value' }, item.downloads == null ? '—' : compact(item.downloads)), h(DeltaBadge, { value: item.downloadsDelta, t })),
+                      h('div', { className: 'fm-metric' }, h('span', { className: 'fm-metric-label' }, t('dash.forks')), h('span', { className: 'fm-metric-value' }, item.forks == null ? '—' : compact(item.forks))),
+                      h('div', { className: 'fm-metric' }, h('span', { className: 'fm-metric-label' }, t('dash.issues')), h('span', { className: 'fm-metric-value' }, item.openIssues == null ? '—' : compact(item.openIssues)))
+                    ),
+                    h(Sparkline, { points: item.history, t }),
+                    h(
+                      'div',
+                      { className: 'fm-feedback-head' },
+                      h('span', null, t('dash.feedback')),
+                      unread ? h('span', { className: 'fm-unread-badge' }, t('dash.unread').replace('{n}', unread)) : null
+                    ),
+                    feedback.length
+                      ? h(
+                          'div',
+                          { className: 'fm-feedback-list' },
+                          feedback.map((entry) =>
+                            h(
+                              'a',
+                              {
+                                key: entry.id,
+                                href: entry.url,
+                                target: '_blank',
+                                rel: 'noreferrer',
+                                className: 'fm-feedback' + (entry.createdAt && Date.parse(entry.createdAt) > Date.parse(item.lastSeenFeedbackAt || 0) ? ' is-unread' : '')
+                              },
+                              h('span', { className: 'fm-feedback-dot', 'aria-hidden': 'true' }),
+                              h(
+                                'span',
+                                { className: 'fm-feedback-main' },
+                                h('span', { className: 'fm-feedback-title' }, entry.title),
+                                h('span', { className: 'fm-feedback-meta' }, `${entry.author} · ${entry.createdAt ? new Date(entry.createdAt).toLocaleDateString(lang === 'zh' ? 'zh-CN' : 'en-US') : ''}${entry.comments ? ` · ${t('dash.comments').replace('{n}', entry.comments)}` : ''}`)
+                              )
+                            )
+                          )
+                        )
+                      : h('div', { className: 'fm-dash-empty' }, t('dash.noFeedback')),
+                    item.error ? h('div', { className: 'fm-dash-error' }, t('dash.failed')) : null
+                  );
+                })
+              )
+      );
+    }
 
     function MarketPanel(props) {
       const t = props.t;
@@ -2439,7 +2835,7 @@ window.__ModuleLoader__.load({
               h(
                 'div',
                 { className: 'fm-tabs' },
-                [['featured', t('tab.featured')], ['heat', t('tab.heat')], ['favorites', t('tab.favorites')], ['installed', t('tab.installed')]].map(([id, label]) =>
+                [['featured', t('tab.featured')], ['heat', t('tab.heat')], ['projects', t('tab.projects')], ['favorites', t('tab.favorites')], ['installed', t('tab.installed')]].map(([id, label]) =>
                   h(
                     'button',
                     {
@@ -2507,9 +2903,11 @@ window.__ModuleLoader__.load({
                   ? renderFeatured()
                   : tab === 'heat'
                     ? renderHeat()
-                    : tab === 'favorites'
-                      ? renderFavorites()
-                      : renderInstalled()
+                    : tab === 'projects'
+                      ? h(ProjectDashboard, { t, lang, onToast: (kind, text) => setToast({ kind, text }) })
+                      : tab === 'favorites'
+                        ? renderFavorites()
+                        : renderInstalled()
             ),
             compare.length && !detail && !comparing
               ? h(
@@ -2637,14 +3035,18 @@ window.__ModuleLoader__.load({
     function QuickAction() {
       const open = useOpen();
       const updates = useUpdates();
+      const projects = useProjectFeed();
       const t = tRef.current;
-      const label = updates.count
-        ? `${t('nav.label')} · ${t('update.badgeTitle').replace('{n}', updates.count)}`
-        : t('nav.label');
+      const bits = [];
+      if (updates.count) bits.push(t('update.badgeTitle').replace('{n}', updates.count));
+      if (projects.unread) bits.push(t('dash.unread').replace('{n}', projects.unread));
+      const label = bits.length ? `${t('nav.label')} · ${bits.join(' · ')}` : t('nav.label');
       useEffect(() => {
         loadUpdates().catch(() => {});
+        loadProjectsFeed().catch(() => {});
         const timer = setInterval(() => {
           loadUpdates().catch(() => {});
+          loadProjectsFeed().catch(() => {});
         }, 5 * 60 * 1000);
         return () => clearInterval(timer);
       }, []);
@@ -2656,14 +3058,14 @@ window.__ModuleLoader__.load({
           'button',
           {
             type: 'button',
-            className: 'fm-action' + (updates.count ? ' has-updates' : ''),
+            className: 'fm-action' + (updates.count || projects.unread ? ' has-updates' : ''),
             title: label,
             'aria-label': label,
             'aria-expanded': open ? 'true' : 'false',
             onClick: () => setOpen(!open)
           },
           h(IconStore, { size: 18 }),
-          updates.count ? h('span', { key: 'dot', className: 'fm-action-dot', 'aria-hidden': 'true' }) : null
+          updates.count || projects.unread ? h('span', { key: 'dot', className: 'fm-action-dot', 'aria-hidden': 'true' }) : null
         )
       );
     }

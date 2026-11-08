@@ -19,6 +19,8 @@ License: MIT
 - The user reads Chinese and wants bilingual plugin descriptions.
 - The user wants a private shortlist, notes, or update alerts for installed DSH
   plugins.
+- The user maintains a DSH plugin and wants one local dashboard for GitHub
+  stars, npm downloads and new GitHub issues.
 - An Agent needs a read-only search tool over a curated DSH plugin index.
 
 ## Not a fit for
@@ -41,9 +43,13 @@ License: MIT
 - Data source: https://awesome-dsh-plugin.com/catalog.json
 - Coverage: 9,463 catalog entries, 2,147 accepted, top 220 in the main lists; search covers all 2,147
 - Maturity: new project, first published 2026-11-08; 0 npm downloads and 0 GitHub stars as of 2026-11-09
-- Refresh: daily at 04:00 local time; cached snapshot stays readable offline
+- Refresh: plugin catalog daily at 04:00 local time; dashboard metrics every 5 minutes
+- Dashboard: up to 5 GitHub repos/npm packages; stars, 30-day downloads, forks,
+  open issues, 7-day delta, star sparkline, latest GitHub issues; stored in
+  `~/.dsh/featured-market/projects.json`
 - Privacy: no telemetry, no account, no cloud sync; favorites and notes stay in
-  browser localStorage
+  browser localStorage; the dashboard reads public GitHub/npm APIs and uses the
+  local `gh` token for GitHub rate limits only
 - Health probe: `/featured-market/health` → `{"ok":true,"ready":true,...}`
 
 ## Curation and scoring

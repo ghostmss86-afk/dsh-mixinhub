@@ -19,6 +19,10 @@ import {
   writeSnapshot
 } from './lib/market.js';
 import { randomBytes } from 'node:crypto';
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+import { execFileSync } from 'node:child_process';
 import { translateText } from './lib/translate.js';
 import { compareVersions, satisfies } from './lib/semver.js';
 
@@ -56,6 +60,195 @@ export function apply(ctx) {
   let learned = (snapshot && snapshot.translations) || {};
   const installs = new Map();
   const get = (name) => (typeof ctx.get === 'function' ? ctx.get(name) : undefined);
+
+  const PROJECTS_PATH = path.join(os.homedir(), '.dsh', 'featured-market', 'projects.json');
+  const PROJECT_TTL_MS = 5 * 60 * 1000;
+  const MAX_PROJECTS = 5;
+
+  const defaultProject = () => ({
+    id: 'ghostmss86-afk/dsh-featured-market',
+    title: '精选插件市场',
+    repo: 'ghostmss86-afk/dsh-featured-market',
+    npm: 'dsh-featured-market',
+    addedAt: new Date().toISOString(),
+    lastSeenFeedbackAt: new Date().toISOString(),
+    history: []
+  });
+
+  function loadProjects() {
+    try {
+      const parsed = JSON.parse(fs.readFileSync(PROJECTS_PATH, 'utf8'));
+      const list = Array.isArray(parsed) ? parsed : parsed && parsed.projects;
+      if (Array.isArray(list) && list.length) return list.slice(0, MAX_PROJECTS);
+    } catch {
+      /* first run or unreadable file: fall back to the user's own project */
+    }
+    return [defaultProject()];
+  }
+
+  function saveProjects() {
+    try {
+      fs.mkdirSync(path.dirname(PROJECTS_PATH), { recursive: true });
+      fs.writeFileSync(PROJECTS_PATH, JSON.stringify({ version: 1, projects: projectItems }, null, 2));
+    } catch {
+      /* the dashboard is still usable for this session */
+    }
+  }
+
+  let projectItems = loadProjects();
+  const projectCache = new Map();
+
+  let ghTokenCache;
+  function githubToken() {
+    if (ghTokenCache !== undefined) return ghTokenCache;
+    ghTokenCache = process.env.GITHUB_TOKEN || process.env.GH_TOKEN || '';
+    if (!ghTokenCache) {
+      try {
+        ghTokenCache = execFileSync('gh', ['auth', 'token'], { encoding: 'utf8', timeout: 3000 }).trim();
+      } catch {
+        ghTokenCache = '';
+      }
+    }
+    return ghTokenCache;
+  }
+
+  async function githubJson(url, timeout = 12000) {
+    const headers = {
+      accept: 'application/vnd.github+json',
+      'user-agent': 'dsh-featured-market'
+    };
+    const token = githubToken();
+    if (token) headers.authorization = `Bearer ${token}`;
+    const response = await fetch(url, { signal: AbortSignal.timeout(timeout), headers });
+    if (!response.ok) throw new Error(`github ${response.status}`);
+    return response.json();
+  }
+
+  async function npmDownloads(name) {
+    const encoded = String(name).split('/').map(encodeURIComponent).join('/');
+    const response = await fetch(`https://api.npmjs.org/downloads/point/last-month/${encoded}`, {
+      signal: AbortSignal.timeout(12000),
+      headers: { accept: 'application/json' }
+    });
+    if (response.status === 404) return 0;
+    if (!response.ok) throw new Error(`npm ${response.status}`);
+    const body = await response.json();
+    return typeof body.downloads === 'number' ? body.downloads : null;
+  }
+
+  function deltaOf(history, key, days = 7) {
+    if (!Array.isArray(history) || history.length < 2) return null;
+    const current = history[history.length - 1];
+    if (!current || typeof current[key] !== 'number') return null;
+    const cutoff = Date.now() - days * 24 * 60 * 60 * 1000;
+    let past = history[0];
+    for (const point of history) {
+      if (Date.parse(point.at) <= cutoff) past = point;
+    }
+    return typeof past[key] === 'number' ? current[key] - past[key] : null;
+  }
+
+  function projectHistory(project, stars, downloads) {
+    const history = Array.isArray(project.history) ? project.history.slice(-59) : [];
+    const previous = history[history.length - 1];
+    const now = new Date().toISOString();
+    if (!previous || Date.now() - Date.parse(previous.at) > 6 * 60 * 60 * 1000) {
+      history.push({ at: now, stars, downloads });
+    } else {
+      history[history.length - 1] = { at: now, stars, downloads };
+    }
+    return history;
+  }
+
+  async function readProject(project, force = false) {
+    const cached = projectCache.get(project.id);
+    if (!force && cached && Date.now() - cached.at < PROJECT_TTL_MS) return cached.data;
+    const next = { ...project };
+    const errors = [];
+    let stars = typeof project.stars === 'number' ? project.stars : null;
+    let downloads = typeof project.downloads === 'number' ? project.downloads : null;
+
+    if (project.repo) {
+      try {
+        const repo = await githubJson(`https://api.github.com/repos/${project.repo}`);
+        stars = typeof repo.stargazers_count === 'number' ? repo.stargazers_count : stars;
+        next.stars = stars;
+        next.forks = typeof repo.forks_count === 'number' ? repo.forks_count : null;
+        next.openIssues = typeof repo.open_issues_count === 'number' ? repo.open_issues_count : null;
+        next.description = repo.description || '';
+        next.repoUrl = repo.html_url || `https://github.com/${project.repo}`;
+        next.pushedAt = repo.pushed_at || null;
+      } catch (error) {
+        errors.push(error && error.message ? error.message : 'github-failed');
+      }
+    }
+
+    if (project.npm) {
+      try {
+        downloads = await npmDownloads(project.npm);
+        next.downloads = downloads;
+      } catch (error) {
+        errors.push(error && error.message ? error.message : 'npm-failed');
+      }
+    }
+
+    if (project.repo) {
+      try {
+        const issues = await githubJson(
+          `https://api.github.com/repos/${project.repo}/issues?state=open&sort=created&direction=desc&per_page=20`
+        );
+        next.feedback = (Array.isArray(issues) ? issues : [])
+          .filter((issue) => issue && !issue.pull_request)
+          .slice(0, 10)
+          .map((issue) => ({
+            id: issue.id,
+            number: issue.number,
+            title: issue.title || '',
+            url: issue.html_url || '',
+            author: issue.user && issue.user.login ? issue.user.login : 'unknown',
+            createdAt: issue.created_at || null,
+            comments: issue.comments || 0,
+            labels: Array.isArray(issue.labels) ? issue.labels.map((label) => label.name).filter(Boolean) : []
+          }));
+      } catch (error) {
+        errors.push(error && error.message ? error.message : 'issues-failed');
+      }
+    }
+
+    next.history = projectHistory(next, stars, downloads);
+    next.starsDelta = deltaOf(next.history, 'stars');
+    next.downloadsDelta = deltaOf(next.history, 'downloads');
+    next.lastUpdated = new Date().toISOString();
+    next.error = errors.length ? errors.join('; ') : null;
+    next.unread = (next.feedback || []).filter(
+      (item) => item.createdAt && Date.parse(item.createdAt) > Date.parse(project.lastSeenFeedbackAt || 0)
+    ).length;
+    projectCache.set(project.id, { at: Date.now(), data: next });
+    return next;
+  }
+
+  function publicProject(project) {
+    return {
+      id: project.id,
+      title: project.title || project.repo || project.npm || project.id,
+      repo: project.repo || null,
+      npm: project.npm || null,
+      stars: typeof project.stars === 'number' ? project.stars : null,
+      starsDelta: typeof project.starsDelta === 'number' ? project.starsDelta : null,
+      downloads: typeof project.downloads === 'number' ? project.downloads : null,
+      downloadsDelta: typeof project.downloadsDelta === 'number' ? project.downloadsDelta : null,
+      forks: typeof project.forks === 'number' ? project.forks : null,
+      openIssues: typeof project.openIssues === 'number' ? project.openIssues : null,
+      description: project.description || '',
+      repoUrl: project.repoUrl || (project.repo ? `https://github.com/${project.repo}` : null),
+      lastUpdated: project.lastUpdated || null,
+      error: project.error || null,
+      unread: project.unread || 0,
+      lastSeenFeedbackAt: project.lastSeenFeedbackAt || null,
+      history: Array.isArray(project.history) ? project.history.slice(-30) : [],
+      feedback: Array.isArray(project.feedback) ? project.feedback : []
+    };
+  }
 
   async function fillTranslations(next) {
     const pending = next.entries
@@ -523,6 +716,123 @@ export function apply(ctx) {
     }
     return true;
   };
+
+
+  effect(() =>
+    webServer.register({
+      kind: 'exact',
+      path: '/featured-market/projects',
+      handler: async (request, response) => {
+        const url = new URL(request.url || '/', 'http://localhost');
+        if (request.method === 'GET') {
+          const force = url.searchParams.get('force') === '1';
+          for (const project of projectItems) {
+            const data = await readProject(project, force);
+            Object.assign(project, data);
+          }
+          saveProjects();
+          send(response, 200, {
+            items: projectItems.map(publicProject),
+            updatedAt: new Date().toISOString()
+          });
+          return;
+        }
+        if (request.method !== 'POST') return send(response, 405, { error: 'method-not-allowed' });
+        if (!authorizeWrite(request, response)) return;
+        const body = await readBody(request);
+        const repo = String((body && body.repo) || '').trim();
+        const npmName = String((body && body.npm) || '').trim();
+        if (repo && !/^[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+$/.test(repo)) {
+          return send(response, 400, { error: 'invalid-repo' });
+        }
+        if (npmName && !/^(@[A-Za-z0-9_.-]+\/)?[A-Za-z0-9_.-]+$/.test(npmName)) {
+          return send(response, 400, { error: 'invalid-npm' });
+        }
+        if (!repo && !npmName) return send(response, 400, { error: 'invalid-project' });
+        if (projectItems.length >= MAX_PROJECTS) return send(response, 400, { error: 'too-many-projects' });
+        const id = repo || npmName;
+        if (projectItems.some((item) => item.id === id || (repo && item.repo === repo) || (npmName && item.npm === npmName))) {
+          return send(response, 409, { error: 'already-tracked' });
+        }
+        const item = {
+          id,
+          title: String((body && body.title) || '').trim().slice(0, 80) || repo || npmName,
+          repo: repo || null,
+          npm: npmName || null,
+          addedAt: new Date().toISOString(),
+          lastSeenFeedbackAt: new Date().toISOString(),
+          history: []
+        };
+        const data = await readProject(item, true);
+        if (repo && data.error && /github 404/.test(data.error)) {
+          return send(response, 404, { error: 'repo-not-found' });
+        }
+        Object.assign(item, data);
+        projectItems.push(item);
+        saveProjects();
+        send(response, 200, { item: publicProject(item) });
+      }
+    })
+  );
+
+  effect(() =>
+    webServer.register({
+      kind: 'exact',
+      path: '/featured-market/projects/refresh',
+      handler: async (request, response) => {
+        if (request.method !== 'POST') return send(response, 405, { error: 'method-not-allowed' });
+        if (!authorizeWrite(request, response)) return;
+        const body = await readBody(request);
+        const id = String((body && body.id) || '');
+        const targets = id ? projectItems.filter((item) => item.id === id) : projectItems;
+        if (!targets.length) return send(response, 404, { error: 'not-found' });
+        for (const project of targets) {
+          const data = await readProject(project, true);
+          Object.assign(project, data);
+        }
+        saveProjects();
+        send(response, 200, { items: projectItems.map(publicProject), updatedAt: new Date().toISOString() });
+      }
+    })
+  );
+
+  effect(() =>
+    webServer.register({
+      kind: 'exact',
+      path: '/featured-market/projects/seen',
+      handler: async (request, response) => {
+        if (request.method !== 'POST') return send(response, 405, { error: 'method-not-allowed' });
+        if (!authorizeWrite(request, response)) return;
+        const body = await readBody(request);
+        const id = String((body && body.id) || '');
+        const project = projectItems.find((item) => item.id === id);
+        if (!project) return send(response, 404, { error: 'not-found' });
+        project.lastSeenFeedbackAt = new Date().toISOString();
+        project.unread = 0;
+        saveProjects();
+        send(response, 200, { ok: true });
+      }
+    })
+  );
+
+  effect(() =>
+    webServer.register({
+      kind: 'exact',
+      path: '/featured-market/projects/remove',
+      handler: async (request, response) => {
+        if (request.method !== 'POST') return send(response, 405, { error: 'method-not-allowed' });
+        if (!authorizeWrite(request, response)) return;
+        const body = await readBody(request);
+        const id = String((body && body.id) || '');
+        const before = projectItems.length;
+        projectItems = projectItems.filter((item) => item.id !== id);
+        if (projectItems.length === before) return send(response, 404, { error: 'not-found' });
+        projectCache.delete(id);
+        saveProjects();
+        send(response, 200, { ok: true });
+      }
+    })
+  );
 
   // Lightweight liveness probe. It answers even while the catalog snapshot is
   // still being read, so a cold start can be distinguished from a dead route.
