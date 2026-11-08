@@ -1,8 +1,9 @@
 name: publish
 
+# Manual by design: npm publishing needs a valid NPM_TOKEN repository secret.
+# Run this workflow from the Actions tab after the secret is configured.
 on:
-  release:
-    types: [published]
+  workflow_dispatch:
 
 permissions:
   contents: read
