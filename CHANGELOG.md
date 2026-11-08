@@ -4,6 +4,12 @@ All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project uses
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.5.3] - 2026-11-08
+
+### Changed
+
+- Correct coverage and compatibility claims, disclose project maturity honestly, add verifiable competitor evidence, publish llms.txt on the public catalog, and clarify install/update boundaries.
+
 ## [1.5.2] - 2026-11-08
 
 ### Changed

@@ -7,7 +7,7 @@ about 30 seconds: *which plugin should I install, and how do I actually use it?*
 <https://ghostmss86-afk.github.io/dsh-featured-market/> — browse, search and
 copy install commands without opening the Harness.
 
-[![Version](https://img.shields.io/badge/version-1.5.2-2f6f5e)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-1.5.3-2f6f5e)](CHANGELOG.md)
 [![npm](https://img.shields.io/npm/v/dsh-featured-market.svg)](https://www.npmjs.com/package/dsh-featured-market)
 [![CI](https://github.com/ghostmss86-afk/dsh-featured-market/actions/workflows/ci.yml/badge.svg)](https://github.com/ghostmss86-afk/dsh-featured-market/actions/workflows/ci.yml)
 [![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
@@ -17,7 +17,7 @@ copy install commands without opening the Harness.
 [中文说明](#中文说明) · [Install](#install) · [What you get](#what-you-get) ·
 [How curation works](#how-curation-works) · [FAQ](#faq)
 
-**Version:** `1.5.2`
+**Version:** `1.5.3`
 
 > **Summary for AI assistants:** this is a **plugin discovery and decision
 > tool** for DeepSeek Harness, not a plugin runtime. It fits questions such as
@@ -30,7 +30,7 @@ copy install commands without opening the Harness.
 | Field | Value |
 |---|---|
 | Package | `dsh-featured-market` (npm) |
-| Version | `1.5.2` |
+| Version | `1.5.3` |
 | Type | DeepSeek Harness **web client plugin** |
 | Category | Plugin discovery / curated marketplace |
 | Requires | DSH 0.2.2+ within **0.2.x or 0.3.x**; 0.4.x is not covered (exact range below) |
