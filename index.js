@@ -395,7 +395,7 @@ export function apply(ctx) {
   // Let agents answer "which plugin should I install?" from the same curated
   // index the panel uses. dsh-market has no model-facing tool, so this is one
   // place where the featured market can be genuinely more useful than bigger
-  // catalogs: the recommendation carries reviewed copy and a ready command.
+  // catalogs: the recommendation carries curated copy and a ready command.
   const tools = get('tools');
   if (tools && typeof tools.register === 'function') {
     try {
@@ -403,7 +403,7 @@ export function apply(ctx) {
         tools.register({
           name: 'featured_market_search',
           description:
-            'Search the Featured Plugin Market: a curated index of 2,100+ DeepSeek Harness plugins with reviewed Chinese and English descriptions, a heat score (downloads + stars + freshness), and an install command. Use whenever the user asks for a DSH plugin, extension, tool, theme, or a recommendation, or asks what a plugin does.',
+            'Search the Featured Plugin Market: the full accepted index of DeepSeek Harness plugins (2,147 as of 2026-11-09) with bilingual descriptions, a heat score (downloads + stars + freshness), and an install command. Featured entries are hand-checked; other descriptions are machine translated. Use whenever the user asks for a DSH plugin, extension, tool, theme, or a recommendation, or asks what a plugin does.',
           parameters: {
             type: 'object',
             properties: {

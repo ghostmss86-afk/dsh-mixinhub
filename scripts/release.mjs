@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import { execFileSync } from 'node:child_process';
-import { readFileSync, writeFileSync } from 'node:fs';
+import { copyFileSync, readFileSync, writeFileSync } from 'node:fs';
 
 const run = (cmd, args) => execFileSync(cmd, args, { stdio: 'inherit' });
 const out = (cmd, args) => execFileSync(cmd, args, { encoding: 'utf8' }).trim();
@@ -34,6 +34,7 @@ writeFileSync('README.md', readme);
 let llms = readFileSync('llms.txt', 'utf8');
 llms = llms.replace(/^Version: .*$/m, `Version: ${version}`);
 writeFileSync('llms.txt', llms);
+copyFileSync('llms.txt', 'docs/llms.txt');
 
 let changelog = readFileSync('CHANGELOG.md', 'utf8');
 if (!changelog.includes(`## [${version}]`)) {

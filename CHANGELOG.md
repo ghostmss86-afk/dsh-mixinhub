@@ -12,7 +12,7 @@ All notable changes to this project are documented here. The format follows
 
 ## [1.5.1] - 2026-11-08
 
-### Changed
+### Fixed
 
 - Mount routes only after the Host web server is ready, add a health probe, and retry transient snapshot failures so a cold start no longer leaves the market blank.
 

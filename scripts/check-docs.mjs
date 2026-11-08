@@ -41,6 +41,7 @@ const checks = [
   ['CHANGELOG entry', changelog.includes(`## [${version}]`), version],
   ['llms.txt version', llms.includes(`Version: ${version}`), version],
   ['llms.txt install command', llms.includes('dsh plugin add dsh-featured-market'), 'missing'],
+  ['docs/llms.txt mirror', read('docs/llms.txt') === llms, 'stale'],
   ...requiredHeadings.map((heading) => [
     `README section ${heading}`,
     readme.includes(heading),

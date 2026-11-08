@@ -13,6 +13,8 @@ import { CATALOG_URL, buildSnapshot, loadSeedTranslations, readSnapshot } from '
 
 const remote = process.argv.includes('--remote');
 const output = path.join(process.cwd(), 'docs', 'catalog.json');
+const llmsSource = path.join(process.cwd(), 'llms.txt');
+const llmsOutput = path.join(process.cwd(), 'docs', 'llms.txt');
 
 function pick(entry) {
   return {
@@ -53,3 +55,7 @@ const payload = {
 fs.mkdirSync(path.dirname(output), { recursive: true });
 fs.writeFileSync(output, `${JSON.stringify(payload)}\n`);
 console.log(`wrote ${output}: ${payload.entries.length} entries, ${(fs.statSync(output).size / 1024).toFixed(1)} KiB`);
+if (fs.existsSync(llmsSource)) {
+  fs.copyFileSync(llmsSource, llmsOutput);
+  console.log(`wrote ${llmsOutput}`);
+}
