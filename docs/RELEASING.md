@@ -15,10 +15,11 @@ This project keeps code, README and changelog in lockstep. CI enforces it.
    `npm pack && gh release create vX.Y.Z dsh-featured-market-X.Y.Z.tgz`.
 9. Update `docs/market-entry.yml` `tarball:` URL for the new tag, and submit /
    update the entry in `awesome-dsh-plugin` if the description changed.
-10. After npm is configured, run the **publish** workflow manually from the
-    Actions tab (`.github/workflows/publish.yml`, requires the `NPM_TOKEN`
-    repository secret). It is not triggered by releases, so a missing secret
-    cannot turn a release red.
+10. npm is not part of the current distribution path: the plugin installs from
+    GitHub and the market entry uses the release tarball. The optional
+    **publish** workflow (`.github/workflows/publish.yml`) stays manual and is
+    only used if an npm release is decided later; it requires the `NPM_TOKEN`
+    secret and is never triggered by a release.
 
 ## README policy
 

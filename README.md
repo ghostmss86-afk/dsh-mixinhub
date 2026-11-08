@@ -47,14 +47,9 @@ dsh plugin add github:ghostmss86-afk/dsh-featured-market
 
 ### From npm
 
-The package name `dsh-featured-market` is reserved for this project. The first
-npm publish is pending an npm credential on the maintainer side; until then, use
-the GitHub command above or the release tarball.
-
-```bash
-# after the first npm publish
-dsh plugin add dsh-featured-market
-```
+This release is distributed through GitHub, not npm. Use the GitHub command
+above; the same code is attached to the v1.4.1 release as a tarball, and the
+official market entry points at that tarball.
 
 Then reload the Harness window. The storefront button appears in the lower-left
 sidebar, next to **Skins & Wallpapers** (`皮肤和壁纸`).
@@ -267,8 +262,8 @@ Not affiliated with DeepSeek. DeepSeek Harness is a separate project.
 dsh plugin add github:ghostmss86-afk/dsh-featured-market
 ```
 
-npm 包名 `dsh-featured-market` 已预留，首次发布待维护者的 npm 凭证；发布后也可以
-直接 `dsh plugin add dsh-featured-market`。
+本版本通过 GitHub 分发，没有发布到 npm。请使用上面的 GitHub 命令；
+同样的代码也附在 v1.4.1 Release 的 tgz 里，官方市场条目同样指向该 tarball。
 
 安装后刷新 Harness 窗口，点左下角商店图标即可。
 
