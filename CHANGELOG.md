@@ -4,6 +4,12 @@ All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project uses
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.5.5] - 2026-11-08
+
+### Changed
+
+- Require a per-process write token on mutating routes, block foreign-origin writes, fix the public catalog's featured names, and state that 0.3.x is allowed but untested.
+
 ## [1.5.4] - 2026-11-08
 
 ### Changed
