@@ -1,0 +1,68 @@
+{
+  "name": "dsh-featured-market",
+  "version": "1.4.0",
+  "description": "Curated plugin market for DeepSeek Harness: daily heat leaderboard, bilingual notes, side-by-side comparison, directional compatibility advice and README summaries.",
+  "type": "module",
+  "license": "MIT",
+  "author": "ghostmss86-afk",
+  "homepage": "https://github.com/ghostmss86-afk/dsh-featured-market#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ghostmss86-afk/dsh-featured-market.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ghostmss86-afk/dsh-featured-market/issues"
+  },
+  "keywords": [
+    "dsh",
+    "dsh-plugin",
+    "deepseek-harness",
+    "plugin-market",
+    "plugin-manager",
+    "marketplace",
+    "curation",
+    "compatibility"
+  ],
+  "engines": {
+    "dsh": ">=0.2.2-0 <0.3.0-0 || >=0.3.0-0 <0.4.0-0"
+  },
+  "exports": {
+    ".": "./index.js",
+    "./client": "./client.js",
+    "./locale/*.json": "./locale/*.json",
+    "./icon": "./icon.svg"
+  },
+  "files": [
+    "index.js",
+    "client.js",
+    "lib/*.js",
+    "data/*.json",
+    "cordis.patch.yml",
+    "locale/*.json",
+    "icon.svg",
+    "CHANGELOG.md",
+    "icon-180.png"
+  ],
+  "scripts": {
+    "check": "node --check index.js && node --check client.js && node scripts/check-docs.mjs",
+    "pack:check": "npm pack --dry-run"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "immediately": true,
+      "inject": [
+        "@deepseek-ai/dsh-client-locale",
+        "@deepseek-ai/dsh-client-ui-layout",
+        "@deepseek-ai/dsh-client-ui-sidebar",
+        "@deepseek-ai/dsh-client-ui-theme"
+      ]
+    }
+  }
+}

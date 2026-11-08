@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="Featured plugin market">
+  <defs>
+    <linearGradient id="fm-bg" x1="8" y1="4" x2="56" y2="60" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#2F6BFF"/>
+      <stop offset="0.55" stop-color="#6B4BE0"/>
+      <stop offset="1" stop-color="#B03BD6"/>
+    </linearGradient>
+    <linearGradient id="fm-awning" x1="14" y1="20" x2="50" y2="30" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FFFFFF" stop-opacity="0.98"/>
+      <stop offset="1" stop-color="#E6ECFF" stop-opacity="0.92"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="15" fill="url(#fm-bg)"/>
+  <path d="M12 29h40v21a3 3 0 0 1-3 3H15a3 3 0 0 1-3-3V29Z" fill="#FFFFFF" fill-opacity="0.16"/>
+  <path d="M15 29h34v19a3 3 0 0 1-3 3H18a3 3 0 0 1-3-3V29Z" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linejoin="round"/>
+  <path d="M12.5 29 16 16.6A3 3 0 0 1 18.9 14h26.2a3 3 0 0 1 2.9 2.6L51.5 29" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M12.5 29c0 2.5 2 4.5 4.5 4.5s4.5-2 4.5-4.5c0 2.5 2 4.5 4.5 4.5s4.5-2 4.5-4.5c0 2.5 2 4.5 4.5 4.5s4.5-2 4.5-4.5c0 2.5 2 4.5 4.5 4.5s4.5-2 4.5-4.5" fill="url(#fm-awning)" stroke="#FFFFFF" stroke-width="2.2" stroke-linejoin="round"/>
+  <path d="M26 51v-9h12v9" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="m50.5 8 .9 2.6 2.6.9-2.6.9-.9 2.6-.9-2.6-2.6-.9 2.6-.9.9-2.6Z" fill="#FFE07A"/>
+</svg>

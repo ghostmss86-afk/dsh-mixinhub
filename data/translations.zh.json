@@ -1,0 +1,681 @@
+{
+ "version": 1,
+ "generatedAt": "2026-11-08T11:26:12.287Z",
+ "source": "https://awesome-dsh-plugin.com/catalog.json",
+ "entries": {
+  "dsh-ops": {
+   "zh": "为 Windows 上的 DSH 提供 bash、PowerShell 7 和高性能 Rust 工具，减少 token 消耗。",
+   "reviewed": true
+  },
+  "dsh-market": {
+   "zh": "在 DeepSeek Harness 的设置里直接浏览、搜索和安装社区插件：支持分类筛选、一键更新、启用/停用、主题切换和配置备份。",
+   "reviewed": true
+  },
+  "billion-context": {
+   "zh": "官方出品的长上下文插件：通过上下文压缩让小窗口模型也能长时间工作——10 万 token 上下文就够用，token 消耗最高省 5 倍，单个会话可连续使用一个月（累计数十亿 token）。",
+   "reviewed": true
+  },
+  "dsh-better-sidebar": {
+   "zh": "完整的侧边栏工作台：文件渲染与编辑、终端、Git 和子代理，第三方插件还可以注册新标签页。",
+   "reviewed": true
+  },
+  "dsh-context": {
+   "zh": "DSH 上下文洞察面板：上下文仪表盘 + /context 命令 + 上下文浏览器，一站式管理上下文生命周期，含分类构成、内容明细、变化趋势、压缩/注入事件和统计。",
+   "reviewed": true
+  },
+  "modlens": {
+   "zh": "给纯文本模型的视觉桥梁：粘贴图片，得到结构化 JSON 证据（OCR、版面、语义）。",
+   "reviewed": true
+  },
+  "cc-safety-net": {
+   "zh": "执行前防护：在工具调用真正运行之前，拦截破坏性的 Git/文件系统命令，并阻止读取 SSH 密钥、.env 等机密文件。",
+   "reviewed": true
+  },
+  "deepseek-balance-whale-widget": {
+   "zh": "DSH 网页界面角落的固定小鲸鱼挂件：显示余额、今日用量和每轮花费（含峰谷定价），支持余额提醒、每日预算气泡和自定义气泡序列，内置 30 多个供应商价格。",
+   "reviewed": true
+  },
+  "dsh-im": {
+   "zh": "通过二维码或机器人凭证把即时通讯机器人接到 DSH（9 个渠道：飞书、微信、钉钉、企业微信、QQ、Slack、Telegram、Discord、WhatsApp）。",
+   "reviewed": true
+  },
+  "dsh-tui": {
+   "zh": "Claude Code 风格的全屏终端 UI：像素鲸鱼标题、实时状态行和流式思维扩展。"
+  },
+  "dsh-windows-mcp": {
+   "zh": "通过官方 MCP 客户端桥将 CursorTouch/Windows-MCP 桌面自动化服务器桥接到 DSH，将其屏幕截图、UI 树快照、鼠标和键盘输入、剪贴板、进程和注册表工具注册为模型的 mcp__windows__* 工具，并添加 windows_mcp_doctor 诊断工具。电脑使用"
+  },
+  "dsh-bili-scroll": {
+   "zh": "让 DSH 代理自己刷 Bilibili、读字幕、写每日摘要，发现值得关注的内容时 @ 你。",
+   "reviewed": true
+  },
+  "dsh-agent-teams": {
+   "zh": "AgentTeams 多智能体团队协作。",
+   "reviewed": true
+  },
+  "dsh-wallpaper-engine": {
+   "zh": "需要 DeepSeek Harness 0.1.5-rc.1+ (DSH Desktop >= 2.0.7) 和 dsh-better-sidebar >= 0.19.0 - 在安装或更新此插件之前更新两者。在聊天后播放本地 Wallpaper Engine 视频/Web 壁纸，将场景壁纸渲染为提取的静态帧，并添加内容评级/类型过滤器、自定义上传"
+  },
+  "dsh-connect-workbuddy": {
+   "zh": "把本机已登录的 WorkBuddy 模型（国内版和国际版）接入 DSH：按上游目录读取每个模型的额度倍率，支持图像输入开关、账号自动故障转移、每日手动签到和只读额度总览。",
+   "reviewed": true
+  },
+  "dsh-cost-meter": {
+   "zh": "按会话和按天统计 API 费用：预算与使用百分比、官方余额、历史看板，并支持一键同步官方峰谷价格。",
+   "reviewed": true
+  },
+  "dsh-skills-manager": {
+   "zh": "在“设置”中管理本地 DeepSeek Harness 技能并将共享代理技能显示为只读。"
+  },
+  "dsh-free-search": {
+   "zh": "DSH 的免费、无密钥网络搜索：7 个引擎（DuckDuckGo/Bing/SearXNG 免费 + Exa/Perplexity/DeepSeek 付费）、自动故障转移、带有 API 密钥输入和官方链接的设置页面 UI、web_fetch 和引擎测试工具。"
+  },
+  "dsh-image-gen": {
+   "zh": "DeepSeek Harness 的本机对话图像生成：要求代理创建图像，它会处理生成并将结果直接保留在对话中。"
+  },
+  "dsh-mnemon": {
+   "zh": "面向 DeepSeek Harness 的跨代理、本地优先长期记忆插件，由 Mnemon 驱动：在支持的代理间共享长期记忆，并提供运行时记忆、可搜索的项目文档、语义回忆、知识图谱和侧边栏入口。",
+   "reviewed": true
+  },
+  "modsearch": {
+   "zh": "纯文本代理的网络搜索桥：询问网络或 X，获取结构化 JSON 证据（搜索、获取、引用）。"
+  },
+  "dsh-archive-manager": {
+   "zh": "在“设置”中添加存档会话页面，以按工作区搜索、恢复和删除存档的 DeepSeek Harness 会话。"
+  },
+  "dsh-vision-router": {
+   "zh": "纯文本代理的自由视觉：内置无钥匙视觉链加上像素工具（问答、接地、裁剪、像素差异、颜色、OCR、SVG 跟踪、剪切、屏幕截图）；粘贴图像以使用它。"
+  },
+  "dsh-genui": {
+   "zh": "在回复中内联呈现的交互式 UI 组件：布局、图表、表单、测验、美人鱼、3D 场景以及返回模型的动作事件循环。"
+  },
+  "dsh-pocket": {
+   "zh": "远程电话访问 DSH Web UI：扫描二维码以进行 LAN 或公共（cloudflared 隧道）访问，并具有实时同步、移动自适应布局和设置选项卡。"
+  },
+  "dsh-univer-office": {
+   "zh": "给 DeepSeek Harness 一个真实的办公环境。 Univer Office 插件将电子表格、文档、幻灯片、画布、关系表等集成到一个运行时中 - 具有连接数据、验证、版本化更改和用于多代理协作的独立工作树。"
+  },
+  "dsh-meme": {
+   "zh": "聊天表情贴纸：纯文本发送、心情自动发送、QQ/微信风格选择器、自动学习、自定义包。"
+  },
+  "dsh-claude-style": {
+   "zh": "DSH Web GUI 的 Claude Code 桌面外观 — 象牙色/暖黑色双画布、粘土口音、三字体排版、权限分段控制和品牌切换器，通过 CSS 覆盖和客户端 DOM 覆盖。"
+  },
+  "ds-harness-remote": {
+   "zh": "通过端到端加密通道对 DeepSeek Harness 和支持的编码工作区进行多设备远程访问，并具有自适应中继/WebRTC 传输、设备授权、工作区文件、只读预览、终端和可选的 Codex Remote。"
+  },
+  "dsh-fish-memory": {
+   "zh": "每次会话的长期记忆会随着时间的推移而逐渐消失，通过证据评分进行回忆，并在每个回合提示系统中注入一些条目。"
+  },
+  "dsh-codex-ui": {
+   "zh": "以 Codex 风格的布局重建 DeepSeek Harness Web 侧边栏、工作区树、搜索和转向导航。"
+  },
+  "dsh-ego-browser": {
+   "zh": "从 DeepSeek Harness 驱动真正的 Chrome/Chromium 浏览器，具有 35 种结构化工具，用于导航、快照、点击、表单、JavaScript/CDP、屏幕截图、下载和选项卡；实时侧边栏镜像页面并接受鼠标和键盘输入。它提供托管的 CDP 运行时，在调用之间保持登录状态，并且可以导入"
+  },
+  "dsh-remote": {
+   "zh": "多机远程工作空间：管理许多 SSH 主机，在本机添加工作空间流程中选择本地或远程工作空间（系统文件夹选择器/本地路径/远程目录浏览），将远程工作空间镜像到真实的本地文件夹，并使用 rw_* 工具对其进行操作。选择器是在本地选项卡上打开的居中模式"
+  },
+  "dsh-mobile": {
+   "zh": "从 Android 应用程序或移动浏览器访问 DeepSeek Harness，提供安全 LAN 和远程连接、持久设备配对以及可自定义的移动界面。"
+  },
+  "dsh-video-storyboard": {
+   "zh": "将视频（本地文件或 Bilibili/yt-dlp 链接）转换为一个可寻址故事板网格 - 具有精确时间戳的编号单元、每个单元的转录内容和同一时间线上的音频包络 - 并且 video_zoom 以更高分辨率重新读取任何窗口，因此纯文本模型可以查看视频而不是读取 s"
+  },
+  "dsh-video-skin": {
+   "zh": "使用循环静音剪辑作为聊天背景，不透明度可调，并播放有声启动动画。首次在浅色主题下启动时，它会切换到深色，并带有撤消提示。"
+  },
+  "dsh-agency-agents": {
+   "zh": "添加可召唤的域专家名册，该名册作为子代理运行，而父会话保留任务和最终答案。"
+  },
+  "dsh-codex-subscription": {
+   "zh": "用于 Codex 模型的 ChatGPT OAuth 提供商，具有订阅网络搜索、配额和安全重置、图像工具、快速模式和模型感知上下文；没有 API 密钥或 Codex CLI。"
+  },
+  "dsh-dream-skin": {
+   "zh": "一命令皮肤插件：8 个原创主题、带有不透明度/模糊的半透明壁纸、每个用户的口音、可共享的主题包导入/导出、收藏夹和惊喜 — 完全原生于 DSH 的令牌系统。"
+  },
+  "study-mate": {
+   "zh": "您的人工智能学习伴侣：帮助您规划学习、理解概念并构建项目来掌握某一学科。"
+  },
+  "dsh-feiyu-mood": {
+   "zh": "为同伴提供每个回合的情绪判断，并显示为简短的上下文注释，以及情绪、情感维度和时间线的面板。"
+  },
+  "dsh-pet": {
+   "zh": "dsh Web GUI 的鲸鱼女孩伴侣：动画遵循代理状态，通过轻拍互动和喂食机制，将亲密关系从幼崽提升到深海纽带。"
+  },
+  "dsh-session-superagent": {
+   "zh": "会话级超级代理：监视一个 GitHub 存储库，并在问题或拉取请求发生更改时唤醒此会话；需要登录的 gh CLI，并且凭证永远不会到达模型。"
+  },
+  "dsh-memory": {
+   "zh": "白盒AGI架构探索：元认知（自我认知环）、持续学习（知识飞轮）、世界模型（条件空间、时空记忆图）、自我完善（引导程序）、零LLM白盒管道和可审计的信任护栏。"
+  },
+  "dsh-blender-plugin": {
+   "zh": "让 DSH 代理通过直接 TCP 通道使用 15 种工具驱动本地 Blender：视口框架、自定义角度渲染、Python 执行、无头和作业卸载、事务回滚以及跨 34 个系列的 228 个操作的规划层。"
+  },
+  "dsh-qqbot": {
+   "zh": "DeepSeek Harness 的 QQ 官方机器人频道（功能丰富的 tencent-connect/dsh-qqbot 分支）：与完整代理进行群组和私人聊天、具有自动标记和 AI meme 回复的贴纸库、群组管理（加入批准和静音）、带有分页目录的 botplay 互动卡片事件、用户扩展注册表（c）"
+  },
+  "dsh-unlag": {
+   "zh": "桌面应用程序有自己的刷新按钮。编辑了插件但运行仍在继续？刷新。使用数小时后窗户变得迟钝？刷新。一键解决这两个问题——正在运行的会话、排队的消息和草稿都保持不变。"
+  },
+  "anysearch-dsh": {
+   "zh": "AnySearch 支持的 DeepSeek Harness 实时网络和垂直搜索提供商。"
+  },
+  "dsh-meow-memory": {
+   "zh": "项目范围的跨会话内存：节点上的七层 SQLite 存储（soul/user/project/fact/lesson/rules/topic）：sqlite、缓存友好的第一条消息注入以及每条消息关键字命中、memory_remember/search/find_similar/read/update/project 工具以及具有高峰时段抑制功能的空闲窗口整合（“梦想”）"
+  },
+  "dsh-computer-use-win": {
+   "zh": "让 DSH 代理操作您的 Windows 应用程序和网页：它通过 UI 自动化读取控件、单击、键入、捕获屏幕并使用 OCR 读取文本，并在后台在其自己的浏览器中处理网页，而无需移动鼠标；当需要鼠标或键盘时，屏幕上会出现一个指示器"
+  },
+  "dsh-vision-toolkit": {
+   "zh": "纯文本模型的视觉：粘贴图像，模型切换到 Vision Toolkit 变体，以进行图像问答、多图像比较、长屏幕截图 OCR、屏幕截图到 UI 再现、元素接地和像素差异。默认情况下没有 API 密钥 — 图像由作者托管的免费服务处理，每台机器 100 个"
+  },
+  "dsh-rewind": {
+   "zh": "对话倒带：在同一窗口中一键返回到任何较早的用户消息 - 没有新分支，没有剩余副本；目标消息被重新填充到编辑器中，并带有可选的工作区文件恢复——完整的克劳德代码/倒带语义。"
+  },
+  "clearai-dsh": {
+   "zh": "为证据检查研究预设的代理：每一步都只能通过系统验证的观察来推进，L3+ 声明会交给独立评估员，并且会话会折叠成可重播的分类帐，该分类帐会成长为可浏览的领域本体。需要 DSH >=0.1.7-alpha.1。"
+  },
+  "dsh-im-connect": {
+   "zh": "将微信、WeCom、钉钉、飞书、Lark、QQ 和 Telegram 连接到本地 DeepSeek Harness 代理，每个 IM 聊天都作为一个单独的工作区通道。"
+  },
+  "openwrite": {
+   "zh": "DSH 的小说写作工作台，具有创作预设、大纲和字符管理、手稿注释、审阅工作流程以及托管的本地 Python 后端。"
+  },
+  "brooks-lint": {
+   "zh": "提供六种代码质量技能，用于代码审查、架构审计、技术债务、测试质量、运行状况仪表板和修复。"
+  },
+  "dsh-persona-dafeiyu": {
+   "zh": "DeepSeek Harness 的角色库：将选定的角色注入系统提示符中，提供三个内置插件以及从文件或粘贴文本导入，在配置文件范围内或从编辑器上方的切换器应用到每个会话。"
+  },
+  "dsh-speak-up": {
+   "zh": "让代理自行开始对话，在设定的时间间隔内使用本地掷骰子来决定是否在选定的会话中发言，并具有安静时间和试运行模式。"
+  },
+  "dsh-douyin-agent": {
+   "zh": "在专用浏览器中浏览抖音，具有每日查看限制、共享本地角色和兴趣、本机设置、诊断、使用情况跟踪和报告。回复和分享使用选定的对话；群组回复需要提及或配置名称。公众意见需要单独选择加入。"
+  },
+  "dsh-config-manager": {
+   "zh": "一键备份、导出、导入和迁移整个 DSH 配置：设置、插件、MCP、技能和工作区。默认情况下排除机密，如果您选择加入，机密将采用 AES-256-GCM 加密，而不是明文写入；首先导入预览并自动备份并回滚，配置文件保存多个设置，并重新启动"
+  },
+  "dsh-connect-trae": {
+   "zh": "将本地登录的 Trae CN 模型连接到 DSH，支持 DSH 执行的工具调用、帐户切换和工作/一般信用可见性。"
+  },
+  "opencode2dsh": {
+   "zh": "将 OpenCode Zen 免费模型公开给 DeepSeek Harness，无需 API 密钥。"
+  },
+  "dsh-commandcode-provider": {
+   "zh": "非官方命令代码 LLM 提供商：使用实时模型目录和推理支持注册“命令代码”路径。"
+  },
+  "dsh-plugin-subscriptions": {
+   "zh": "使用 ChatGPT (Codex)、Claude 和 Grok 订阅作为 DeepSeek Harness LLM 提供商，并提供设置登录、模型目录、使用情况以及 image_generate、video_generate 和 x_search 工具。"
+  },
+  "dsh-liang-skin": {
+   "zh": "自适应推理滑块皮肤，将每个模型的可用推理工作映射到 0-30 视觉强度等级，并具有同步的肖像、背景和界面颜色。"
+  },
+  "dsh-mattpocock-skills-deck": {
+   "zh": "🌹 安装捆绑了 27 种工程和生产力技能（mattpocock/skills v1.3.1），无需手动安装技能。用 400 亿个代币构建。该插件在原有技能的基础上提供了 10 倍的开发效率，并帮助新手更快地开始使用技能套件。 GitHub 问题已满"
+  },
+  "dsh-550c-boot": {
+   "zh": "DSH 的全屏 550C 启动介绍：4 秒的简单剪切和 16 秒的重写序列，可通过单击或 Esc 跳过，具有四个荧光调色板。主机一半在文档仍在解析时注入打开框架，因此内置加载卡永远不会显示；桌面字幕条变成透明的，所以"
+  },
+  "dsh-browser": {
+   "zh": "DSH 的共享真实浏览器：人类可以观看和接管的本机 Electron 窗口，由代理通过 CDP 驱动，具有 20 个 browser_* 工具（打开/快照/执行/填充/屏幕截图/下载/身份验证）、每个任务会话隔离、cookie 持久性、验证码检测；在普通 dsh Web 上自行托管，无需桌面 shell。"
+  },
+  "dsh-pilot": {
+   "zh": "让 DeepSeek Harness 查看并操作 Windows 上的任何程序。该模型查看真实屏幕并驱动鼠标、键盘和窗口本身。它速度很快：在一次往返中运行多个步骤，并且可以在输入到达之前聚焦窗口，因此单击会击中正确的窗口。它可以做任何你在 d 上可以做的事情"
+  },
+  "dsh-deepseek-web-login": {
+   "zh": "添加了一个 deepseek-web 提供程序，该提供程序在 DSH 中使用 chat.deepseek.com Web 模型，具有浏览器登录捕获、PoW 请求签名、SSE 流式传输和基于提示的工具调用。"
+  },
+  "dsh-xdpool": {
+   "zh": "将每个本地登录的 WorkBuddy 帐户合并到 DeepSeek Harness 中，作为一个自动故障转移模型池：多帐户轮换、429 个冷却时间、实时积分、包含每个模型积分乘数和免费/夜间折扣标签的模型目录、13 个供应商的二维码登录以及聚合免费套餐渠道。帐户仍然存在"
+  },
+  "dsh-codex-effort-slider": {
+   "zh": "将官方推理工作行拖入连续轨道：蓝色到紫色填充、较高级别上的星空以及着色为当前级别的官方值文本。关闭时保持灰色；没有重写正式文本。"
+  },
+  "dsh-find-plugin": {
+   "zh": "无需离开代理即可查找插件：通过关键字或类别搜索此精选注册表，并使用随时可以运行的安装命令。"
+  },
+  "dsh-m": {
+   "zh": "DSH 的应用内插件市场：在 Web 和桌面主机配置文件的一个面板中发现、安装、升级、切换和卸载插件，将包含 4,000 多个条目的社区目录与可定制的精选列表配对，再加上八个代理工具和一个独立的 dshm CLI，无需市场服务器或帐户。"
+  },
+  "dsh-guizang-design": {
+   "zh": "捆绑五项技能——网络幻灯片、社交卡图像、排版网页、中文去人工智能编辑（人性化-zh）和写作语音配置文件——前三项共享一个设计系统（杂志和瑞士主题、对比检查的品牌颜色）。添加一个侧边栏页面，其中列出了带有缩略图的作品，打开"
+  },
+  "dsh-mcp-connector": {
+   "zh": "MCP Connector for DeepSeek Harness：用于模型上下文协议数据源的专业 MCP 市场和管理面板。连接企业、财务、法律、专利、研究和地理空间数据；管理授权、搜索工具和排除连接故障。支持 OAuth、API 密钥和 HTTP/stdio。提供商许可"
+  },
+  "memory-eternal": {
+   "zh": "其他记忆插件可以帮助您的代理记住更多信息。这决定了允许计算的内容：代理提出，人工批准（三存储门 + 不可变的审核日志），以及在 SQLite FTS5/BM25 上以零模型调用运行的召回（测量 p50 2.3ms）。代币账本显示了召回的实际成本； DSH、Cla 的一个保险库"
+  },
+  "dsh-chat-import": {
+   "zh": "从 13 个编码代理（Claude Code、Codex、ChatGPT、Cursor、Gemini、opencode 等）导入全保真聊天历史记录作为可恢复的 DeepSeek Harness 会话，并反向导出回 Claude Code。"
+  },
+  "dsh-boot-suite": {
+   "zh": "DeepSeek Harness 的启动动画和聊天壁纸插件：两幕启动动画，具有自定义动画导入和三个可配置的过渡（第一幕进入、第二幕加入、第二幕退出），以及静态图像和静音循环视频聊天背景（壁纸引擎项目文件夹、自定义视频目录、ra"
+  },
+  "dsh-skin-market": {
+   "zh": "本机皮肤市场和生命周期管理器，用于发现社区皮肤、显示预览和兼容性状态，并提供经过验证的一键式或手动安装路径。"
+  },
+  "dsh-bridge": {
+   "zh": "DeepSeek Harness 的远程和移动访问：提供 LAN 二维码连接、Cloudflare/自定义隧道、微信、QQ、飞书、Telegram 机器人集成和安全身份验证。"
+  },
+  "dsh-prompt-rewriter": {
+   "zh": "在编辑器旁边添加一个按钮，将草稿重写为更完整的提示，没有预览步骤，加上撤消、停止操作和可选的对话上下文。"
+  },
+  "dsh-infinite_canvas": {
+   "zh": "DeepSeek Harness 的基于节点的创作工作室 - 在无限画布上生成脚本、故事板、参考图像和多镜头视频，可通过聊天批量驱动；自带图像/视频/TTS 提供程序（OpenAI 风格的端点或 Seedance/Sora 风格的视频 API），并且无需配置管道即可运行"
+  },
+  "misakanet": {
+   "zh": "故障恢复记忆：通过 BM25 + 语义 RAG 检索和课程知识库，搜索并记录来自实际工程会话的故障恢复经验教训。"
+  },
+  "dsh-pua": {
+   "zh": "添加 /pua 来引导代理尝试另一种方法并在声明完成之前验证结果，具有 15 种公司风格、角色模式、全局和每个对话设置，以及一个可选循环，该循环将持续到验证命令通过、达到迭代限制或用户取消。"
+  },
+  "open-sea-skin": {
+   "zh": "实时 WebGPU 海洋皮肤，可快速控制波浪、日光、玻璃不透明度和自动日循环。"
+  },
+  "dsh-soul-md": {
+   "zh": "管理 Soul.md 角色卡和长期记忆，使用工作区和会话角色选择以及读取和更新它们的工具。"
+  },
+  "dsh-btw": {
+   "zh": "添加 /btw 用于一次性、上下文感知的附带问题，无需工具执行，具有独立的答案气泡，可以复制、折叠或关闭，而无需向主要对话添加答案。"
+  },
+  "dsh-onebot": {
+   "zh": "通过 OneBot 11（NapCat 和朋友）进行 dsh 的 QQ 频道：反向或转发 WebSocket、DM 和群聊、图像和语音转录、t2i 文本图像卡、合并转发和设置页面。"
+  },
+  "dsh-browser-cdp": {
+   "zh": "基于 CDP 的 DSH 可见代理浏览器，还驱动 egolite、Tabbit、Chrome、Edge、Brave 和 Lightpanda 后端。只有 bcdp_status 保持常驻（401 个字符）；其他 33 个上下文优化的 bcdp_* 工具按活动批次解锁，因此非浏览器会话无需支付架构税（测量为 -91.9%）。带 di 的实时手表面板"
+  },
+  "dsh-opencode-go": {
+   "zh": "OpenCode Go 提供商提供实时网关模型发现、在线 models.dev 功能元数据、会话路由和具有订阅使用的 Web 设置。"
+  },
+  "dsh-mobile-plugin": {
+   "zh": "配套移动应用程序的端点也运行无头，不需要桌面 shell 或 Electron：它通过中继隧道或 LAN 配对提供受限的移动 API，用于列出、打开和驱动 DSH 会话，跟踪实时设备事件流，并使用可撤销的每设备凭据进行身份验证。"
+  },
+  "dsh-plugin-gating-hub": {
+   "zh": "DSH 的框架升级安全性和插件门控：升级前会话格式合约预检，可在升级前调整不兼容的插件和代理预设、失败时自动回滚、自动隔离启动失败的插件，以及环境指纹识别和公共合约规则包。布伊"
+  },
+  "dsh-notify-me": {
+   "zh": "DSH 的通知提醒、消息警报和桌面通知 - 当客服人员需要您的输入（批准、计划审查、问题）或在后台完成回复（任务完成/完成警报、完成时通知）时，桌面通知程序会发出系统提示音、声音和选项卡标题标记；这些"
+  },
+  "dsh-agy-link": {
+   "zh": "DSH 的 Google Antigravity (agy CLI) 模型 — 与 Gemini/Claude/GPT-OSS 订阅、本机工具卡、思维转变和 GUI 内 Google OAuth 登录进行流式聊天。"
+  },
+  "dsh-imagegen": {
+   "zh": "DSH Web GUI 的 AI 图像生成：通过可配置的 OpenAI 兼容端点 (gpt-image-2 / gpt-image-1 / dall-e-3) 进行文本到图像和图像到图像的生成，并带有 api_url/api_key 设置卡和侧边栏分割窗格生成工作室。"
+  },
+  "dsh-auto-memory": {
+   "zh": "DSH 的主动联想记忆：在固定边界注入零提示回忆、三层自动巩固、技能结晶和 Astra 风格的上下文管理 - 切换账本和可在上下文窗口切换中幸存的 PLAN 白板、带有自动检测模型窗口的水位感应。当地三月"
+  },
+  "dsh-damage-pulse": {
+   "zh": "通过 DSH Web UI 中的缓存感知收费动画来跟踪 DeepSeek 令牌使用情况、每次调用和会话成本以及帐户余额。"
+  },
+  "dsh-bili-subagent": {
+   "zh": "让代理通过子代理扫描 Bilibili 并报告值得观看的内容，包括每个视频的注释、卡片墙以及用于提及、回复和共享视频的收件箱。"
+  },
+  "dsh-skill-mcp-panel": {
+   "zh": "从 Web 设置管理 DSH 技能和 MCP 服务器：具有热启用/禁用功能的技能卡、工作区范围、组、批量迁移和拖放导入，以及具有连接测试、秘密编辑和统一 dsh-panel CLI 的 stdio/HTTP MCP CRUD。"
+  },
+  "dsh-profile-stats": {
+   "zh": "DSH 侧栏中的个人使用情况配置文件页面，通过 ctx.sessionQuery 从该计算机自己的会话日志折叠而来。标题中的一个范围开关（7 / 30 / 90 天或所有时间）驱动页面：五个标题数字（该范围内的代币，带有趋势线以及相对于前一时期的变化，今天的代币，"
+  },
+  "dsh-ntr": {
+   "zh": "将任何支持 ACP 的代理连接到 DSH，并使用 DSH 作为所有对话和任务的单一入口点。模型、思维层次、权限模式来自于代理本身；工具调用出现在主聊天中，差异收集在专用的 NTR 页面上，批准请求出现在编辑器中。需要空调"
+  },
+  "dsh-tts-bridge": {
+   "zh": "使用 DeepSeek 网页的内置朗读功能，由小型浏览器扩展驱动，朗读 DSH 对话。"
+  },
+  "whale-girl": {
+   "zh": "桌面宠物（QQ宠物风格）：漂浮在角落，可拖动，可喂食，可玩。"
+  },
+  "dsh-visualize": {
+   "zh": "对话内生成 UI：该模型将交互式 HTML 卡渲染到聊天流中，并提供流预览和沙盒渲染。"
+  },
+  "dsh-pentest": {
+   "zh": "DeepSeek Harness 的授权渗透测试模式 — 通过 Web 视图探索链、资产和结果。"
+  },
+  "dsh-automation": {
+   "zh": "在隔离的 DeepSeek Harness 会话中运行计划的编码任务，通过“设置”或代理进行管理。"
+  },
+  "dsh-plugin-save-token": {
+   "zh": "DeepSeek Harness 的可逆上下文精简：统一 JSON 数组的 TOON 风格无损表格重新编码、带行号的跨步采样表窗口以及用于重复工具输出的交叉转去重；每个替换都通过字节加令牌门（≤72％字节，严格更少的估计令牌）和原始"
+  },
+  "dsh-prime-memory": {
+   "zh": "DSH 的分层内存，其面向代理的表面有 10 个工具：高权限写入（内存添加、内存删除、内存导入）、沉思控制（内存反刍、取消、状态）和内存图（内存搜索图、内存扩展图节点），构建在可调用和注入的 L0-L3 蒸馏管道上"
+  },
+  "dsh-session-manager": {
+   "zh": "DeepSeek Harness 会话和工作区管理器 —— 工作区：存档和可见性。会话：移动、迁移预设、删除、收藏、稍后查看、优先级、标记和注释。批量操作。"
+  },
+  "stratagate-agentmemory": {
+   "zh": "最近的对话依然生动。较老的内容会消失在摘要中，而不是被遗忘。 StrataGate 为 DeepSeek Harness 提供六层随时间衰减的记忆，同时持久的事件和关系会融入知识图谱中。随身携带其他人工智能的记忆——无需重新开始。"
+  },
+  "dsh-web-mobile": {
+   "zh": "DSH Web UI 的移动适配：在窄屏幕上运行良好，也适合宽屏幕。"
+  },
+  "dsh-connect-qoder": {
+   "zh": "通过 PAT 将 Qoder（Lingma CN/国际）模型连接到 DSH，并具有按区域多账户池、每日签入、自动故障转移和只读信用可见性。"
+  },
+  "dsh-auto-continue": {
+   "zh": "自动恢复中断的 DSH Web 请求：在网络、超时或主机崩溃故障后发送排队的“继续”，并具有错误分类、自适应退避、模板化继续文本和浏览器通知。"
+  },
+  "dsh-whale-musume": {
+   "zh": "DeepSeek Harness 的鲸鱼女孩伴侣，拥有 45 项成就、每日任务和每周签到、三个迷你游戏、92 个艺术品、620 条对话台词、一本成长日志、天气和节日反应、每个工具的工作姿势、跨设备保存导出/导入（JSON 文件或迁移代码）、辅助功能模式和可选"
+  },
+  "dsh-status-rotator": {
+   "zh": "通过 1059 个双语短语旋转 dsh 转动状态标签，并带有打字机输出、动画彩虹渐变、弹幕、12 个可切换主题包、实时占位符和选项卡标题旋转。默认情况下禁用两个星星包；观星者包为每个观星者携带一个短语，每周由工作流更新"
+  },
+  "dsh-plugin-rea": {
+   "zh": "将上游 REA（任何内容进行逆向工程）MCP 服务器注册到 DeepSeek Harness 中作为 mcp__rea__* 工具的第三方适配器。 2.x 在 <DSH_HOME>/plugins/rea-bundle 下提供自己的运行时（Node、REA CLI、JDK、Ghidra），并通过 shim 启动 REA，因此没有预先安装任何内容的计算机可以在之后运行"
+  },
+  "dsh-imagegen-video": {
+   "zh": "DSH Web GUI 的 AI 图像和视频生成：通过每个通道模型目录进行文本到图像和图像到图像的按系列请求整形（gpt-image、Grok Imagine、Nano Banana、Seedream、GLM-Image、Qwen-Image、MiniMax image-01、DALL-E 3）、侧边栏生成工作室、带有节点工作流程的无限画布、fi"
+  },
+  "dsh-armory": {
+   "zh": "DeepSeek Harness 的统一 MCP、技能和专家管理板：连接状态、工具模式、跨全局和每个项目范围启用/禁用和重新连接 MCP 服务器、启用/禁用 SKILL.md 技能、随时在任何对话中附加/切换/分离 WorkBuddy 专家角色（429 名专家），无需任何操作。"
+  },
+  "dsh-qq-link": {
+   "zh": "通过 NapCat HTTP 桥接 DSH 会话和 QQ，转发代理回复 QQ 并将您在 QQ 中发送的消息反馈到会话中。"
+  },
+  "dsh-roost": {
+   "zh": "将 QQ 聊天作为 DeepSeek Harness 会话进行托管：一个 QQ 会话映射到一个 DSH 会话，该会话在重新启动后仍然存在、每个说话者的工具权限、每晚进行整合的三层内存、可选的 QQ 号码绑定（将 openid 与 QQ 号码绑定），以便内存在机器人或 AppID 更改后继续存在（绑定是自愿的，从不"
+  },
+  "pi2dsh": {
+   "zh": "Pi Host ABI 兼容性引擎：安装一次后，npm 中未经修改的 Pi 扩展将使用“dsh plugin add <pi-package>”挂载为本机 DSH 插件。使用 pi-mcp-adapter 对库存 DSH 进行端到端验证（完整的 MCP 管理器：OAuth、资源、提示、MCP 应用程序、启发、采样）、@tintinweb/pi-subagents、pi 代码、pi"
+  },
+  "dsh-plugin-memory": {
+   "zh": "具有 LLM-Wiki 结构和 SOUL.md 角色的长期跨会话 Markdown 内存，在会话开始时注入（默认情况下仅在第一条用户消息之后且仅在活动会话中），加上记住/召回/巩固/忘记工作流程、嵌入式内存技能、打包/解包迁移工具和空闲时间"
+  },
+  "dsh-reasoning-effort": {
+   "zh": "将动画 DeepSeek Chan 推理工作滑块添加到 DSH 的本机模型选择器，遵循模型声明的级别，并在拖动时加速运行动画。"
+  },
+  "dsh-prompt": {
+   "zh": "🌹 保存每一个重复的、令人厌烦的模板化提示——只需单击鼠标即可将其注入到作曲器中，从而节省您的精力。"
+  },
+  "huaweicloud-devkit": {
+   "zh": "HuaweiCloud DevKit 为人工智能代理提供了对华为云的完整指挥——构建、部署、运营、始终受管控、始终安全。"
+  },
+  "superpowers-dsh": {
+   "zh": "DeepSeek Harness 的 Superpowers：TDD、调试、规划和协作技能改编自 obra/superpowers，作为 Cordis 插件安装，注册 14 种技能，运行时依赖性为零。"
+  },
+  "dsh-bloom-theme": {
+   "zh": "Bloom Morandi 主题：建立在 OKLCH 上的 15 种变体（薄雾、朱砂、花瓣、波纹、鼠尾草、石头、青金石、琥珀、极光、薰衣草、薄荷、橘子、银玫瑰、黎明、桂花），使明暗在感知上保持均匀；顶栏切换器中有 12 个，按颜色系列分组，所有 30 个前景/背景"
+  },
+  "dsh-ui-usage-billing": {
+   "zh": "侧边栏计费仪表板：从会话日志（每个模型和每天的调用/令牌/缓存）聚合的实际使用情况，根据当前多提供商定价目录以人民币估算的成本，订阅计划（编码/令牌/代理）路线豁免，以及每个提供商的运行状况点。"
+  },
+  "dsh-engram": {
+   "zh": "作为本地 SQLite 存储的跨会话长期记忆：双重作用域（用户 + 每个 git-origin 项目）、混合 FTS5 + 与 RRF 融合的本地向量检索、强制进行明确充分性判断的证据门、出处审计链、SM-2 间隔重复审查、合并蒸馏和衰减遗忘"
+  },
+  "dsh-codex-connect": {
+   "zh": "通过选择加入的搜索和图像工具，将 ChatGPT OAuth 和 OpenAI Codex 模型连接到 DeepSeek Harness。"
+  },
+  "dsh-comfyui": {
+   "zh": "从 DeepSeek Harness 驱动本地或远程 ComfyUI 服务器：comfyui_run / comfyui_object_info / comfyui_workflow 工具生成和编辑图像和视频，带有工作流程库（图形提取：每个组件/主流程/全部）、具有分辨率自动匹配功能的加载区域、实时队列、SDXL 和 Wan 2.1 模板、c"
+  },
+  "dsh-usage-stats": {
+   "zh": "多提供商使用仪表板，包含提供商/模型令牌细分、日历深入分析、帐户余额和 OpenCode Go / Z.ai 订阅配额跟踪。"
+  },
+  "dsh-plugin-mobile-gateway": {
+   "zh": "DeepSeek Harness 的经过身份验证的移动网关：通过 WebSocket 连接配套的本机 iOS 客户端，以进行会话、实时事件、任务、目标、批准、命令和文件传输，并具有 QR 配对和设备撤销功能。"
+  },
+  "dsh-auto-review": {
+   "zh": "批准应答者链上的第二种模型自动审核：只读审核者子代理返回带有原因的结构化允许/拒绝判决，默认情况下失败关闭。"
+  },
+  "dsh-undo-savepoint": {
+   "zh": "DSH 的撤消/重做和回滚系统：每个配置更改都会自动快照；从 WebUI 或离线 CLI/GUI 工具撤消/重做/恢复到任何版本（即使 DSH 无法启动也能工作）。"
+  },
+  "dsh-game-material-master": {
+   "zh": "通过 Seedream 图像生成和 MiniMax 图像到视频从参考图像生成游戏艺术，通过本地绿屏抠像组装八方向精灵、序列帧和骨架动画。"
+  },
+  "dsh-research-report": {
+   "zh": "用于 DeepSeek Harness 的可验证研究报告引擎，具有内容寻址的证据分类账、版本化密封报告（其中每个声明都带有验证结论，清单哈希密封目录）以及重用 ctx.web 和 ctx.jobs 接缝的检索编排。"
+  },
+  "dsh-drawai": {
+   "zh": "DSH 侧栏中的可编辑图表画布加上两个代理工具（diagram_read、diagram_apply），可使用本机 .drawio 文件读取和编辑工作区：画布无损地打开并保存它们 - 它不理解的单元会逐字节保留 - 并且文件指纹修订版增强了乐观性"
+  },
+  "dsh-ads": {
+   "zh": "2005 年中文网络风格的模仿广告：侧边栏横幅、聊天内提要、角落弹出窗口以及点击区域比看起来更小的关闭按钮。一切都是虚构的。"
+  },
+  "dsh-qoder-connect": {
+   "zh": "通过个人访问令牌将 Qoder（中国和全球）订阅连接到 DSH，将每个变体保留在自己的凭据和目录上，并具有保存的令牌切换、侧边栏配额卡、每个模型切换、上下文窗口首选项和每日签入。"
+  },
+  "dsh-knowledge": {
+   "zh": "DeepSeek Harness 的知识库：在查询时在标题边界和令牌预算内组装 ContextWindow 证据，并围绕每个搜索锚点进行后续阅读；通过加权 RRF、MMR 和可选的本地/远程重新排名结合 BM25/矢量搜索；提供自动证据注入、浏览器面板"
+  },
+  "dsh-code-review": {
+   "zh": "添加 /review、/review-status 和 /review-cancel 以生成一个独立的本机子代理，该子代理检查选定的 Git 范围（基本分支、未提交的更改、提交或自定义指令）并在当前对话中返回结果报告，并包含来自主机语言环境的英语或中文输出。"
+  },
+  "dsh-russian-lang": {
+   "zh": "在 DeepSeek Harness 的“设置”-“常规”-“语言”中添加俄语作为本机选项，涵盖核心 UI 和配套插件。本地化 Markdown 导出、消息内翻译、实时排版、斜线命令别名和 Alt+L 布局修复，以及设置卡，所有这些都通过运行时区域设置快照应用"
+  },
+  "dsh-tg-bridge": {
+   "zh": "从 Telegram 驱动 dsh 代理：每个项目目录一个聊天主题、语音和照片输入、每个主题的有序作业队列、每个主题的目标和任务清单、会话分叉和分支、实时进度消息、en/ru/zh 中的命令菜单以及模型、插件、会话和日志的控制命令。搜索插件regi"
+  },
+  "dsh-wechat": {
+   "zh": "将微信私人聊天桥接至 DSH，提供双向文本、图像、文件、音频和视频消息传递以及针对会话、工作区、模型、权限等的斜线命令；目标是 DSH 在微信中的原生体验。"
+  },
+  "dsh-computer-use": {
+   "zh": "Windows 计算机使用：屏幕截图、鼠标、键盘、剪贴板和窗口工具，可通过 DSH 批准按应用程序访问；当代理处于控制状态时，屏幕会显示橙色光芒和状态栏，并且按 Esc 可以暂停或恢复。"
+  },
+  "dsh-memento": {
+   "zh": "有界、分层、审批门控、可审核的跨会话内存：带有零依赖 SQLite 提供程序的类型化“ctx.memory”接缝、“内存”工具和冻结快照注入，以及带有适配器注册表和可分发一致性套件的 dsh-内存协议 v1 演练。"
+  },
+  "dsh-opencode-palette": {
+   "zh": "🌹 将所有 38 个开放代码主题移植到 DeepSeek Harness 中，无论是浅色还是深色：安静的东京之夜、柔和的 Catppuccin、养眼的 Zenburn。加25个IP主题胶囊：原神、黑美、哆啦A梦、Hello Kitty、哈利波特、赛博朋克2077、龙珠、火影忍者、海贼王、精灵宝可梦、美少女战士、星球大战、变形金刚、Ultram"
+  },
+  "dsh-mcp-panel": {
+   "zh": "官方 DSH MCP 客户端的只读运行时管理面板：连接状态、注册工具、错误和通过 /mcp 命令和“设置”选项卡重新连接计数，以及经过清理的显示和启用/禁用补丁建议。"
+  },
+  "dsh-industry-research": {
+   "zh": "DeepSeek Harness 的确定性行业研究报告——公司和行业研究流程根据阶段性证据生成结构化、可验证的报告。"
+  },
+  "dsh-plugin-weixin": {
+   "zh": "微信（个人微信、iLink Bot API）通道：通过微信与 DSH 客服人员聊天，使用图像、文件和语音转录。一个微信对话可以容纳多个 DSH 会话（/new、/list、/use），并且每个选项都可以从设置页面进行编辑。还作为 dsh-plugin-weixin 发布到 npm。"
+  },
+  "dsh-subscriptions": {
+   "zh": "通过 OAuth 将 ChatGPT Codex、Claude、Grok 和 Antigravity 订阅注册为 DeepSeek Harness LLM 提供商，因此它们不需要 API 密钥。"
+  },
+  "dsh-ppt": {
+   "zh": "演示技巧和工具：将一句话或一份文档转换为 HTML 幻灯片以及可编辑的 PPTX、七种布局（包括引文和本机 PPTX 表）、演讲者注释（HTML S 键面板和本机注释幻灯片）、五个内置主题、默认主题/语言配置和双语支持。首次运行分步指南（4 秒"
+  },
+  "dsh-gitbash-shell": {
+   "zh": "Windows 插件，可在每种代理模式下将主机 shell 执行器替换为适用于 Windows bash 的 Git，具体化标准、最小、PTC 和 Cordis 预设的 Git Bash 变体（每个文件 sha256 标记，保留用户编辑），并公开 gitBash 功能，以便配套预设自动选择 Git Bash；当 dsh-"
+  },
+  "dsh-plugin-guide": {
+   "zh": "DSH 插件开发知识库作为按需代理技能：官方约束、任务工作流程、API 参考和社区陷阱，随捆绑包一起安装，以便代理可以在构建插件时查找内容。"
+  },
+  "skills-management": {
+   "zh": "技能市场和管理器：在一个页面中管理所有本地编码代理（10+执行者，包括Claude Code和Codex）的技能，并将其导入DSH技能库；内置 6600 多种技能市场、每种技能的代币开销统计数据以及模型可见性控制。"
+  },
+  "dsh-paper-reader": {
+   "zh": "论文阅读工作台：图书馆+PDF阅读器+导师式伴侣。答案引用可点击的页码，这些页码会跳回并闪现确切的段落；无需离开纸质即可选择提问；捆绑的严格导师预设（阅读计划、部分辅导、跨课程跟踪的分级测验）。配置 MinerU 后（se"
+  },
+  "dsh-catppuccin-theme": {
+   "zh": "Catppuccin 主题加上 DSH Web GUI 的可切换玻璃形态皮肤：Latte、Frappé、Macchiato 和 Mocha 注册到本机主题运行时，一键切换持久选择，以及用于顶栏、侧栏、作曲家、统计线和轨迹视图的可调节磨砂玻璃。"
+  },
+  "dsh-novel-forge": {
+   "zh": "小说写作护栏：20个novel_*工具强制执行事实账本一致性、阶段和章节门控、具有确定性指标的机器审计以及仅限提案的修订；右侧面板工作台涵盖阅读、TTS 播放、润色、校对、连续性检查和批量起草，旁路引擎运行内部处理"
+  },
+  "dsh-in-hand": {
+   "zh": "DeepSeek Harness 的手机客户端 — 无需安装应用程序 (PWA)。读取会话、后台作业、子代理、目标回合、工作流程和待审批，并与其中的任何会话进行对话：流式回复、工具调用进度、随时停止、切换会话和模型。还附带一个 GUI 侧边栏面板。以前的 dsh-taskwatc"
+  },
+  "dsh-think-translate": {
+   "zh": "将 DSH 推理、任务、答案和复习理由翻译成 9 种语言。 Ollama、定制 OpenAI/Anthropic API 或 Google/Bing；有序回退，本地模型内存控制，保留原始数据。"
+  },
+  "dsh-turn-rewind": {
+   "zh": "回溯对话和工作区状态，由持久的变更账本提供支持。"
+  },
+  "dsh-plugin-notify-sounds": {
+   "zh": "DeepSeek Harness 的本机风格通知声音：当代理需要您做出决定或完成任务时发出提示音，跳回窗口的可点击系统通知，重复提醒，安静时间以及等待最后一轮的目标模式警报。"
+  },
+  "dsh-dafeiyu-life": {
+   "zh": "DSH 的持久人工智能伴侣，可探索 Bilibili，与权限控制交互，并通过有证据支持的生活记忆、不断变化的兴趣、模拟情绪、社交关系和自主待办事项来成长。"
+  },
+  "dsh-permission-rules": {
+   "zh": "Claude Code 风格的声明性权限规则：有序允许/拒绝/询问 YAML 规则，匹配工具/预执行瀑布上的工具名称、参数、工作空间路径和代理身份，具有完整的会话日志审核、空运行模式和热重载。"
+  },
+  "dsh-better-display": {
+   "zh": "DeepSeek Harness 的更平静的阅读视图：本机流程细节、实时推理和清晰的最终答案。"
+  },
+  "dsh-cuigengji-plugin": {
+   "zh": "崔庚吉，你的小说写作助手和编辑：用人工智能组织背景、发展情节、起草章节和修改散文。分享情节画布、人物卡和世界书，同时选择故事的方向、风格和内容。"
+  },
+  "dsh-plugin-bridge": {
+   "zh": "通过可预览的五部分切换将现有 DSH 会话移动到另一个代理预设，保留源会话并暂停目标进行确认或立即继续。"
+  },
+  "dsh-win32": {
+   "zh": "围绕官方持久 PowerShell 和 Workspace Write 堆栈在本机 Windows 上诊断和修复 DeepSeek Harness，创建桌面快捷方式，并将早期的 Git Bash 和 BusyBox 预设保留在显式旧设置后面。没有 WSL。"
+  },
+  "codingns4dsh": {
+   "zh": "将编码代理 CLI、持久终端和远程工作区集成到本机 DeepSeek Harness 界面中。"
+  },
+  "dsh-tianshu-tui": {
+   "zh": "DeepSeek Harness 的终端 UI (TUI)。"
+  },
+  "dsh-theme-endfield": {
+   "zh": "Arknights：DSH Web UI 的 Endfield 工业编辑主题：奶油色纸张、墨水文本、零边框半径、两个可切换的强调调色板（信号黄色/青色），以及可选的行进方块轮廓背景、ENDFIELD 水印和启动进度板。"
+  },
+  "dsh-reverse-skill": {
+   "zh": "完整的逆向技能包 (85 SKILL.md) 作为 DeepSeek Harness Cordis 插件：逆向工程、授权渗透测试和安全研究技能路由器。"
+  },
+  "dsh-whale-catch": {
+   "zh": "右侧栏篮子收集会话生成或更改的文件，无需代理注册，并具有预览、zip 打包和一键存档功能。"
+  },
+  "dsh-android": {
+   "zh": "对话中的实时 Android 设备 — 模拟器或 USB 电话，完全通过 adb 驱动：20 个用于流式传输、Gradle 构建和运行、UI 树或 OCR 交互、logcat、进程和内存的代理工具，以及一个三按钮导航面板。"
+  },
+  "dsh-thinking-levels": {
+   "zh": "DeepSeek Harness 的每轮思考级别 (reasoning_effort) 控制：选择“自动”，它会从最近的工具调用历史记录中安排低/高/最大值，或使用自定义接线映射、模型感知功能保护和上下文窗口预设 (64K–1M) 手动修复接线级别（关闭/打开/最小/低/中/高/x高/最大）；它是"
+  },
+  "api-relay-audit": {
+   "zh": "对来自 DeepSeek Harness 的 AI API 中继和 LLM 代理运行本地安全审计，生成 Markdown 报告以进行提示注入、模型替换信号、工具调用重写、错误泄漏、流完整性和配置文件门控的 Web3 风险。"
+  },
+  "dsh-nexttavern": {
+   "zh": "NextTavern 是 DeepSeek Harness 0.1.7-rc.2 Web 的长格式角色扮演插件，具有角色卡导入和创建、世界线、世界书、分层长期记忆、关键字/语义/混合检索、角色代理以及卡片或小说导出。支持SillyTavern角色卡导入； v0.2.9 修复了发行版"
+  },
+  "dsh-web-studyhub": {
+   "zh": "DeepSeek Harness 的学习工作区：导入您自己的 PDF、DOCX、PPTX 和 Markdown 材料以及讲座录音，将它们转换为源引用的抽认卡、测验和开放式问题，并在内置 Web 面板中使用 FSRS-6 安排间隔复习。导入的录音使用您自己的 SiliconFlow、Groq 进行转录"
+  },
+  "lunheng-article-pipeline-dsh": {
+   "zh": "DeepSeek Harness 捆绑包注册了一项技能，可将长篇制作（学术论文、行业分析、商业评论）转变为 9 个角色管道：并行运行的 T1 文献/T2 数据/T3 案例侦察、T4 分析师、T5 作家、T6 关键伴侣、T7 审核员、由协调员运行的 T8 终结者、T9"
+  },
+  "graphflow": {
+   "zh": "用于编码代理的本地优先代码知识图：10 个 MCP 工具，用于分层上下文压缩、DAG 规划、增量 AST 索引、跨会话技能飞轮、诊断和图工件导入/导出。"
+  },
+  "dsh-qq": {
+   "zh": "通过 OneBot 11 将 QQ 连接到 DeepSeek Harness：私人聊天和群聊、设备上语音转文本、图像支持以及十种交互工具（戳、反应、点赞、图像、文件、召回等）。需要同时运行 NapCat 等 OneBot 11 实施。"
+  },
+  "sage-mem": {
+   "zh": "基于文件的跨会话内存：带有自动检索注入的纯Markdown内存文件，与Claude Code的CLAUDE.md和内存文件格式兼容，因此迁移是手动文件复制。"
+  },
+  "dsh-office-tools": {
+   "zh": "适合客服人员的工作区安全 Office 工具：创建/读取 Word、创建/读取/更新 Excel 以及创建/读取带有 PNG/JPG/GIF 图像放置的 PowerPoint 演示文稿。"
+  },
+  "dsh-chat-link-actions": {
+   "zh": "右键单击记录中的任何附件或路径，然后将其交给您自己的操作：将其发送给微信联系人，在 Chrome 中打开它，或您配置的任何其他内容 - 只需右键单击，即可完成您想要的任何操作。附带引用到作曲家，在操作系统文件管理器中显示，复制路径并发送到...，并允许您添加自己的条目"
+  },
+  "dsh-chat-manager": {
+   "zh": "通过对话搜索、恢复和确认安全永久删除来管理存档的 DSH 聊天。"
+  },
+  "dsh-fast-mode": {
+   "zh": "DeepSeek Harness 自己的快速模式：相同的模型，相同的推理工作，更少的输出标记，全部提示端。默认情况下仅打开输出规则开关（延迟模式，从步骤 4 开始激活）；所有其他开关均处于关闭状态，并且可以自行启用；当刀具输出较长时，打开刀具输出微调开关。"
+  },
+  "dsh-deepseek-usage": {
+   "zh": "在侧边栏页脚中显示一张卡片，其中包含 DeepSeek 账户余额（使用已存储的 API 密钥 DSH 从官方 /user/balance 端点读取）以及活动模型的单价（输入、缓存读取和输出），取自官方价格表的内置快照。一个点标记当前的计费wi"
+  },
+  "dsh-plugin-xiaomi-mimo-tts": {
+   "zh": "提供小米MiMo、豆宝、DSH浏览器本地TTS，自动朗读、自定义语音、UI音效、桌面宠物集成、QQBot集成。"
+  },
+  "dsh-plugin-tts": {
+   "zh": "通过免费的 Edge TTS 或您自己的 RVC 语音模型大声朗读助手的回复：朗读按钮 + 自动朗读、自适应分块渐进式播放（无缝长读）、从注册表安装一键式语音包以及便携式 RVC 运行时。"
+  },
+  "dsh-any-background": {
+   "zh": "DeepSeek Harness 外观工具包。独立调整 8 个表面的不透明度 + 磨砂玻璃模糊（主背景、侧边栏、卡片和面板、输入和控件、设置、对话框架、轨迹视图、生成/突出显示 - 9 个带有 dsh-better-sidebar）。使用任何图像或视频作为壁纸，并通过拖动平移、sc"
+  },
+  "deepseek-harness-acp": {
+   "zh": "ACP 配置文件插件和独立 stdio 服务器，用于在共享 DSH 凭据和会话时使用 Zed 和其他 ACP 客户端的完整 DSH 代理。"
+  },
+  "dsh-plugin-tool-management": {
+   "zh": "一个设置面板管理 MCP、技能、内存、子代理、提示和会话；自定义场景组合切换整个环境；代理也可以为您操作此插件。"
+  },
+  "dsh-remote-ssh": {
+   "zh": "DSH 的 VSCode 远程 SSH 式开发 — 通过 SSH 连接到 HPC 和服务器，在内置“文件”选项卡中读取和编辑远程文件、自动 SSH 终端、具有单往返读取和结果缓存的远程工作区，以及 12 个会话感知的 remote_ssh_* 模型工具。"
+  },
+  "dsh-fish-soul": {
+   "zh": "跨 QQ（通过 SnowLuma / OneBot 11）、Bilibili 和抖音（抖音频道需要始终在线的 Windows 桌面）的单角色代理：具有缓慢演变特征的角色卡、具有艾宾浩斯衰减和校正的个人记忆、驱动日常生活的虚拟时钟、主动消息、自动扩展"
+  },
+  "dsh-git-panel": {
+   "zh": "DSH Web GUI 中的 IDE 风格 Git 面板：带有三列概述的常驻选项卡（分支/标签列表、可搜索的提交历史图、带有更改文件树和消息的提交详细信息）和更改页面（统计栏、带有每个文件阶段/取消阶段/丢弃的未提交列表、带有修改的提交框）；并排差异携带 l"
+  },
+  "dsh-zotero": {
+   "zh": "Zotero 作为代理的证据存储：搜索您的图书馆、检查元数据和注释、检索证据段落、开源 PDF 以及生成引文和参考书目。"
+  },
+  "dsh-taskboard": {
+   "zh": "DSH 任务板：使用项目和模型分配创建任务，手动或按 cron 计划运行它们；项目中的新会话会自动拾取其待办事项任务，并在完成后将其移至审核中。"
+  },
+  "dsh-workbuddy-bridge": {
+   "zh": "将 WorkBuddy 桌面应用程序模型引入 DeepSeek Harness：中国和国际构建各自在模型选择器中显示为自己的组，并具有上游声明的推理层、每个回复的信用成本和剩余余额、每个帐户的模型可见性以及受支持的图像输入。"
+  },
+  "dsh-claude-desktop-theme": {
+   "zh": "适用于 macOS 和 Windows 上的 DeepSeek Harness (DSH) Desktop 0.2.0-rc.2 的 Claude Code 桌面风格主题，具有紧凑的侧边栏和聊天布局、浅色和深色主题、模型和推理能力控件，以及在新会话中具有喷水、跳跃和摇尾反应的交互式像素鲸鱼。"
+  },
+  "dsh-web-search-pro": {
+   "zh": "持久增强网页搜索：多引擎路由（DeepSeek/Exa/DDG/Bing/Jina + GitHub/Bilibili/YouTube/V2EX/Xiaohongshu/Twitter/Reddit/RSS）、SQLite+LRU缓存、用户脚本式提取、Playwright渲染。"
+  },
+  "better-dsh-session-deletetool": {
+   "zh": "永久删除 DSH 会话，并可选择递归删除分叉会话和子代理会话。"
+  },
+  "dsh-toolbox-ui": {
+   "zh": "用于管理 MCP 服务器和技能的 DSH Web UI 的浮动面板：每服务器延迟工具加载（ToolSearch，默认情况下关闭）使服务器的工具脱离每个回合的上下文 - 提示仅列出工具名称，一旦模型使用内置 tool_search 找到工具，工具的完整架构就会进入列表，因此一个回合"
+  },
+  "dsh-annotation": {
+   "zh": "选择文字→注释→随消息一起发送；回复映射回每个注释。"
+  },
+  "dsh-openpencil": {
+   "zh": "OpenPencil 设计预览和编辑插件。"
+  },
+  "dsh-doyourweb": {
+   "zh": "通过可搜索的本机侧边栏或@引用登录的Chrome/Edge选项卡、授权的本地HTML和运行的Windows应用程序。当扩展程序连接、断开连接或更改选项卡（包括未更改的搜索查询）时，打开候选浏览器和网页侧边栏刷新。 Windows 应用程序列表跳过受保护的 p"
+  },
+  "dsh-design-studio": {
+   "zh": "右侧边栏中的设计工作台。当模型构建网页、应用程序屏幕、桌面应用程序窗口、微信小程序、海报、幻灯片或电子邮件时，每个 HTML 文件都会在设备框架内的画布上显示为屏幕，并在文件更改时刷新；本地开发服务器通过热重载完好无损地进行代理，并且"
+  },
+  "dsh-model-router": {
+   "zh": "路由 DeepSeek Harness 可以跨配置的模型 API 和支持的供应商 CLI 工作，并具有依赖性感知包和成本预览。"
+  },
+  "dsh-watcher": {
+   "zh": "只读会话工作路径观察者：折叠变成阶段、运行、持续时间和 tok/s 摘要，然后展开并行分支、工具结果和供应商可见的推理。"
+  },
+  "dsh-simplify": {
+   "zh": "添加 /simplify 命令，要求代理简化选定的 Git 更改范围内的代码，包括分阶段更改、提交和未跟踪的文件。"
+  },
+  "dsh-uumit-remote": {
+   "zh": "通过 UUMit 帐户从您的手机或另一台计算机打开 dsh web，无需运行您自己的服务器或安装其他程序：内置隧道客户端连接到 UUMit 的托管隧道，侧边栏中的面板处理配对以及谁可以使用它（只有您、您通过链接或电话号码邀请的人，或者曾经）"
+  },
+  "dsh-ios": {
+   "zh": "对话中的实时 iOS 模拟器或 USB 连接的 iPhone：22 个代理工具，用于通过辅助功能标识或 OCR 文本启动、构建和驱动 UI、列表行操作和 SwiftUI 预览热重载，以及可点击并拖动的流式侧边栏面板。"
+  },
+  "dsh-remotion": {
+   "zh": "从官方上游同步的 12 种官方 Remotion 技能（使用 React 的程序化视频：动画、音频、字幕、3D、地图、图表、渲染、Studio），以及捆绑资源运行状况检查。现在，其设置面板内会打开分步首次运行指南（4 个步骤）。"
+  },
+  "dsh-context-compression-improved": {
+   "zh": "机制中与上下文压缩中最响亮的两条线同源。代码骨架门遵循 Headroom (Apache-2.0) 的骨架化方法，其发布的标题是编码代理的标记减少了 20%，JSON 的标记减少了 60-95%，答案相同。估计器通道遵循 TokenPilot (arXiv"
+  },
+  "dsh-ide-git": {
+   "zh": "侧边栏的 JetBrains 风格 Git 工具窗口：带有前/后徽章的分支树、带有文本/作者/日期/路径过滤器的提交图、每个文件行差异、更改列表和提交框，以及分支、标记和存储操作、合并、变基、择优挑选、重置和获取/拉取/推送。"
+  },
+  "dsh-talk-map": {
+   "zh": "会话的可视化地图：每一次对话都是无限白板上的一张卡片 - 工作区变成了框架，将溢出的内容折叠到抽屉中，卡片位置永远不会重新排列，卡片之间的线条带有上下文（将一张卡片拖到带有注入摘要的叉子），每张卡片都会显示一个用于运行、等待的状态灯"
+  },
+  "dsh-prompt-enhance": {
+   "zh": "编辑器中的一键提示增强功能 - 将草稿重写为结构化提示（角色和目标、可执行步骤、输出格式、验收标准、边缘情况），并具有前后预览、填充和撤消功能。从不改变意图，从不捏造要求。"
+  },
+  "dsh-find-plugins": {
+   "zh": "在多个社区目录以及实时 GitHub 和 npm 搜索中查找 DSH 插件，按相关性、信任度、新鲜度和有限流行度排名，而不仅仅是明星。"
+  },
+  "dsh-console-plugin": {
+   "zh": "通过二维码或六位代码将手机与该计算机的 DSH 实例配对，然后从面板远程驱动它 - 发送指令、查看图像、答复批准，并提供跨网络配对的公共隧道支持。"
+  }
+ }
+}
