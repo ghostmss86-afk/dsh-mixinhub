@@ -6,7 +6,7 @@
 > `engines.dsh` compatibility advice, README summaries and a one-click update
 > flow. It is a web client plugin, not a plugin runtime or a hosted marketplace.
 
-Version: 1.6.0
+Version: 1.6.1
 Last verified: 2026-11-09
 License: MIT
 

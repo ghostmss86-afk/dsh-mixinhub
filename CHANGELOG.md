@@ -4,6 +4,12 @@ All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project uses
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.6.1] - 2026-11-08
+
+### Changed
+
+- Show the curated-market rank on each dashboard card, allow up to twelve tracked projects, and reject unknown repositories with a clear message.
+
 ## [1.6.0] - 2026-11-08
 
 ### Changed
