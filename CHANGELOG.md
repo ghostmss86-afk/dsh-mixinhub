@@ -4,6 +4,12 @@ All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project uses
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.6.4] - 2026-11-08
+
+### Changed
+
+- Public web catalog now opens with the same rotating, hue-driven editor-pick poster and color-matched picks as the in-app panel; bilingual labels, mobile layout and docs sync.
+
 ## [1.6.3] - 2026-11-08
 
 ### Changed
