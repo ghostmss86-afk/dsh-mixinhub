@@ -18,9 +18,11 @@ import {
   shouldRefresh,
   writeSnapshot
 } from './lib/market.js';
+import { randomBytes } from 'node:crypto';
 import { translateText } from './lib/translate.js';
 import { compareVersions, satisfies } from './lib/semver.js';
 
+const WRITE_TOKEN = randomBytes(24).toString('hex');
 const FETCH_TIMEOUT_MS = 45000;
 const TICK_MS = 10 * 60 * 1000;
 const INSTALL_TTL_MS = 30 * 60 * 1000;
@@ -303,7 +305,7 @@ export function apply(ctx) {
 
   function publicSnapshot(installed) {
     if (!snapshot) {
-      return { version: 1, ready: false, refreshing, error: refreshError, refreshHour: REFRESH_HOUR };
+      return { version: 1, ready: false, writeToken: WRITE_TOKEN, refreshing, error: refreshError, refreshHour: REFRESH_HOUR };
     }
     const installedMap = new Map();
     for (const bundle of installed) {
@@ -340,6 +342,7 @@ export function apply(ctx) {
     return {
       version: 1,
       ready: true,
+      writeToken: WRITE_TOKEN,
       generatedAt: snapshot.generatedAt,
       generatedDay: snapshot.generatedDay,
       nextRefreshAt: nextRefreshLabel(),
@@ -403,7 +406,7 @@ export function apply(ctx) {
         tools.register({
           name: 'featured_market_search',
           description:
-            'Search the Featured Plugin Market: the full accepted index of DeepSeek Harness plugins (2,147 as of 2026-11-09) with bilingual descriptions, a heat score (downloads + stars + freshness), and an install command. Featured entries are hand-checked; other descriptions are machine translated. Use whenever the user asks for a DSH plugin, extension, tool, theme, or a recommendation, or asks what a plugin does.',
+            'Search the Featured Plugin Market: the full accepted index of DeepSeek Harness plugins with bilingual descriptions, a heat score (downloads + stars + freshness), and an install command. Check /featured-market/health for the current accepted count. Featured entries are hand-checked; other descriptions are machine translated. Use whenever the user asks for a DSH plugin, extension, tool, theme, or a recommendation, or asks what a plugin does.',
           parameters: {
             type: 'object',
             properties: {
@@ -492,6 +495,35 @@ export function apply(ctx) {
       request.on('error', () => resolve({}));
     });
 
+  // All mutating routes require the per-process token that only the same-origin
+  // client can read from the snapshot. This blocks CSRF from other pages that
+  // can reach localhost; the token is not a substitute for OS-level isolation.
+  const authorizeWrite = (request, response) => {
+    const token = request.headers['x-featured-market-token'];
+    if (typeof token !== 'string' || token !== WRITE_TOKEN) {
+      send(response, 403, { error: 'forbidden' });
+      return false;
+    }
+    const site = request.headers['sec-fetch-site'];
+    if (site && site !== 'same-origin' && site !== 'none') {
+      send(response, 403, { error: 'forbidden' });
+      return false;
+    }
+    const origin = request.headers.origin;
+    if (origin && typeof webServer.getOrigin === 'function') {
+      try {
+        if (new URL(origin).origin !== new URL(webServer.getOrigin()).origin) {
+          send(response, 403, { error: 'forbidden' });
+          return false;
+        }
+      } catch {
+        send(response, 403, { error: 'forbidden' });
+        return false;
+      }
+    }
+    return true;
+  };
+
   // Lightweight liveness probe. It answers even while the catalog snapshot is
   // still being read, so a cold start can be distinguished from a dead route.
   effect(() =>
@@ -527,6 +559,7 @@ export function apply(ctx) {
       path: '/featured-market/refresh',
       handler: async (request, response) => {
         if (request.method !== 'POST') return send(response, 405, { error: 'method-not-allowed' });
+        if (!authorizeWrite(request, response)) return;
         await refresh();
         send(response, 200, publicSnapshot(await bundles()));
       }
@@ -648,6 +681,7 @@ export function apply(ctx) {
       path: '/featured-market/toggle',
       handler: async (request, response) => {
         if (request.method !== 'POST') return send(response, 405, { error: 'method-not-allowed' });
+        if (!authorizeWrite(request, response)) return;
         const body = await readBody(request);
         const name = String((body && body.name) || '');
         if (!name) return send(response, 400, { error: 'invalid-name' });
@@ -690,6 +724,7 @@ export function apply(ctx) {
       path: '/featured-market/update',
       handler: async (request, response) => {
         if (request.method !== 'POST') return send(response, 405, { error: 'method-not-allowed' });
+        if (!authorizeWrite(request, response)) return;
         const body = await readBody(request);
         const name = String((body && body.name) || '');
         const version = String((body && body.version) || '');
@@ -723,6 +758,7 @@ export function apply(ctx) {
       path: '/featured-market/remove',
       handler: async (request, response) => {
         if (request.method !== 'POST') return send(response, 405, { error: 'method-not-allowed' });
+        if (!authorizeWrite(request, response)) return;
         const body = await readBody(request);
         const name = String((body && body.name) || '');
         if (!name) return send(response, 400, { error: 'invalid-name' });
@@ -773,6 +809,7 @@ export function apply(ctx) {
           });
         }
         if (request.method !== 'POST') return send(response, 405, { error: 'method-not-allowed' });
+        if (!authorizeWrite(request, response)) return;
 
         const body = await readBody(request);
         const name = cleanName(body && body.name);

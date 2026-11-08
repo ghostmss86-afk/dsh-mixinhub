@@ -84,9 +84,9 @@
   <section class="hero">
     <div class="eyebrow" id="eyebrow">CURATED FOR DEEPSEEK HARNESS</div>
     <h1 id="headline">30 秒，找到该装的那个插件。</h1>
-    <p class="lede" id="lede">按真实热度、下载与星标排序，每个插件都有中英双语说明和安装命令。不追求最多，只帮你少装错。</p>
+    <p class="lede" id="lede">按真实热度、下载与星标排序，每个插件都有中英双语说明和安装命令。本页展示热度前 220 条；完整 2,147 条收录在插件内搜索。</p>
     <div class="stats">
-      <div class="stat"><b id="s1">—</b><span id="s1l">精选插件</span></div>
+      <div class="stat"><b id="s1">—</b><span id="s1l">本页收录</span></div>
       <div class="stat"><b id="s2">—</b><span id="s2l">累计下载</span></div>
       <div class="stat"><b id="s3">—</b><span id="s3l">数据更新</span></div>
     </div>
@@ -135,9 +135,9 @@ function applyLang() {
   $('eyebrow').textContent = zh ? '为 DEEPSEEK HARNESS 精选' : 'CURATED FOR DEEPSEEK HARNESS';
   $('headline').textContent = zh ? '30 秒，找到该装的那个插件。' : 'Find the plugin worth installing in 30 seconds.';
   $('lede').textContent = zh
-    ? '按真实热度、下载与星标排序，每个插件都有中英双语说明和安装命令。不追求最多，只帮你少装错。'
-    : 'Ranked by real heat, downloads and stars. Every plugin has a bilingual description and an install command. Fewer, better choices.';
-  $('s1l').textContent = zh ? '精选插件' : 'curated plugins';
+    ? '按真实热度、下载与星标排序，每个插件都有中英双语说明和安装命令。本页展示热度前 220 条；完整 2,147 条收录在插件内搜索。'
+    : 'Ranked by real heat, downloads and stars. This page lists the top 220; search the full 2,147 inside the plugin.';
+  $('s1l').textContent = zh ? '本页收录' : 'listed here';
   $('s2l').textContent = zh ? '累计下载' : 'total downloads';
   $('s3l').textContent = zh ? '数据更新' : 'last refresh';
   $('q').placeholder = zh ? '搜索插件、作者或功能…' : 'Search plugins, authors or features…';

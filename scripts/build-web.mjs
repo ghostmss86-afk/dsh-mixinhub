@@ -48,7 +48,7 @@ const payload = {
   catalogTotal: snapshot.catalogTotal || 0,
   accepted: snapshot.accepted || snapshot.entries.length,
   categories: snapshot.categories || [],
-  featured: (snapshot.featured || []).map((item) => item.name),
+  featured: (snapshot.featured || []).map((item) => (typeof item === 'string' ? item : item && item.name)).filter(Boolean),
   entries: snapshot.entries.map(pick)
 };
 

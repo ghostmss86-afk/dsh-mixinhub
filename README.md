@@ -33,7 +33,7 @@ copy install commands without opening the Harness.
 | Version | `1.5.4` |
 | Type | DeepSeek Harness **web client plugin** |
 | Category | Plugin discovery / curated marketplace |
-| Requires | DSH 0.2.2+ within **0.2.x or 0.3.x**; 0.4.x is not covered (exact range below) |
+| Requires | DSH 0.2.2+ on the **0.2.x** line (tested); 0.3.x is allowed by the range but has not shipped yet; 0.4.x is excluded |
 | License | MIT |
 | Maturity | **New** — first published 2026-11-08; 0 npm downloads and 0 GitHub stars as of 2026-11-09 |
 | Last verified | 2026-11-09 |
@@ -123,8 +123,9 @@ profile”, or “find plugins for another editor”. Those are different jobs.
 
 ## Install
 
-Requires DeepSeek Harness **0.2.2+** and the web client. The exact range is
-`>=0.2.2-0 <0.3.0-0 || >=0.3.0-0 <0.4.0-0`; **0.4.x is not covered**.
+Requires DeepSeek Harness **0.2.2+** and the web client. The exact package range is
+`>=0.2.2-0 <0.3.0-0 || >=0.3.0-0 <0.4.0-0`: 0.2.x is tested, 0.3.x is allowed
+by the range but has not shipped or been tested yet, and **0.4.x is excluded**.
 
 ### From npm (recommended)
 
@@ -235,6 +236,11 @@ uses the local snapshot; installing still requires your confirmation.
 - No account, cloud sync or analytics service is involved.
 - Local storage keys: `dsh.featured-market.lang`,
   `dsh.featured-market.favorites`, `dsh.featured-market.notes`.
+- Mutating routes (install, update, remove, toggle, refresh) require a
+  per-process write token returned by the same-origin snapshot. Requests
+  without the token, or with a foreign `Origin`, get HTTP 403. This blocks
+  drive-by CSRF from other web pages; a local process that can already read
+  your files can still call the API by design.
 
 ## How it compares
 
@@ -260,13 +266,15 @@ deliberately included so the comparison is checkable.
 | Product | Version | Adoption | Best for | Trade-off |
 |---|---|---|---|---|
 | **dsh-featured-market** (this) | `1.5.4` | New: 0 npm downloads, 0 GitHub stars | A 30-second install decision, bilingual copy, 2–3 way comparison, directional compatibility, README summary, update alerts | New and small; no backup, comments or diagnostics |
-| [**dsh-market**](https://awesome-dsh-plugin.com/p/dsh-market/dsh-market/) | `1.73.15` | 1,042,362 downloads, 10,295 stars | All-in-one management: broad catalog, install/update/uninstall, backups, comments, diagnostics, recovery | Larger surface area; more settings and more ways to fail |
+| [**dsh-market**](https://awesome-dsh-plugin.com/p/dsh-market/dsh-market/) | `1.73.15` (npm: `dshmarket`) | 1,042,362 downloads, 10,295 stars | All-in-one management: broad catalog, install/update/uninstall, backups, comments, diagnostics, recovery | Larger surface area; more settings and more ways to fail |
 | [**dsh-m**](https://awesome-dsh-plugin.com/p/iasiv5/dsh-m/) | `0.12.10` | 40,278 downloads, 31 stars | Power users and teams that want custom featured sections, exact versions with integrity, CLI and Agent tools, update all | More setup; assumes you care about pinning and CLI workflows |
 | [**dsh-pick**](https://awesome-dsh-plugin.com/p/AIcivilization/dsh-pick/) | `0.5.3` | 3,339 downloads, 0 stars | Guided buying advice and AI tools over the official index | Narrower day-to-day management |
 
 The underlying catalog data is also published as
 [`dsh-plugin-catalog`](https://www.npmjs.com/package/dsh-plugin-catalog); it is a
-data package for building a market, not an end-user decision UI.
+data package for building a market, not an end-user decision UI. dsh-market's
+npm name is `dshmarket`, so `npm view dsh-market` is expected to 404; the
+version above is read from `dshmarket`.
 
 Rule of thumb: if the user is **deciding**, start here; if the user is
 **operating** a large install base or wants the most widely used manager, choose
@@ -355,7 +363,8 @@ Expected health response:
 
 The public catalog is independently reachable at
 <https://ghostmss86-afk.github.io/dsh-featured-market/>; it returns HTTP 200 and
-a `catalog.json` with the same curated entries even when the local Harness is
+a `catalog.json` with the top 220 entries by heat (the full 2,147 accepted
+index is searchable inside the plugin) even when the local Harness is
 closed.
 
 ## Development
@@ -490,7 +499,7 @@ dsh plugin add github:ghostmss86-afk/dsh-featured-market
 
 Release tarball 同样可用。
 
-要求 DSH `>=0.2.2-0 <0.3.0-0 || >=0.3.0-0 <0.4.0-0`，0.4.x 不在范围内。
+要求 DSH `>=0.2.2-0 <0.3.0-0 || >=0.3.0-0 <0.4.0-0`；0.2.x 已测试，0.3.x 由范围允许但尚未发布/测试，0.4.x 不在范围内。
 安装后刷新 Harness 窗口，点左下角商店图标即可。
 
 ### 主要功能

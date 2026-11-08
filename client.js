@@ -6,6 +6,13 @@ window.__ModuleLoader__.load({
     const { useEffect, useRef, useState, useSyncExternalStore } = React;
 
     const API = '/featured-market';
+    // Mutating routes require this per-process token. It is returned by the
+    // snapshot endpoint, so only same-origin JS can read and replay it.
+    let writeToken = '';
+    const writeHeaders = () => ({
+      'content-type': 'application/json',
+      'x-featured-market-token': writeToken
+    });
     const SELF_NAMES = new Set(['dsh-featured-market', '@local/featured-market']);
 
     const ZH = {
@@ -1623,6 +1630,7 @@ window.__ModuleLoader__.load({
       const load = async () => {
         try {
           const next = await fetchSnapshot();
+          writeToken = next && next.writeToken ? next.writeToken : '';
           setData(next);
           setStatus(next && next.ready ? 'ready' : 'syncing');
           setDetail((current) =>
@@ -1750,9 +1758,10 @@ window.__ModuleLoader__.load({
         if (busy) return;
         setBusy(true);
         try {
-          const response = await fetch(`${API}/refresh`, { method: 'POST' });
+          const response = await fetch(`${API}/refresh`, { method: 'POST', headers: writeHeaders() });
           if (!response.ok) throw new Error(`HTTP ${response.status}`);
           const next = await response.json();
+          writeToken = next && next.writeToken ? next.writeToken : writeToken;
           setData(next);
           setStatus(next && next.ready ? 'ready' : 'syncing');
           setToast(next && next.error ? { kind: 'error', text: t('error.title') } : { kind: 'ok', text: t('panel.updated') });
@@ -1771,7 +1780,7 @@ window.__ModuleLoader__.load({
         try {
           const response = await fetch(`${API}/install`, {
             method: 'POST',
-            headers: { 'content-type': 'application/json' },
+            headers: writeHeaders(),
             body: JSON.stringify({ name: entry.name })
           });
           const body = await response.json().catch(() => ({}));
@@ -1921,7 +1930,7 @@ window.__ModuleLoader__.load({
         try {
           const response = await fetch(`${API}/remove`, {
             method: 'POST',
-            headers: { 'content-type': 'application/json' },
+            headers: writeHeaders(),
             body: JSON.stringify({ name: bundle.name })
           });
           const body = await response.json().catch(() => ({}));
@@ -1965,7 +1974,7 @@ window.__ModuleLoader__.load({
         try {
           const response = await fetch(`${API}/update`, {
             method: 'POST',
-            headers: { 'content-type': 'application/json' },
+            headers: writeHeaders(),
             body: JSON.stringify({ name: bundle.name, version })
           });
           const body = await response.json().catch(() => ({}));
@@ -2028,7 +2037,7 @@ window.__ModuleLoader__.load({
         try {
           const response = await fetch(`${API}/toggle`, {
             method: 'POST',
-            headers: { 'content-type': 'application/json' },
+            headers: writeHeaders(),
             body: JSON.stringify({ name: bundle.name, enabled: !bundle.enabled })
           });
           const body = await response.json().catch(() => ({}));
