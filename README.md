@@ -5,7 +5,10 @@ about 30 seconds: *which plugin should I install, and how do I actually use it?*
 
 **Public catalog (read-only, works on any device):**
 <https://ghostmss86-afk.github.io/dsh-featured-market/> — browse, search and
-copy install commands without opening the Harness.
+copy install commands without opening the Harness. It opens with a rotating,
+poster-style editor pick whose color is taken from that plugin, plus four
+color-matched "editor picks" cards — the same first screen as the in-app panel,
+so the web catalog is not a plain list.
 
 [![Version](https://img.shields.io/badge/version-1.6.3-2f6f5e)](CHANGELOG.md)
 [![npm](https://img.shields.io/npm/v/dsh-featured-market.svg)](https://www.npmjs.com/package/dsh-featured-market)
@@ -164,6 +167,7 @@ sidebar, next to **Skins & Wallpapers** (`皮肤和壁纸`).
 | **Update alerts** | Background check every five minutes; a sidebar dot appears when updates exist, with one-click **Update all**. |
 | **Project dashboard** | Track up to twelve GitHub repos / npm packages: stars, 30-day downloads, forks, open issues, market listing rank, seven-day deltas, a small star trend, and the latest public GitHub issues as feedback. New feedback raises the sidebar dot. |
 | **Agent tool** | `featured_market_search` lets an Agent search the same index in conversation. |
+| **Poster first screen** | Both the in-app panel and the public web catalog open with a rotating editor-pick poster: a two-tone gradient derived from the highlighted plugin's hue, a large initials watermark, badge, bilingual description, download/star/heat stats, and the install command. The web catalog adds four color-matched editor-pick cards. |
 
 All UI copy is available in Chinese and English. The language switch is stored
 locally.
@@ -384,7 +388,11 @@ Expected health response:
 The public catalog is independently reachable at
 <https://ghostmss86-afk.github.io/dsh-featured-market/>; it returns HTTP 200 and
 a `catalog.json` with all 2,147 accepted entries and bilingual descriptions
-even when the local Harness is closed.
+even when the local Harness is closed. The first screen is a rotating
+editor-pick poster (gradient built from the featured plugin's hue) followed by
+four color-matched editor-pick cards, both bilingual and driven by the same
+`featured` list as the in-app panel; it degrades gracefully to a plain list if
+the catalog fetch fails.
 
 ## Development
 
@@ -454,6 +462,10 @@ Not affiliated with DeepSeek. DeepSeek Harness is a separate project.
 
 公开目录页（只读，手机/其他电脑可直接打开）：
 <https://ghostmss86-afk.github.io/dsh-featured-market/>
+
+打开就是一张轮播的精选海报：背景渐变取自置顶插件的颜色，配大字首字母水印、
+双语简介、下载/星标/热度，下面还有四张同色系的「编辑精选」卡片，和插件面板
+里的首屏是同一套视觉，不会是纯白底的一列小卡片。
 
 ### 它解决什么问题
 

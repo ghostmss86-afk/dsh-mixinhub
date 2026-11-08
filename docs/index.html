@@ -22,7 +22,8 @@
     :root { --bg:#0e0e13; --panel:#17171f; --text:#f2f2f7; --muted:#a0a0b2; --line:#2a2a36; --accent:#9b86ff; --accent-soft:#241f3d; --ok:#4bd3a5; --shadow:0 10px 30px rgba(0,0,0,.35); }
   }
   * { box-sizing: border-box; }
-  body { margin:0; background:var(--bg); color:var(--text); font:15px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif; }
+  html { overflow-x: clip; }
+  body { margin:0; background:var(--bg); color:var(--text); font:15px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif; overflow-x:clip; }
   a { color:inherit; }
   .wrap { max-width:1120px; margin:0 auto; padding:0 20px; }
   header { border-bottom:1px solid var(--line); background:color-mix(in srgb, var(--panel) 88%, transparent); backdrop-filter:blur(12px); position:sticky; top:0; z-index:10; }
@@ -33,7 +34,11 @@
   .spacer { flex:1; }
   .ghost { border:1px solid var(--line); background:var(--panel); color:var(--text); border-radius:9px; padding:7px 11px; font:inherit; cursor:pointer; text-decoration:none; }
   .ghost:hover { border-color:var(--accent); }
-  .hero { padding:54px 0 30px; }
+  .hero { padding:40px 0 24px; position:relative; isolation:isolate; }
+  .hero::before { content:''; position:absolute; inset:-64px -24px 0; z-index:-1; pointer-events:none;
+    background:radial-gradient(60% 82% at 12% 0%, hsl(var(--hero-hue,158) 82% 52% / .14), transparent 72%),
+               radial-gradient(55% 78% at 90% 6%, hsl(var(--hero-hue2,206) 78% 50% / .11), transparent 72%);
+    -webkit-mask-image:linear-gradient(180deg, #000 52%, transparent 100%); mask-image:linear-gradient(180deg, #000 52%, transparent 100%); }
   .eyebrow { color:var(--accent); font-weight:700; font-size:12px; letter-spacing:.12em; text-transform:uppercase; }
   h1 { font-size:clamp(30px,5vw,52px); line-height:1.08; letter-spacing:-.035em; margin:10px 0 14px; }
   .lede { color:var(--muted); max-width:680px; font-size:17px; margin:0; }
@@ -70,7 +75,51 @@
   .note { color:var(--muted); font-size:12px; margin-top:14px; }
   footer { border-top:1px solid var(--line); color:var(--muted); font-size:12.5px; padding:24px 0 40px; }
   footer .sep { opacity:.5; margin:0 6px; }
-  @media (max-width:680px) { .controls { grid-template-columns:1fr 1fr; } .controls input { grid-column:1/-1; } .hero { padding-top:36px; } .bar { min-height:56px; } }
+  /* ---- Editorial poster hero ---- */
+  .poster { position:relative; display:flex; gap:22px; align-items:flex-end; min-height:228px; padding:26px 30px; border-radius:22px; overflow:hidden; color:#fff; isolation:isolate; margin:6px 0 14px;
+    box-shadow:0 18px 44px -18px rgba(22,22,29,.42); }
+  .poster::before { content:''; position:absolute; inset:0; z-index:0;
+    background:radial-gradient(120% 130% at 88% -12%, rgba(255,255,255,.34), transparent 55%), linear-gradient(120deg, rgba(0,0,0,.10), rgba(0,0,0,.30)); }
+  .poster::after { content:''; position:absolute; inset:0; z-index:0; background:linear-gradient(180deg, transparent 40%, rgba(0,0,0,.34)); }
+  .poster-mark { position:absolute; right:14px; top:-52px; font-size:210px; font-weight:850; line-height:1; opacity:.14; letter-spacing:-.06em; pointer-events:none; z-index:0; }
+  .poster-main { position:relative; z-index:1; display:flex; flex-direction:column; gap:9px; min-width:0; flex:1; }
+  .poster-badge { align-self:flex-start; display:inline-flex; align-items:center; gap:6px; height:24px; padding:0 11px; border-radius:999px; background:rgba(255,255,255,.2); border:1px solid rgba(255,255,255,.3); backdrop-filter:blur(6px); font-size:11.5px; font-weight:700; letter-spacing:.02em; }
+  .poster-title { margin:2px 0 0; font-size:clamp(26px,3.6vw,38px); line-height:1.1; font-weight:820; letter-spacing:-.03em; text-shadow:0 2px 6px rgba(0,0,0,.22); }
+  .poster-author { font-size:12.5px; opacity:.85; }
+  .poster-desc { font-size:13.5px; line-height:1.6; opacity:.95; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; max-width:660px; }
+  .poster-foot { display:flex; align-items:center; gap:16px; flex-wrap:wrap; margin-top:2px; }
+  .poster-stat { display:inline-flex; align-items:center; gap:5px; font-size:12px; opacity:.92; }
+  .poster-tags { display:flex; gap:7px; flex-wrap:wrap; margin-top:2px; }
+  .poster-tag { font-size:11px; font-weight:650; padding:3px 10px; border-radius:999px; background:rgba(255,255,255,.16); border:1px solid rgba(255,255,255,.3); }
+  .poster-side { position:relative; z-index:1; display:flex; flex-direction:column; align-items:flex-end; gap:10px; flex:none; }
+  .poster-cta { display:inline-flex; align-items:center; gap:6px; background:#fff; color:#16161d; border:0; border-radius:11px; padding:11px 16px; font:inherit; font-weight:700; cursor:pointer; white-space:nowrap; box-shadow:0 8px 20px rgba(0,0,0,.2); }
+  .poster-cta:hover { transform:translateY(-1px); }
+  .poster-cta.ghost { background:rgba(255,255,255,.16); color:#fff; border:1px solid rgba(255,255,255,.42); box-shadow:none; }
+  .poster-nav { display:flex; gap:6px; margin-top:2px; }
+  .poster-dot { width:8px; height:8px; border-radius:999px; background:rgba(255,255,255,.4); border:0; padding:0; cursor:pointer; transition:width .2s ease, background .2s ease; }
+  .poster-dot.on { width:22px; background:#fff; }
+  .section-head { display:flex; align-items:baseline; gap:10px; margin:26px 0 14px; flex-wrap:wrap; }
+  .section-head h2 { margin:0; font-size:19px; letter-spacing:-.02em; }
+  .section-head span { color:var(--muted); font-size:12.5px; }
+  .picks { display:grid; grid-template-columns:repeat(2,1fr); gap:14px; padding-bottom:10px; }
+  .pick { position:relative; display:flex; gap:14px; align-items:center; min-height:96px; padding:16px 18px; border-radius:16px; overflow:hidden; color:#fff; isolation:isolate; text-align:left; border:0; cursor:pointer; font:inherit; }
+  .pick::before { content:''; position:absolute; inset:0; z-index:0; background:radial-gradient(90% 130% at 92% -20%, rgba(255,255,255,.24), transparent 60%), linear-gradient(120deg, rgba(0,0,0,.06), rgba(0,0,0,.24)); }
+  .pick-mark { position:absolute; right:2px; top:-40px; font-size:130px; font-weight:850; line-height:1; opacity:.12; letter-spacing:-.06em; pointer-events:none; z-index:0; }
+  .pick > * { position:relative; z-index:1; }
+  .pick-avatar { width:44px; height:44px; border-radius:12px; display:grid; place-items:center; font-weight:800; font-size:16px; background:rgba(255,255,255,.2); border:1px solid rgba(255,255,255,.28); flex:none; }
+  .pick-body { min-width:0; flex:1; }
+  .pick-title { font-size:16px; font-weight:760; letter-spacing:-.01em; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .pick-owner { font-size:12px; opacity:.85; }
+  .pick-desc { font-size:12px; opacity:.92; margin-top:5px; display:-webkit-box; -webkit-line-clamp:1; -webkit-box-orient:vertical; overflow:hidden; }
+  .pick-stat { position:absolute; right:16px; bottom:14px; font-size:11.5px; font-weight:700; opacity:.95; display:flex; gap:12px; }
+  @media (max-width:680px) { .controls { grid-template-columns:1fr 1fr; } .controls input { grid-column:1/-1; } .hero { padding-top:30px; } .bar { min-height:56px; gap:8px; }
+    .brand { font-size:14px; white-space:nowrap; } .brand .ver { display:none; } .ghost { white-space:nowrap; padding:7px 9px; font-size:13px; }
+    .poster { min-height:0; padding:20px; gap:14px; flex-direction:column; align-items:flex-start; }
+    .poster-side { width:100%; flex-direction:row; flex-wrap:wrap; align-items:center; justify-content:space-between; }
+    .poster-mark { font-size:150px; top:-34px; }
+    .picks { grid-template-columns:1fr; }
+    .pick-stat { display:none; }
+  }
 </style>
 </head>
 <body>
@@ -92,6 +141,11 @@
       <div class="stat"><b id="s3">—</b><span id="s3l">数据更新</span></div>
     </div>
   </section>
+
+  <div class="poster" id="poster" aria-live="polite"></div>
+
+  <div class="section-head"><h2 id="picks-title">编辑精选</h2><span id="picks-note">按下载、星标与新鲜度选出，每个分类最多 2 个</span></div>
+  <section class="picks" id="picks"></section>
 
   <section class="controls">
     <input id="q" type="search" placeholder="搜索插件、作者或功能…" autocomplete="off">
@@ -119,14 +173,99 @@
 <script>
 const CAT = {ui:'界面',workflow:'工作流',tools:'工具',connect:'连接',model:'模型',dev:'开发',data:'数据',fun:'趣味',market:'市场'};
 const CAT_EN = {ui:'Interface',workflow:'Workflow',tools:'Tools',connect:'Connect',model:'Model',dev:'Development',data:'Data',fun:'Fun',market:'Market'};
-const state = { lang: localStorage.getItem('fm.public.lang') || 'zh', data: null, q: '', cat: '', sort: 'heat' };
+const state = { lang: localStorage.getItem('fm.public.lang') || 'zh', data: null, q: '', cat: '', sort: 'heat', heroIdx: 0 };
 const $ = (id) => document.getElementById(id);
 const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const nf = new Intl.NumberFormat(state.lang === 'zh' ? 'zh-CN' : 'en-US', { notation: 'compact', maximumFractionDigits: 1 });
 const hue = (n) => `hsl(${n % 360} 62% 46%)`;
+const compact = (n) => nf.format(n || 0);
+const PICK = {
+  zh: { badge:'今日编辑精选', downloads:'下载', stars:'星标', heat:'热度', get:'获取安装命令', details:'详情 ›', editorPicks:'编辑精选', picksNote:'按下载、星标与新鲜度选出，每个分类最多 2 个', loved:'口碑爆棚', starred:'社区高星', hot:'热度飙升', fresh:'新晋热门' },
+  en: { badge:"Today's editor pick", downloads:'downloads', stars:'stars', heat:'Heat', get:'Get install command', details:'Details ›', editorPicks:'Editor picks', picksNote:'Selected for downloads, stars and freshness, at most two per category', loved:'Loved', starred:'High stars', hot:'Trending', fresh:'New & hot' }
+};
+const pk = () => PICK[state.lang === 'zh' ? 'zh' : 'en'];
 
 function label(c) { return state.lang === 'zh' ? (CAT[c] || c) : (CAT_EN[c] || c); }
 function desc(e) { return state.lang === 'zh' ? (e.descriptionZh || e.descriptionEn) : (e.descriptionEn || e.descriptionZh); }
+function initials(e) {
+  const s = String(e.title || e.name || '?');
+  if (/[\u4e00-\u9fa5]/.test(s)) return s.slice(0, 1);
+  const words = s.split(/[\s\-_.]+/).filter(Boolean);
+  if (!words.length) return '?';
+  return words.length === 1 ? words[0].slice(0, 2).toUpperCase() : (words[0][0] + words[1][0]).toUpperCase();
+}
+function badgesOf(e) {
+  const out = [];
+  if ((e.stars || 0) >= 4000) out.push(pk().starred);
+  if ((e.downloads || 0) >= 1000000) out.push(pk().loved);
+  if (!out.length && (e.heat || 0) >= 90) out.push(pk().hot);
+  if (!out.length) out.push(pk().fresh);
+  return out.slice(0, 2);
+}
+function featuredEntries() {
+  if (!state.data) return [];
+  const byName = new Map(state.data.entries.map((e) => [e.name, e]));
+  return (state.data.featured || []).map((n) => typeof n === 'string' ? byName.get(n) : n).filter(Boolean);
+}
+function heroGradient(h) { return `linear-gradient(122deg, hsl(${h} 72% 42%), hsl(${(h + 48) % 360} 64% 30%))`; }
+
+function renderDecor() {
+  const picks = featuredEntries();
+  if (!picks.length) return;
+  const p = pk();
+  const hero = picks[state.heroIdx % Math.min(picks.length, 4)] || picks[0];
+  const h = ((Number(hero.hue) || 220) % 360 + 360) % 360;
+  document.documentElement.style.setProperty('--hero-hue', h);
+  document.documentElement.style.setProperty('--hero-hue2', (h + 48) % 360);
+  $('poster').style.background = heroGradient(h);
+  $('poster').innerHTML = `
+    <div class="poster-mark" aria-hidden="true">${esc(initials(hero))}</div>
+    <div class="poster-main">
+      <span class="poster-badge">✦ ${esc(p.badge)}</span>
+      <h2 class="poster-title">${esc(hero.title || hero.name)}</h2>
+      <div class="poster-author">${esc(hero.name)}${hero.owner ? ' · @' + esc(hero.owner) : ''}</div>
+      <p class="poster-desc">${esc(desc(hero))}</p>
+      <div class="poster-foot">
+        <span class="poster-stat">↓ ${compact(hero.downloads)} ${esc(p.downloads)}</span>
+        <span class="poster-stat">★ ${compact(hero.stars)} ${esc(p.stars)}</span>
+        <span class="poster-stat">✦ ${esc(p.heat)} ${esc(hero.heat)}°</span>
+      </div>
+      <div class="poster-tags">${badgesOf(hero).map((b) => `<span class="poster-tag">${esc(b)}</span>`).join('')}</div>
+    </div>
+    <div class="poster-side">
+      <button class="poster-cta" id="poster-get">${esc(p.get)}</button>
+      <button class="poster-cta ghost" id="poster-details">${esc(p.details)}</button>
+      <div class="poster-nav" id="poster-nav">${picks.slice(0, 4).map((_, i) => `<button class="poster-dot${i === state.heroIdx % 4 ? ' on' : ''}" data-i="${i}" aria-label="${i + 1}"></button>`).join('')}</div>
+    </div>`;
+  $('poster-get').onclick = () => open(hero.name);
+  $('poster-details').onclick = () => open(hero.name);
+  $('poster-nav').querySelectorAll('.poster-dot').forEach((d) => d.onclick = () => { state.heroIdx = Number(d.dataset.i); stopRotate(); renderDecor(); });
+
+  $('picks-title').textContent = p.editorPicks;
+  $('picks-note').textContent = p.picksNote;
+  const secondary = picks.slice(1, 5);
+  $('picks').innerHTML = secondary.map((e) => {
+    const eh = ((Number(e.hue) || 220) % 360 + 360) % 360;
+    return `<button class="pick" data-name="${esc(e.name)}" style="background:${heroGradient(eh)}">
+      <div class="pick-mark" aria-hidden="true">${esc(initials(e))}</div>
+      <div class="pick-avatar">${esc((e.title || e.name).slice(0, 1).toUpperCase())}</div>
+      <div class="pick-body"><div class="pick-title">${esc(e.title || e.name)}</div><div class="pick-owner">@${esc(e.owner)}</div><div class="pick-desc">${esc(desc(e))}</div></div>
+      <div class="pick-stat"><span>↓ ${compact(e.downloads)}</span><span>★ ${compact(e.stars)}</span><span>${esc(e.heat)}°</span></div>
+    </button>`;
+  }).join('');
+  $('picks').querySelectorAll('.pick').forEach((el) => el.onclick = () => open(el.dataset.name));
+}
+
+let rotateTimer = null;
+function stopRotate() { if (rotateTimer) { clearInterval(rotateTimer); rotateTimer = null; } }
+function startRotate() {
+  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  stopRotate();
+  rotateTimer = setInterval(() => { state.heroIdx = (state.heroIdx + 1) % 4; renderDecor(); }, 7000);
+}
+const posterEl = $('poster');
+posterEl.addEventListener('mouseenter', stopRotate);
+posterEl.addEventListener('mouseleave', startRotate);
 
 function applyLang() {
   const zh = state.lang === 'zh';
@@ -156,7 +295,7 @@ function applyLang() {
   $('copy').textContent = zh ? '复制' : 'Copy';
   $('d-repo').textContent = zh ? '插件主页 ↗' : 'Plugin page ↗';
   $('cat').innerHTML = `<option value="">${zh ? '全部分类' : 'All categories'}</option>` + Object.keys(CAT).map((c) => `<option value="${c}">${label(c)}</option>`).join('');
-  if (state.data) render();
+  if (state.data) { render(); renderDecor(); }
 }
 
 function matches(e) {
@@ -213,7 +352,7 @@ $('copy').addEventListener('click', async () => {
 });
 
 applyLang();
-fetch('./catalog.json', { cache: 'no-store' }).then((r) => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); }).then((data) => { state.data = data; render(); }).catch((err) => {
+fetch('./catalog.json', { cache: 'no-store' }).then((r) => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); }).then((data) => { state.data = data; render(); renderDecor(); startRotate(); }).catch((err) => {
   $('grid').innerHTML = `<div class="empty">${state.lang === 'zh' ? `数据加载失败（${esc(err.message)}）。` : `Failed to load data (${esc(err.message)}).`}</div>`;
 });
 </script>

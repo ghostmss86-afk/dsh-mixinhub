@@ -35,7 +35,7 @@ License: MIT
 
 - Package: `dsh-featured-market` (npm)
 - Repository: https://github.com/ghostmss86-afk/dsh-featured-market
-- Public catalog: https://ghostmss86-afk.github.io/dsh-featured-market/
+- Public catalog: https://ghostmss86-afk.github.io/dsh-featured-market/ — opens with a rotating poster-style editor pick (two-tone gradient from the featured plugin's hue, initials watermark, bilingual copy, stats, install command) and four color-matched editor-pick cards; same first screen as the in-app panel
 - Runtime: DeepSeek Harness `>=0.2.2-0 <0.3.0-0 || >=0.3.0-0 <0.4.0-0`; 0.2.x tested, 0.3.x allowed but not shipped/tested, 0.4.x excluded
 - Install: `dsh plugin add dsh-featured-market`
 - GitHub install: `dsh plugin add github:ghostmss86-afk/dsh-featured-market`
