@@ -44,8 +44,8 @@ License: MIT
 - Coverage: 9,463 catalog entries, 2,147 accepted, top 220 in the main lists; search covers all 2,147
 - Maturity: new project, first published 2026-11-08; 0 npm downloads and 0 GitHub stars as of 2026-11-09
 - Refresh: plugin catalog daily at 04:00 local time; dashboard metrics every 5 minutes
-- Dashboard: up to 5 GitHub repos/npm packages; stars, 30-day downloads, forks,
-  open issues, 7-day delta, star sparkline, latest GitHub issues; stored in
+- Dashboard: up to 12 GitHub repos/npm packages; stars, 30-day downloads, forks,
+  open issues, market listing rank, 7-day delta, star sparkline, latest GitHub issues; stored in
   `~/.dsh/featured-market/projects.json`
 - Privacy: no telemetry, no account, no cloud sync; favorites and notes stay in
   browser localStorage; the dashboard reads public GitHub/npm APIs and uses the

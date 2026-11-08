@@ -33,8 +33,8 @@ window.__ModuleLoader__.load({
       'dash.adding': '添加中…',
       'dash.added': '已开始跟踪',
       'dash.exists': '已经在看板里了',
-      'dash.limit': '最多跟踪 5 个项目',
       'dash.invalid': '请输入 owner/repo 或 npm 包名',
+      'dash.notFound': '找不到这个仓库或包',
       'dash.stars': '星标',
       'dash.downloads': '30 天下载',
       'dash.forks': 'Fork',
@@ -56,6 +56,9 @@ window.__ModuleLoader__.load({
       'dash.failed': '项目数据暂时不可用',
       'dash.empty': '还没有项目',
       'dash.comments': '{n} 条评论',
+      'dash.listed': '已收录 #{rank}',
+      'dash.unlisted': '未进精选目录',
+      'dash.limit': '最多跟踪 12 个项目',
       'tab.favorites': '收藏',
       'section.favorites': '我的收藏',
       'favorites.count': '已收藏 {n} 个',
@@ -256,8 +259,8 @@ window.__ModuleLoader__.load({
       'dash.adding': 'Adding…',
       'dash.added': 'Now tracking',
       'dash.exists': 'Already on the dashboard',
-      'dash.limit': 'Track up to 5 projects',
       'dash.invalid': 'Enter owner/repo or an npm package name',
+      'dash.notFound': 'Repository or package not found',
       'dash.stars': 'Stars',
       'dash.downloads': '30-day downloads',
       'dash.forks': 'Forks',
@@ -279,6 +282,9 @@ window.__ModuleLoader__.load({
       'dash.failed': 'Project data is temporarily unavailable',
       'dash.empty': 'No projects yet',
       'dash.comments': '{n} comments',
+      'dash.listed': 'Listed #{rank}',
+      'dash.unlisted': 'Not in the curated index',
+      'dash.limit': 'Track up to 12 projects',
       'tab.favorites': 'Saved',
       'section.favorites': 'Saved plugins',
       'favorites.count': '{n} saved',
@@ -968,7 +974,9 @@ window.__ModuleLoader__.load({
 .fm-project{padding:14px;border:1px solid var(--dsw-alias-border-l1);border-radius:14px;background:var(--dsw-alias-bg-layer-1);display:flex;flex-direction:column;gap:10px;min-width:0;}
 .fm-project-head{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;}
 .fm-project-title{min-width:0;}
-.fm-project-name{font-size:14px;font-weight:750;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.fm-project-name{font-size:14px;font-weight:750;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:flex;align-items:center;gap:6px;}
+.fm-market-badge{padding:1px 6px;border-radius:999px;background:var(--dsw-alias-bg-layer-2);color:var(--dsw-alias-label-secondary);font-size:9px;font-weight:600;flex-shrink:0;}
+.fm-market-badge.is-on{background:color-mix(in srgb, var(--dsw-alias-brand-primary) 14%, transparent);color:var(--dsw-alias-brand-primary);}
 .fm-project-repo{margin-top:3px;font-size:10.5px;color:var(--dsw-alias-label-secondary);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 .fm-project-repo a{color:var(--dsw-alias-label-secondary);text-decoration:none;}
 .fm-project-repo a:hover{color:var(--dsw-alias-brand-primary);text-decoration:underline;}
@@ -1797,10 +1805,10 @@ window.__ModuleLoader__.load({
         let npmName = '';
         if (/^https?:\/\/github\.com\//i.test(raw)) {
           repo = raw.replace(/^https?:\/\/github\.com\//i, '').replace(/\/+$/, '').split('/').slice(0, 2).join('/');
-        } else if (raw.includes('/')) {
-          repo = raw.replace(/^\/+|\/+$/g, '');
-        } else {
+        } else if (raw.startsWith('@') || !raw.includes('/')) {
           npmName = raw;
+        } else {
+          repo = raw.replace(/^\/+|\/+$/g, '');
         }
         setAdding(true);
         try {
@@ -1815,6 +1823,10 @@ window.__ModuleLoader__.load({
           }
           if (response.status === 400) {
             onToast('error', t('dash.limit'));
+            return;
+          }
+          if (response.status === 404) {
+            onToast('error', t('dash.notFound'));
             return;
           }
           if (!response.ok) throw new Error(`HTTP ${response.status}`);
@@ -1909,7 +1921,7 @@ window.__ModuleLoader__.load({
                       h(
                         'div',
                         { className: 'fm-project-title' },
-                        h('div', { className: 'fm-project-name' }, item.title || item.repo || item.npm),
+                        h('div', { className: 'fm-project-name' }, item.title || item.repo || item.npm, item.market ? h('span', { className: 'fm-market-badge' + (item.market.listed ? ' is-on' : '') }, item.market.listed ? t('dash.listed').replace('{rank}', item.market.rank) : t('dash.unlisted')) : null),
                         h(
                           'div',
                           { className: 'fm-project-repo' },

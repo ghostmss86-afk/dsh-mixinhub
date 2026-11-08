@@ -162,7 +162,7 @@ sidebar, next to **Skins & Wallpapers** (`皮肤和壁纸`).
 | **Import / export** | Move favorites and notes as one JSON file. |
 | **Installed** | Install, update, enable/disable and uninstall the plugins it surfaces; it is not a profile-wide backup, diagnostics or recovery tool. |
 | **Update alerts** | Background check every five minutes; a sidebar dot appears when updates exist, with one-click **Update all**. |
-| **Project dashboard** | Track up to five GitHub repos / npm packages: stars, 30-day downloads, forks, open issues, seven-day deltas, a small star trend, and the latest public GitHub issues as feedback. New feedback raises the sidebar dot. |
+| **Project dashboard** | Track up to twelve GitHub repos / npm packages: stars, 30-day downloads, forks, open issues, market listing rank, seven-day deltas, a small star trend, and the latest public GitHub issues as feedback. New feedback raises the sidebar dot. |
 | **Agent tool** | `featured_market_search` lets an Agent search the same index in conversation. |
 
 All UI copy is available in Chinese and English. The language switch is stored
@@ -179,7 +179,7 @@ locally.
 ## Project dashboard
 
 Open **Dashboard** in the panel to watch the projects you maintain. Add an
-`owner/repo` or an npm package name (up to five). The card shows GitHub stars,
+`owner/repo` or an npm package name (up to twelve). The card shows GitHub stars,
 30-day npm downloads, forks and open issues, a seven-day delta and a star
 sparkline. The latest public GitHub issues appear as feedback; a new issue
 raises the same sidebar dot used for updates, and **Mark all read** clears it.
@@ -533,7 +533,7 @@ Release tarball 同样可用。
 - 备注与清单导入导出：数据只存在本机。
 - 已安装管理：启用、停用、更新、卸载；不会停用自己。
 - 更新提醒：每 5 分钟自动检查，有更新时侧栏出现圆点，已安装页可一键全部更新。
-- 项目看板：最多 5 个 GitHub 仓库 / npm 包，查看星标、30 天下载、Fork、开放 issue、7 日变化、星标趋势和最新反馈；新反馈会点亮侧栏圆点。
+- 项目看板：最多 12 个 GitHub 仓库 / npm 包，查看星标、30 天下载、Fork、开放 issue、市场收录排名、7 日变化、星标趋势和最新反馈；新反馈会点亮侧栏圆点。
 - Agent 工具：`featured_market_search`，在对话里直接搜。
 
 ### 精选规则（会随版本调整）

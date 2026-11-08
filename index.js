@@ -63,7 +63,7 @@ export function apply(ctx) {
 
   const PROJECTS_PATH = path.join(os.homedir(), '.dsh', 'featured-market', 'projects.json');
   const PROJECT_TTL_MS = 5 * 60 * 1000;
-  const MAX_PROJECTS = 5;
+  const MAX_PROJECTS = 12;
 
   const defaultProject = () => ({
     id: 'ghostmss86-afk/dsh-featured-market',
@@ -215,6 +215,20 @@ export function apply(ctx) {
       }
     }
 
+    if (project.npm && snapshot && Array.isArray(snapshot.index)) {
+      const rank = snapshot.index.findIndex((entry) => entry.name === project.npm);
+      next.market = rank >= 0
+        ? {
+            listed: true,
+            rank: rank + 1,
+            heat: snapshot.index[rank].heat,
+            downloads: snapshot.index[rank].downloads,
+            stars: snapshot.index[rank].stars,
+            category: snapshot.index[rank].category
+          }
+        : { listed: false };
+    }
+
     next.history = projectHistory(next, stars, downloads);
     next.starsDelta = deltaOf(next.history, 'stars');
     next.downloadsDelta = deltaOf(next.history, 'downloads');
@@ -244,6 +258,7 @@ export function apply(ctx) {
       lastUpdated: project.lastUpdated || null,
       error: project.error || null,
       unread: project.unread || 0,
+      market: project.market || null,
       lastSeenFeedbackAt: project.lastSeenFeedbackAt || null,
       history: Array.isArray(project.history) ? project.history.slice(-30) : [],
       feedback: Array.isArray(project.feedback) ? project.feedback : []
