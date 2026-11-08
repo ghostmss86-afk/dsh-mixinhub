@@ -47,6 +47,7 @@ if (!changelog.includes(`## [${version}]`)) {
   writeFileSync('CHANGELOG.md', changelog);
 }
 
+run('npm', ['run', 'build:web']);
 run('npm', ['run', 'check']);
 run('git', ['add', '-A']);
 run('git', ['commit', '-m', `chore(release): v${version}`]);

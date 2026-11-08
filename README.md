@@ -383,9 +383,8 @@ Expected health response:
 
 The public catalog is independently reachable at
 <https://ghostmss86-afk.github.io/dsh-featured-market/>; it returns HTTP 200 and
-a `catalog.json` with the top 220 entries by heat (the full 2,147 accepted
-index is searchable inside the plugin) even when the local Harness is
-closed.
+a `catalog.json` with all 2,147 accepted entries and bilingual descriptions
+even when the local Harness is closed.
 
 ## Development
 

@@ -266,7 +266,11 @@ export function apply(ctx) {
   }
 
   async function fillTranslations(next) {
-    const pending = next.entries
+    const pool = new Map();
+    for (const entry of [...next.entries, ...(next.index || [])]) {
+      if (!pool.has(entry.name)) pool.set(entry.name, entry);
+    }
+    const pending = [...pool.values()]
       .filter((entry) => !entry.descriptionZh || !entry.descriptionEn)
       .slice(0, TRANSLATE_BATCH);
     if (!pending.length) return;
@@ -293,7 +297,7 @@ export function apply(ctx) {
     };
     await Promise.all(Array.from({ length: 4 }, worker));
 
-    const current = new Set(next.entries.map((entry) => entry.name));
+    const current = new Set([...next.entries, ...(next.index || [])].map((entry) => entry.name));
     const entries = Object.entries(learned);
     const keep = entries.filter(([name]) => current.has(name));
     const spare = entries.filter(([name]) => !current.has(name)).slice(-600);

@@ -11,6 +11,8 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { CATALOG_URL, buildSnapshot, loadSeedTranslations, readSnapshot } from '../lib/market.js';
 
+const pkg = JSON.parse(fs.readFileSync(new URL('../package.json', import.meta.url), 'utf8'));
+
 const remote = process.argv.includes('--remote');
 const output = path.join(process.cwd(), 'docs', 'catalog.json');
 const llmsSource = path.join(process.cwd(), 'llms.txt');
@@ -43,13 +45,19 @@ if (!snapshot) {
   snapshot = buildSnapshot(catalog, null, loadSeedTranslations());
 }
 
+const source = Array.isArray(snapshot.index) && snapshot.index.length ? snapshot.index : snapshot.entries;
+const now = new Date();
+const localMinute = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+
 const payload = {
-  generatedAt: snapshot.generatedAt || new Date().toISOString(),
+  pluginVersion: pkg.version,
+  generatedAt: snapshot.generatedAt || now.toISOString(),
+  generatedLocal: localMinute,
   catalogTotal: snapshot.catalogTotal || 0,
   accepted: snapshot.accepted || snapshot.entries.length,
   categories: snapshot.categories || [],
   featured: (snapshot.featured || []).map((item) => (typeof item === 'string' ? item : item && item.name)).filter(Boolean),
-  entries: snapshot.entries.map(pick)
+  entries: source.map(pick)
 };
 
 fs.mkdirSync(path.dirname(output), { recursive: true });

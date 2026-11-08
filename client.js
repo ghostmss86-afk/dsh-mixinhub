@@ -21,6 +21,8 @@ window.__ModuleLoader__.load({
       'panel.subtitle': '编辑精选 · 一键安装 · 每日 04:00 自动更新热度',
       'panel.updated': '已刷新社区数据',
       'panel.count': '{n} 个社区插件',
+      'panel.crashed': '面板加载出错，点关闭后重试',
+      'panel.close': '关闭',
       'tab.featured': '精选',
       'tab.heat': '热度榜',
       'tab.installed': '已安装',
@@ -247,6 +249,8 @@ window.__ModuleLoader__.load({
       'panel.subtitle': 'Editor picks · one-click install · heat refreshed daily at 04:00',
       'panel.updated': 'Community data refreshed',
       'panel.count': '{n} community plugins',
+      'panel.crashed': 'This panel hit an error. Close and retry.',
+      'panel.close': 'Close',
       'tab.featured': 'Featured',
       'tab.heat': 'Leaderboard',
       'tab.installed': 'Installed',
@@ -469,7 +473,20 @@ window.__ModuleLoader__.load({
 
     // ---------- tiny open/close bus between the footer action and the overlay ----------
 
-    const bus = { open: false, listeners: new Set() };
+    // A module instance can be replaced by HMR while the old footer button is
+    // still mounted. Keep the open state on the page, not on this instance, so
+    // the visible button and the live overlay always share one bus.
+    const bus = (() => {
+      const key = '__dshFeaturedMarketOpenBus';
+      try {
+        if (globalThis[key] && globalThis[key].listeners instanceof Set) return globalThis[key];
+        const created = { open: false, listeners: new Set() };
+        globalThis[key] = created;
+        return created;
+      } catch {
+        return { open: false, listeners: new Set() };
+      }
+    })();
     function setOpen(next) {
       if (bus.open === next) return;
       bus.open = next;
@@ -756,7 +773,7 @@ window.__ModuleLoader__.load({
     // ---------- styles ----------
 
     const STYLE = `
-.fm-layer{position:fixed;inset:0;z-index:44;display:flex;align-items:center;justify-content:center;padding:26px;pointer-events:none;}
+.fm-layer{position:fixed;inset:0;z-index:2147483647;display:flex;align-items:center;justify-content:center;padding:26px;pointer-events:none;background:rgba(15,23,42,.28);backdrop-filter:blur(2px);}
 .fm-backdrop{position:absolute;inset:0;background:rgba(10,12,18,.34);backdrop-filter:blur(3px);pointer-events:auto;}
 .fm-panel{position:relative;display:flex;flex-direction:column;width:min(940px,100%);height:min(790px,100%);border-radius:22px;border:1px solid var(--dsw-alias-border-l1);background:var(--dsw-alias-bg-overlay);color:var(--dsw-alias-label-primary);box-shadow:var(--dsw-elevation-panel,0 28px 80px rgba(0,0,0,.34));overflow:hidden;pointer-events:auto;font-size:13px;line-height:1.5;}
 .fm-panel *{box-sizing:border-box;}
@@ -1735,7 +1752,7 @@ window.__ModuleLoader__.load({
     // ---------- the market panel ----------
 
 
-    function Sparkline(props) {
+    function StarTrend(props) {
       const points = (props.points || []).filter((point) => typeof point.stars === 'number');
       if (points.length < 2) return h('div', { className: 'fm-dash-nohistory' }, props.t('dash.noHistory'));
       const width = 220;
@@ -1950,7 +1967,7 @@ window.__ModuleLoader__.load({
                       h('div', { className: 'fm-metric' }, h('span', { className: 'fm-metric-label' }, t('dash.forks')), h('span', { className: 'fm-metric-value' }, item.forks == null ? '—' : compact(item.forks))),
                       h('div', { className: 'fm-metric' }, h('span', { className: 'fm-metric-label' }, t('dash.issues')), h('span', { className: 'fm-metric-value' }, item.openIssues == null ? '—' : compact(item.openIssues)))
                     ),
-                    h(Sparkline, { points: item.history, t }),
+                    h(StarTrend, { points: item.history, t }),
                     h(
                       'div',
                       { className: 'fm-feedback-head' },
@@ -3036,19 +3053,71 @@ window.__ModuleLoader__.load({
       );
     }
 
+    class PanelBoundary extends React.Component {
+      constructor(props) {
+        super(props);
+        this.state = { error: null };
+      }
+      static getDerivedStateFromError(error) {
+        return { error };
+      }
+      componentDidCatch(error, info) {
+        console.error('[featured-market] panel crashed', error, info);
+      }
+      render() {
+        if (this.state.error) {
+          return h(
+            'div',
+            { className: 'fm-overlay' },
+            h(
+              'div',
+              { className: 'fm-panel', style: { minHeight: '220px', alignItems: 'center', justifyContent: 'center' } },
+              h('div', { className: 'fm-empty-title' }, this.props.t('panel.crashed')),
+              h('div', { className: 'fm-section-desc' }, String(this.state.error && this.state.error.message ? this.state.error.message : this.state.error)),
+              h('button', { type: 'button', className: 'fm-btn is-primary', style: { marginTop: '14px' }, onClick: this.props.onClose }, this.props.t('panel.close'))
+            )
+          );
+        }
+        return this.props.children;
+      }
+    }
+
     function OverlayEntry() {
       const open = useOpen();
       if (!open) return null;
-      return h(MarketPanel, { onClose: () => setOpen(false), t: tRef.current });
+      return h(
+        PanelBoundary,
+        { t: tRef.current, onClose: () => setOpen(false) },
+        h(MarketPanel, { onClose: () => setOpen(false), t: tRef.current })
+      );
     }
 
     let tRef = { current: (key) => key };
+
+    function dismissPreviewNotice() {
+      // DSH shows a first-run "Preview Notice" dialog. In some window modes its
+      // dialog is painted off-screen or behind the shell while its full-screen
+      // mask still swallows pointer events, so the store button looks dead.
+      // Acknowledge that exact dialog once, not any other modal.
+      try {
+        const dialogs = document.querySelectorAll('[role="dialog"][aria-label="Preview Notice"]');
+        for (const dialog of dialogs) {
+          const button = Array.from(dialog.querySelectorAll('button')).find((item) =>
+            /continue/i.test(item.textContent || '')
+          );
+          if (button) button.click();
+        }
+      } catch {
+        // ignore a host DOM that is mid-teardown
+      }
+    }
 
     function QuickAction() {
       const open = useOpen();
       const updates = useUpdates();
       const projects = useProjectFeed();
       const t = tRef.current;
+      const buttonRef = useRef(null);
       const bits = [];
       if (updates.count) bits.push(t('update.badgeTitle').replace('{n}', updates.count));
       if (projects.unread) bits.push(t('dash.unread').replace('{n}', projects.unread));
@@ -3056,11 +3125,40 @@ window.__ModuleLoader__.load({
       useEffect(() => {
         loadUpdates().catch(() => {});
         loadProjectsFeed().catch(() => {});
+        const noticeTimer = setTimeout(dismissPreviewNotice, 700);
         const timer = setInterval(() => {
           loadUpdates().catch(() => {});
           loadProjectsFeed().catch(() => {});
+          dismissPreviewNotice();
         }, 5 * 60 * 1000);
-        return () => clearInterval(timer);
+        return () => {
+          clearTimeout(noticeTimer);
+          clearInterval(timer);
+        };
+      }, []);
+      useEffect(() => {
+        // If an invisible host mask covers the footer, the click target is the
+        // mask rather than our button. Treat a pointer inside the button's
+        // rectangle as a store click so the entry point cannot dead-end.
+        const onPointerDown = (event) => {
+          const node = buttonRef.current;
+          if (!node) return;
+          const rect = node.getBoundingClientRect();
+          if (
+            event.clientX < rect.left ||
+            event.clientX > rect.right ||
+            event.clientY < rect.top ||
+            event.clientY > rect.bottom
+          ) {
+            return;
+          }
+          if (node.contains(event.target)) return;
+          event.preventDefault();
+          event.stopPropagation();
+          setOpen(!bus.open);
+        };
+        document.addEventListener('pointerdown', onPointerDown, true);
+        return () => document.removeEventListener('pointerdown', onPointerDown, true);
       }, []);
       return h(
         React.Fragment,
@@ -3069,6 +3167,7 @@ window.__ModuleLoader__.load({
         h(
           'button',
           {
+            ref: buttonRef,
             type: 'button',
             className: 'fm-action' + (updates.count || projects.unread ? ' has-updates' : ''),
             title: label,
