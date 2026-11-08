@@ -71,6 +71,7 @@ sidebar, next to **Skins & Wallpapers** (`皮肤和壁纸`).
 | **Notes** | A private note per plugin (up to 500 characters). |
 | **Import / export** | Move favorites and notes as one JSON file. |
 | **Installed** | Enable, disable, update and uninstall installed plugins; the market never disables itself. |
+| **Update alerts** | Background check every five minutes; a sidebar dot appears when updates exist, with one-click **Update all**. |
 | **Agent tool** | `featured_market_search` lets an Agent search the same index in conversation. |
 
 All UI copy is available in Chinese and English. The language switch is stored
@@ -286,6 +287,7 @@ dsh plugin add dsh-featured-market
 - 方向性兼容建议：区分「环境太旧」「超过上限」「未声明」「不兼容」。
 - 备注与清单导入导出：数据只存在本机。
 - 已安装管理：启用、停用、更新、卸载；不会停用自己。
+- 更新提醒：每 5 分钟自动检查，有更新时侧栏出现圆点，已安装页可一键全部更新。
 - Agent 工具：`featured_market_search`，在对话里直接搜。
 
 ### 精选规则（会随版本调整）

@@ -31,6 +31,11 @@ window.__ModuleLoader__.load({
       'update.run': '更新',
       'update.done': '更新完成',
       'update.failed': '更新失败',
+      'update.all': '全部更新 ({n})',
+      'update.allRunning': '正在更新 {done}/{total}…',
+      'update.allDone': '已更新 {n} 个插件',
+      'update.badgeTitle': '{n} 个插件可更新',
+      'update.checked': '上次检查 {time}',
       'remove.action': '卸载',
       'remove.confirm': '确认卸载',
       'remove.done': '已卸载',
@@ -217,6 +222,11 @@ window.__ModuleLoader__.load({
       'update.run': 'Update',
       'update.done': 'Updated',
       'update.failed': 'Update failed',
+      'update.all': 'Update all ({n})',
+      'update.allRunning': 'Updating {done}/{total}…',
+      'update.allDone': 'Updated {n} plugins',
+      'update.badgeTitle': '{n} plugins can update',
+      'update.checked': 'Last checked {time}',
       'remove.action': 'Remove',
       'remove.confirm': 'Confirm',
       'remove.done': 'Removed',
@@ -399,6 +409,58 @@ window.__ModuleLoader__.load({
         () => bus.open,
         () => bus.open
       );
+    }
+
+    // ---------- shared update state: the sidebar dot and the installed tab ----------
+
+    const updatesBus = {
+      state: { items: [], count: 0, checkedAt: null, ready: false },
+      listeners: new Set(),
+      inflight: null
+    };
+
+    function publishUpdates(patch) {
+      updatesBus.state = { ...updatesBus.state, ...patch };
+      updatesBus.listeners.forEach((listener) => listener());
+    }
+
+    function useUpdates() {
+      return useSyncExternalStore(
+        (listener) => {
+          updatesBus.listeners.add(listener);
+          return () => {
+            updatesBus.listeners.delete(listener);
+          };
+        },
+        () => updatesBus.state,
+        () => updatesBus.state
+      );
+    }
+
+    async function loadUpdates(force = false) {
+      if (updatesBus.inflight) return updatesBus.inflight;
+      updatesBus.inflight = (async () => {
+        try {
+          const response = await fetch(`${API}/updates${force ? '?force=1' : ''}`, { cache: 'no-store' });
+          if (!response.ok) throw new Error(`HTTP ${response.status}`);
+          const body = await response.json();
+          const items = body && Array.isArray(body.items) ? body.items : [];
+          const count =
+            body && typeof body.count === 'number'
+              ? body.count
+              : items.filter((item) => item.latest && item.current && item.latest !== item.current).length;
+          publishUpdates({
+            items,
+            count,
+            checkedAt: (body && body.checkedAt) || new Date().toISOString(),
+            ready: true
+          });
+          return updatesBus.state;
+        } finally {
+          updatesBus.inflight = null;
+        }
+      })();
+      return updatesBus.inflight;
     }
 
     const LANG_KEY = 'dsh.featured-market.lang';
@@ -1531,9 +1593,10 @@ window.__ModuleLoader__.load({
       const [notes, setNotes] = useState(readNotes);
       const [compare, setCompare] = useState([]);
       const [comparing, setComparing] = useState(false);
-      const [updates, setUpdates] = useState(null);
+      const updatesState = useUpdates();
       const [checking, setChecking] = useState(false);
       const [updating, setUpdating] = useState({});
+      const [bulk, setBulk] = useState(null);
       const [confirmRemove, setConfirmRemove] = useState(null);
       const [jobs, setJobs] = useState({});
       const [toast, setToast] = useState(null);
@@ -1565,6 +1628,7 @@ window.__ModuleLoader__.load({
 
       useEffect(() => {
         load();
+        loadUpdates().catch(() => {});
         const timer = setTimeout(() => {
           if (searchRef.current) searchRef.current.focus();
         }, 60);
@@ -1719,6 +1783,11 @@ window.__ModuleLoader__.load({
       const rising = data && Array.isArray(data.rising) ? data.rising : [];
       const categories = data && Array.isArray(data.categories) ? data.categories : [];
       const installedBundles = data && Array.isArray(data.installed) ? data.installed : [];
+      const updates = {};
+      for (const item of updatesState.items) updates[item.name] = item;
+      const pendingCount = Object.values(updates).filter(
+        (item) => item.latest && item.current && item.latest !== item.current && !SELF_NAMES.has(item.name)
+      ).length;
       const marketByName = new Map(entries.map((entry) => [entry.name, entry]));
       const normalizedQuery = query.trim();
       const resultsActive = Boolean(normalizedQuery) || category !== 'all';
@@ -1867,15 +1936,8 @@ window.__ModuleLoader__.load({
         if (checking) return;
         setChecking(true);
         try {
-          const response = await fetch(`${API}/updates`, { cache: 'no-store' });
-          if (!response.ok) throw new Error(`HTTP ${response.status}`);
-          const body = await response.json();
-          const map = {};
-          for (const item of body.items || []) map[item.name] = item;
-          setUpdates(map);
-          const count = Object.values(map).filter(
-            (item) => item.latest && item.current && item.latest !== item.current
-          ).length;
+          const state = await loadUpdates(true);
+          const count = state.count || 0;
           setToast({
             kind: 'ok',
             text: count ? t('update.available').replace('{n}', count) : t('update.none')
@@ -1887,8 +1949,8 @@ window.__ModuleLoader__.load({
         }
       };
 
-      const runUpdate = async (bundle, version) => {
-        if (!bundle || updating[bundle.name]) return;
+      const runUpdate = async (bundle, version, options = {}) => {
+        if (!bundle || updating[bundle.name]) return false;
         setUpdating((previous) => ({ ...previous, [bundle.name]: true }));
         try {
           const response = await fetch(`${API}/update`, {
@@ -1898,12 +1960,18 @@ window.__ModuleLoader__.load({
           });
           const body = await response.json().catch(() => ({}));
           if (!response.ok) throw new Error(body.error || `HTTP ${response.status}`);
-          const restart = body.application === 'restart-required';
-          setToast({ kind: 'ok', text: restart ? t('install.restart') : t('update.done') });
-          await load();
-          await checkUpdates();
+          if (!options.silent) {
+            const restart = body.application === 'restart-required';
+            setToast({ kind: 'ok', text: restart ? t('install.restart') : t('update.done') });
+            await load();
+            await loadUpdates(true).catch(() => {});
+          }
+          return true;
         } catch (cause) {
-          setToast({ kind: 'error', text: `${t('update.failed')} · ${cause && cause.message ? cause.message : 'error'}` });
+          if (!options.silent) {
+            setToast({ kind: 'error', text: `${t('update.failed')} · ${cause && cause.message ? cause.message : 'error'}` });
+          }
+          return false;
         } finally {
           setUpdating((previous) => {
             const next = { ...previous };
@@ -1911,6 +1979,32 @@ window.__ModuleLoader__.load({
             return next;
           });
         }
+      };
+
+      const runAllUpdates = async () => {
+        if (bulk || !pendingCount) return;
+        const pending = Object.values(updates).filter(
+          (item) => item.latest && item.current && item.latest !== item.current && !SELF_NAMES.has(item.name)
+        );
+        let done = 0;
+        let failed = false;
+        setBulk({ done, total: pending.length });
+        for (const item of pending) {
+          const bundle = installedBundles.find((candidate) => candidate.name === item.name);
+          if (!bundle) continue;
+          const ok = await runUpdate(bundle, item.latest, { silent: true });
+          if (!ok) {
+            failed = true;
+            break;
+          }
+          done += 1;
+          setBulk({ done, total: pending.length });
+        }
+        setBulk(null);
+        await load();
+        await loadUpdates(true).catch(() => {});
+        if (failed) setToast({ kind: 'error', text: t('update.failed') });
+        else if (done) setToast({ kind: 'ok', text: t('update.allDone').replace('{n}', done) });
       };
 
       const text = (entry) => {
@@ -2117,9 +2211,42 @@ window.__ModuleLoader__.load({
               'div',
               { className: 'fm-result-tools' },
               h('div', { className: 'fm-section-desc' }, t('installed.count').replace('{n}', installedBundles.length)),
+              bulk
+                ? h(
+                    'div',
+                    { className: 'fm-section-desc' },
+                    t('update.allRunning').replace('{done}', bulk.done).replace('{total}', bulk.total)
+                  )
+                : null,
+              pendingCount
+                ? h(
+                    'button',
+                    {
+                      type: 'button',
+                      className: 'fm-btn is-small is-primary',
+                      onClick: runAllUpdates,
+                      disabled: Boolean(bulk)
+                    },
+                    t('update.all').replace('{n}', pendingCount)
+                  )
+                : null,
               h(
                 'button',
-                { type: 'button', className: 'fm-btn is-small', onClick: checkUpdates, disabled: checking },
+                {
+                  type: 'button',
+                  className: 'fm-btn is-small',
+                  onClick: checkUpdates,
+                  disabled: checking || Boolean(bulk),
+                  title: updatesState.checkedAt
+                    ? t('update.checked').replace(
+                        '{time}',
+                        new Date(updatesState.checkedAt).toLocaleTimeString(lang === 'zh' ? 'zh-CN' : 'en-US', {
+                          hour: '2-digit',
+                          minute: '2-digit'
+                        })
+                      )
+                    : undefined
+                },
                 checking ? t('update.checking') : t('update.check')
               )
             )
@@ -2490,7 +2617,18 @@ window.__ModuleLoader__.load({
 
     function QuickAction() {
       const open = useOpen();
+      const updates = useUpdates();
       const t = tRef.current;
+      const label = updates.count
+        ? `${t('nav.label')} · ${t('update.badgeTitle').replace('{n}', updates.count)}`
+        : t('nav.label');
+      useEffect(() => {
+        loadUpdates().catch(() => {});
+        const timer = setInterval(() => {
+          loadUpdates().catch(() => {});
+        }, 5 * 60 * 1000);
+        return () => clearInterval(timer);
+      }, []);
       return h(
         React.Fragment,
         null,
@@ -2499,22 +2637,25 @@ window.__ModuleLoader__.load({
           'button',
           {
             type: 'button',
-            className: 'fm-action',
-            title: t('nav.label'),
-            'aria-label': t('nav.label'),
+            className: 'fm-action' + (updates.count ? ' has-updates' : ''),
+            title: label,
+            'aria-label': label,
             'aria-expanded': open ? 'true' : 'false',
             onClick: () => setOpen(!open)
           },
-          h(IconStore, { size: 18 })
+          h(IconStore, { size: 18 }),
+          updates.count ? h('span', { key: 'dot', className: 'fm-action-dot', 'aria-hidden': 'true' }) : null
         )
       );
     }
 
     const ACTION_CSS = `
-.fm-action{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;padding:0;border:none;border-radius:8px;background:transparent;color:var(--dsw-alias-label-secondary);cursor:pointer;}
+.fm-action{position:relative;display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;padding:0;border:none;border-radius:8px;background:transparent;color:var(--dsw-alias-label-secondary);cursor:pointer;}
 .fm-action:hover{background:var(--dsw-alias-bg-layer-2);color:var(--dsw-alias-label-primary);}
+.fm-action.has-updates{color:var(--dsw-alias-brand-primary);}
 .fm-action[aria-expanded="true"]{background:var(--dsw-alias-bg-layer-2);color:var(--dsw-alias-brand-primary);}
 .fm-action:focus-visible{outline:2px solid var(--dsw-alias-brand-primary);outline-offset:2px;}
+.fm-action-dot{position:absolute;top:4px;right:4px;width:7px;height:7px;border-radius:50%;background:var(--dsw-alias-brand-primary);box-shadow:0 0 0 2px var(--dsw-alias-bg-layer-1,var(--dsw-alias-bg-layer-2));}
 `;
 
     return {

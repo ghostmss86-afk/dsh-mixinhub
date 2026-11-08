@@ -126,6 +126,46 @@ export function apply(ctx) {
     }
   }
 
+  const UPDATES_TTL_MS = 5 * 60 * 1000;
+  let updatesCache = { at: 0, value: null };
+
+  function invalidateUpdates() {
+    updatesCache = { at: 0, value: null };
+  }
+
+  async function collectUpdates(force = false) {
+    if (!force && updatesCache.value && Date.now() - updatesCache.at < UPDATES_TTL_MS) {
+      return updatesCache.value;
+    }
+    const pluginManager = get('pluginManager');
+    if (!pluginManager || typeof pluginManager.listVersions !== 'function') {
+      return { items: [], count: 0, checkedAt: new Date().toISOString(), unavailable: true };
+    }
+    const installed = (await bundles()).filter((bundle) => bundle && bundle.installed);
+    const items = [];
+    for (const bundle of installed) {
+      try {
+        const listed = await pluginManager.listVersions(bundle.name, undefined, AbortSignal.timeout(9000));
+        if (listed && listed.status === 'listed' && Array.isArray(listed.versions) && listed.versions.length) {
+          items.push({
+            name: bundle.name,
+            current: bundle.version || null,
+            latest: listed.versions[0].version,
+            versions: listed.versions.slice(0, 5).map((version) => version.version)
+          });
+        } else {
+          items.push({ name: bundle.name, current: bundle.version || null, latest: null, problem: (listed && listed.problem) || 'not-updatable' });
+        }
+      } catch (error) {
+        items.push({ name: bundle.name, current: bundle.version || null, latest: null, problem: 'unknown' });
+      }
+    }
+    const count = items.filter((item) => item.latest && item.current && item.latest !== item.current).length;
+    const value = { items, count, checkedAt: new Date().toISOString() };
+    updatesCache = { at: Date.now(), value };
+    return value;
+  }
+
   const MANIFEST_TTL_MS = 10 * 60 * 1000;
   const manifestCache = new Map();
   let runtimeCache = null;
@@ -619,30 +659,9 @@ export function apply(ctx) {
       path: '/featured-market/updates',
       handler: async (request, response) => {
         if (request.method !== 'GET') return send(response, 405, { error: 'method-not-allowed' });
-        const pluginManager = get('pluginManager');
-        if (!pluginManager || typeof pluginManager.listVersions !== 'function') {
-          return send(response, 503, { error: 'manager-unavailable' });
-        }
-        const installed = (await bundles()).filter((bundle) => bundle && bundle.installed);
-        const items = [];
-        for (const bundle of installed) {
-          try {
-            const listed = await pluginManager.listVersions(bundle.name, undefined, AbortSignal.timeout(9000));
-            if (listed && listed.status === 'listed' && Array.isArray(listed.versions) && listed.versions.length) {
-              items.push({
-                name: bundle.name,
-                current: bundle.version || null,
-                latest: listed.versions[0].version,
-                versions: listed.versions.slice(0, 5).map((version) => version.version)
-              });
-            } else {
-              items.push({ name: bundle.name, current: bundle.version || null, latest: null, problem: (listed && listed.problem) || 'not-updatable' });
-            }
-          } catch (error) {
-            items.push({ name: bundle.name, current: bundle.version || null, latest: null, problem: 'unknown' });
-          }
-        }
-        send(response, 200, { items });
+        const url = new URL(request.url || '/', 'http://localhost');
+        const force = url.searchParams.get('force') === '1';
+        send(response, 200, await collectUpdates(force));
       }
     })
   );
@@ -663,6 +682,7 @@ export function apply(ctx) {
         }
         try {
           const result = await pluginManager.updateBundle(name, version);
+          invalidateUpdates();
           send(response, 200, {
             name,
             version,
@@ -694,6 +714,7 @@ export function apply(ctx) {
         }
         try {
           const result = await pluginManager.removeBundle(name);
+          invalidateUpdates();
           send(response, 200, {
             name,
             changed: Boolean(result && result.changed),
@@ -765,9 +786,11 @@ export function apply(ctx) {
           .then((result) => {
             task.result = result;
             task.status = result && result.application === 'failed' ? 'failed' : 'done';
+            invalidateUpdates();
           })
           .catch((error) => {
             task.status = 'failed';
+            invalidateUpdates();
             task.error = error && error.message ? error.message : String(error);
           });
 
