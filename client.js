@@ -773,7 +773,7 @@ window.__ModuleLoader__.load({
     // ---------- styles ----------
 
     const STYLE = `
-.fm-layer{position:fixed;inset:0;z-index:2147483647;display:flex;align-items:center;justify-content:center;padding:26px;pointer-events:none;background:rgba(15,23,42,.28);backdrop-filter:blur(2px);}
+.fm-layer{position:fixed;inset:0;z-index:2147483000;display:flex;align-items:center;justify-content:center;padding:26px;pointer-events:none;background:rgba(15,23,42,.28);backdrop-filter:blur(2px);}
 .fm-backdrop{position:absolute;inset:0;background:rgba(10,12,18,.34);backdrop-filter:blur(3px);pointer-events:auto;}
 .fm-panel{position:relative;display:flex;flex-direction:column;width:min(940px,100%);height:min(790px,100%);border-radius:22px;border:1px solid var(--dsw-alias-border-l1);background:var(--dsw-alias-bg-overlay);color:var(--dsw-alias-label-primary);box-shadow:var(--dsw-elevation-panel,0 28px 80px rgba(0,0,0,.34));overflow:hidden;pointer-events:auto;font-size:13px;line-height:1.5;}
 .fm-panel *{box-sizing:border-box;}
