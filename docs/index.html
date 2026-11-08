@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>精选插件市场 · DeepSeek Harness</title>
+<meta name="description" content="精选 DeepSeek Harness 插件：按热度、下载与星标排序，双语说明，30 秒找到该装的那个插件。">
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #f7f7fb;
+    --panel: #ffffff;
+    --text: #16161d;
+    --muted: #6b6b7b;
+    --line: #e7e7ef;
+    --accent: #6d4aff;
+    --accent-soft: #f0ecff;
+    --ok: #12805c;
+    --shadow: 0 10px 30px rgba(22, 22, 29, .07);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg:#0e0e13; --panel:#17171f; --text:#f2f2f7; --muted:#a0a0b2; --line:#2a2a36; --accent:#9b86ff; --accent-soft:#241f3d; --ok:#4bd3a5; --shadow:0 10px 30px rgba(0,0,0,.35); }
+  }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--text); font:15px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif; }
+  a { color:inherit; }
+  .wrap { max-width:1120px; margin:0 auto; padding:0 20px; }
+  header { border-bottom:1px solid var(--line); background:color-mix(in srgb, var(--panel) 88%, transparent); backdrop-filter:blur(12px); position:sticky; top:0; z-index:10; }
+  .bar { display:flex; align-items:center; gap:14px; min-height:64px; }
+  .brand { display:flex; align-items:center; gap:10px; font-weight:750; letter-spacing:-.01em; }
+  .logo { width:34px; height:34px; border-radius:10px; background:linear-gradient(145deg,#8b6cff,#5b34e8); display:grid; place-items:center; color:#fff; font-size:17px; box-shadow:0 6px 16px rgba(109,74,255,.28); }
+  .spacer { flex:1; }
+  .ghost { border:1px solid var(--line); background:var(--panel); color:var(--text); border-radius:9px; padding:7px 11px; font:inherit; cursor:pointer; text-decoration:none; }
+  .ghost:hover { border-color:var(--accent); }
+  .hero { padding:54px 0 30px; }
+  .eyebrow { color:var(--accent); font-weight:700; font-size:12px; letter-spacing:.12em; text-transform:uppercase; }
+  h1 { font-size:clamp(30px,5vw,52px); line-height:1.08; letter-spacing:-.035em; margin:10px 0 14px; }
+  .lede { color:var(--muted); max-width:680px; font-size:17px; margin:0; }
+  .stats { display:flex; flex-wrap:wrap; gap:22px; margin-top:26px; }
+  .stat b { display:block; font-size:22px; letter-spacing:-.02em; }
+  .stat span { color:var(--muted); font-size:12px; }
+  .controls { display:grid; grid-template-columns:1fr 170px 170px; gap:10px; margin:8px 0 20px; }
+  input, select { width:100%; border:1px solid var(--line); background:var(--panel); color:var(--text); border-radius:10px; padding:11px 12px; font:inherit; outline:none; }
+  input:focus, select:focus { border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-soft); }
+  .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(270px,1fr)); gap:14px; padding-bottom:50px; }
+  .card { text-align:left; border:1px solid var(--line); background:var(--panel); border-radius:14px; padding:16px; cursor:pointer; box-shadow:var(--shadow); transition:transform .15s ease, border-color .15s ease; }
+  .card:hover { transform:translateY(-2px); border-color:color-mix(in srgb, var(--accent) 55%, var(--line)); }
+  .card-top { display:flex; gap:11px; align-items:flex-start; }
+  .avatar { width:38px; height:38px; border-radius:10px; display:grid; place-items:center; font-weight:800; color:#fff; flex:none; }
+  .card h3 { margin:0; font-size:15.5px; letter-spacing:-.01em; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .owner { color:var(--muted); font-size:12px; }
+  .desc { color:var(--muted); font-size:13px; margin:11px 0 13px; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; min-height:60px; }
+  .meta { display:flex; align-items:center; gap:10px; color:var(--muted); font-size:11.5px; flex-wrap:wrap; }
+  .heat { margin-left:auto; background:var(--accent-soft); color:var(--accent); font-weight:750; border-radius:999px; padding:3px 8px; font-size:11px; }
+  .empty { color:var(--muted); padding:50px 0; text-align:center; grid-column:1/-1; }
+  dialog { border:1px solid var(--line); background:var(--panel); color:var(--text); border-radius:18px; padding:0; width:min(680px,calc(100vw - 28px)); box-shadow:0 30px 80px rgba(0,0,0,.28); }
+  dialog::backdrop { background:rgba(10,10,16,.55); backdrop-filter:blur(3px); }
+  .d-head { display:flex; gap:14px; padding:22px 22px 0; align-items:flex-start; }
+  .d-head h2 { margin:0; font-size:21px; letter-spacing:-.02em; }
+  .d-body { padding:16px 22px 22px; }
+  .tags { display:flex; gap:7px; flex-wrap:wrap; margin:14px 0; }
+  .tag { border:1px solid var(--line); border-radius:999px; padding:3px 9px; font-size:11.5px; color:var(--muted); }
+  .tag.hot { color:var(--accent); border-color:color-mix(in srgb,var(--accent) 40%,var(--line)); }
+  .d-desc { font-size:14.5px; color:var(--text); white-space:pre-wrap; }
+  .cmd { display:flex; gap:8px; align-items:center; margin-top:16px; background:var(--bg); border:1px solid var(--line); border-radius:10px; padding:10px 12px; font:12.5px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace; overflow:auto; }
+  .cmd code { white-space:nowrap; }
+  .d-actions { display:flex; gap:10px; flex-wrap:wrap; margin-top:16px; }
+  .primary { background:var(--accent); color:#fff; border:0; border-radius:9px; padding:10px 14px; font:inherit; font-weight:650; cursor:pointer; text-decoration:none; }
+  .note { color:var(--muted); font-size:12px; margin-top:14px; }
+  footer { border-top:1px solid var(--line); color:var(--muted); font-size:12.5px; padding:24px 0 40px; }
+  @media (max-width:680px) { .controls { grid-template-columns:1fr 1fr; } .controls input { grid-column:1/-1; } .hero { padding-top:36px; } .bar { min-height:56px; } }
+</style>
+</head>
+<body>
+<header><div class="wrap bar">
+  <div class="brand"><span class="logo">▦</span><span id="brand">精选插件市场</span></div>
+  <div class="spacer"></div>
+  <button class="ghost" id="lang">EN</button>
+  <a class="ghost" href="https://github.com/ghostmss86-afk/dsh-featured-market" target="_blank" rel="noreferrer">GitHub ↗</a>
+</div></header>
+
+<main class="wrap">
+  <section class="hero">
+    <div class="eyebrow" id="eyebrow">CURATED FOR DEEPSEEK HARNESS</div>
+    <h1 id="headline">30 秒，找到该装的那个插件。</h1>
+    <p class="lede" id="lede">按真实热度、下载与星标排序，每个插件都有中英双语说明和安装命令。不追求最多，只帮你少装错。</p>
+    <div class="stats">
+      <div class="stat"><b id="s1">—</b><span id="s1l">精选插件</span></div>
+      <div class="stat"><b id="s2">—</b><span id="s2l">累计下载</span></div>
+      <div class="stat"><b id="s3">—</b><span id="s3l">数据更新</span></div>
+    </div>
+  </section>
+
+  <section class="controls">
+    <input id="q" type="search" placeholder="搜索插件、作者或功能…" autocomplete="off">
+    <select id="cat"><option value="">全部分类</option></select>
+    <select id="sort">
+      <option value="heat">按热度</option>
+      <option value="downloads">按下载</option>
+      <option value="stars">按星标</option>
+      <option value="new">按收录时间</option>
+    </select>
+  </section>
+
+  <section class="grid" id="grid"><div class="empty">正在加载精选数据…</div></section>
+</main>
+
+<footer><div class="wrap">
+  <div id="foot">数据来自 awesome-dsh-plugin.com，仅供选型参考。安装需要本机已运行 DeepSeek Harness。</div>
+</div></footer>
+
+<dialog id="detail"><div class="d-head"><div class="avatar" id="d-avatar">·</div><div style="min-width:0"><h2 id="d-title">—</h2><div class="owner" id="d-owner"></div></div></div><div class="d-body"><div class="tags" id="d-tags"></div><div class="d-desc" id="d-desc"></div><div class="cmd"><code id="d-cmd">—</code><button class="ghost" id="copy">复制</button></div><div class="d-actions"><a class="primary" id="d-repo" target="_blank" rel="noreferrer">插件主页 ↗</a><button class="ghost" id="close">关闭</button></div><div class="note" id="d-note"></div></div></dialog>
+
+<script>
+const CAT = {ui:'界面',workflow:'工作流',tools:'工具',connect:'连接',model:'模型',dev:'开发',data:'数据',fun:'趣味',market:'市场'};
+const CAT_EN = {ui:'Interface',workflow:'Workflow',tools:'Tools',connect:'Connect',model:'Model',dev:'Development',data:'Data',fun:'Fun',market:'Market'};
+const state = { lang: localStorage.getItem('fm.public.lang') || 'zh', data: null, q: '', cat: '', sort: 'heat' };
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const nf = new Intl.NumberFormat(state.lang === 'zh' ? 'zh-CN' : 'en-US', { notation: 'compact', maximumFractionDigits: 1 });
+const hue = (n) => `hsl(${n % 360} 62% 46%)`;
+
+function label(c) { return state.lang === 'zh' ? (CAT[c] || c) : (CAT_EN[c] || c); }
+function desc(e) { return state.lang === 'zh' ? (e.descriptionZh || e.descriptionEn) : (e.descriptionEn || e.descriptionZh); }
+
+function applyLang() {
+  const zh = state.lang === 'zh';
+  document.documentElement.lang = zh ? 'zh-CN' : 'en';
+  $('lang').textContent = zh ? 'EN' : '中';
+  $('brand').textContent = zh ? '精选插件市场' : 'Featured Market';
+  $('eyebrow').textContent = zh ? '为 DEEPSEEK HARNESS 精选' : 'CURATED FOR DEEPSEEK HARNESS';
+  $('headline').textContent = zh ? '30 秒，找到该装的那个插件。' : 'Find the plugin worth installing in 30 seconds.';
+  $('lede').textContent = zh
+    ? '按真实热度、下载与星标排序，每个插件都有中英双语说明和安装命令。不追求最多，只帮你少装错。'
+    : 'Ranked by real heat, downloads and stars. Every plugin has a bilingual description and an install command. Fewer, better choices.';
+  $('s1l').textContent = zh ? '精选插件' : 'curated plugins';
+  $('s2l').textContent = zh ? '累计下载' : 'total downloads';
+  $('s3l').textContent = zh ? '数据更新' : 'last refresh';
+  $('q').placeholder = zh ? '搜索插件、作者或功能…' : 'Search plugins, authors or features…';
+  $('sort').options[0].text = zh ? '按热度' : 'By heat';
+  $('sort').options[1].text = zh ? '按下载' : 'By downloads';
+  $('sort').options[2].text = zh ? '按星标' : 'By stars';
+  $('sort').options[3].text = zh ? '按收录时间' : 'Newest';
+  $('foot').textContent = zh
+    ? '数据来自 awesome-dsh-plugin.com，仅供选型参考。安装需要本机已运行 DeepSeek Harness。'
+    : 'Data from awesome-dsh-plugin.com, for selection only. Installing requires DeepSeek Harness on your machine.';
+  $('d-note').textContent = zh ? '安装命令需在已安装 DeepSeek Harness 的机器上运行。' : 'Run the install command on a machine with DeepSeek Harness.';
+  $('close').textContent = zh ? '关闭' : 'Close';
+  $('copy').textContent = zh ? '复制' : 'Copy';
+  $('d-repo').textContent = zh ? '插件主页 ↗' : 'Plugin page ↗';
+  $('cat').innerHTML = `<option value="">${zh ? '全部分类' : 'All categories'}</option>` + Object.keys(CAT).map((c) => `<option value="${c}">${label(c)}</option>`).join('');
+  if (state.data) render();
+}
+
+function matches(e) {
+  if (state.cat && e.category !== state.cat) return false;
+  if (!state.q) return true;
+  const q = state.q.toLowerCase();
+  return [e.name, e.title, e.owner, e.descriptionEn, e.descriptionZh].some((v) => String(v || '').toLowerCase().includes(q));
+}
+
+function render() {
+  const all = state.data.entries.filter(matches);
+  const sorted = all.slice().sort((a, b) => {
+    if (state.sort === 'downloads') return b.downloads - a.downloads;
+    if (state.sort === 'stars') return b.stars - a.stars;
+    if (state.sort === 'new') return String(b.added).localeCompare(String(a.added));
+    return b.heat - a.heat || b.downloads - a.downloads;
+  });
+  $('s1').textContent = state.data.entries.length;
+  $('s2').textContent = nf.format(state.data.entries.reduce((sum, e) => sum + (e.downloads || 0), 0));
+  $('s3').textContent = String(state.data.generatedAt || '').slice(0, 10);
+  $('grid').innerHTML = sorted.length ? sorted.map((e) => `
+    <button class="card" data-name="${esc(e.name)}">
+      <div class="card-top"><div class="avatar" style="background:${hue(e.hue)}">${esc((e.title || e.name).slice(0, 1).toUpperCase())}</div>
+        <div style="min-width:0"><h3>${esc(e.title || e.name)}</h3><div class="owner">@${esc(e.owner)} · ${esc(label(e.category))}</div></div></div>
+      <div class="desc">${esc(desc(e))}</div>
+      <div class="meta"><span>↓ ${nf.format(e.downloads || 0)}</span><span>★ ${nf.format(e.stars || 0)}</span><span class="heat">${esc(e.heat)}°</span></div>
+    </button>`).join('') : `<div class="empty">${state.lang === 'zh' ? '没有匹配的插件，换个词试试。' : 'No matching plugin. Try another word.'}</div>`;
+  $('grid').querySelectorAll('.card').forEach((el) => el.addEventListener('click', () => open(el.dataset.name)));
+}
+
+function open(name) {
+  const e = state.data.entries.find((x) => x.name === name);
+  if (!e) return;
+  $('d-avatar').style.background = hue(e.hue);
+  $('d-avatar').textContent = (e.title || e.name).slice(0, 1).toUpperCase();
+  $('d-title').textContent = e.title || e.name;
+  $('d-owner').textContent = `@${e.owner} · ${label(e.category)}`;
+  $('d-tags').innerHTML = [`↓ ${nf.format(e.downloads || 0)}`, `★ ${nf.format(e.stars || 0)}`, `热度 ${e.heat}°`, e.added ? `收录 ${e.added}` : ''].filter(Boolean).map((t, i) => `<span class="tag${i === 2 ? ' hot' : ''}">${esc(t)}</span>`).join('');
+  $('d-desc').textContent = desc(e);
+  $('d-cmd').textContent = e.command || `dsh plugin add ${e.spec || e.name}`;
+  $('d-repo').href = e.href ? (/^https?:/.test(e.href) ? e.href : `https://awesome-dsh-plugin.com${e.href}`) : `https://www.npmjs.com/package/${encodeURIComponent(e.name)}`;
+  $('detail').showModal();
+}
+
+$('lang').addEventListener('click', () => { state.lang = state.lang === 'zh' ? 'en' : 'zh'; localStorage.setItem('fm.public.lang', state.lang); applyLang(); });
+$('q').addEventListener('input', (e) => { state.q = e.target.value.trim(); render(); });
+$('cat').addEventListener('change', (e) => { state.cat = e.target.value; render(); });
+$('sort').addEventListener('change', (e) => { state.sort = e.target.value; render(); });
+$('close').addEventListener('click', () => $('detail').close());
+$('copy').addEventListener('click', async () => {
+  try { await navigator.clipboard.writeText($('d-cmd').textContent); $('copy').textContent = state.lang === 'zh' ? '已复制' : 'Copied'; setTimeout(() => { $('copy').textContent = state.lang === 'zh' ? '复制' : 'Copy'; }, 1400); } catch { $('d-cmd').select?.(); }
+});
+
+applyLang();
+fetch('./catalog.json', { cache: 'no-store' }).then((r) => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); }).then((data) => { state.data = data; render(); }).catch((err) => {
+  $('grid').innerHTML = `<div class="empty">${state.lang === 'zh' ? `数据加载失败（${esc(err.message)}）。` : `Failed to load data (${esc(err.message)}).`}</div>`;
+});
+</script>
+</body>
+</html>

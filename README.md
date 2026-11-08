@@ -3,6 +3,10 @@
 **A curated plugin market for DeepSeek Harness.** It answers one question in
 about 30 seconds: *which plugin should I install, and how do I actually use it?*
 
+**Public catalog (read-only, works on any device):**
+<https://ghostmss86-afk.github.io/dsh-featured-market/> — browse, search and
+copy install commands without opening the Harness.
+
 [![Version](https://img.shields.io/badge/version-1.5.1-2f6f5e)](CHANGELOG.md)
 [![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 [![Platform](https://img.shields.io/badge/DSH-web%20client-4b5563)](https://github.com/deepseek-ai/deepseek-harness)
