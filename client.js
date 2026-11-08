@@ -1,11 +1,12 @@
 window.__ModuleLoader__.load({
-  id: '@local/featured-market',
+  id: 'dsh-featured-market',
   factory(require) {
     const React = require('react');
     const h = React.createElement;
     const { useEffect, useRef, useState, useSyncExternalStore } = React;
 
     const API = '/featured-market';
+    const SELF_NAMES = new Set(['dsh-featured-market', '@local/featured-market']);
 
     const ZH = {
       'nav.label': '精选市场',
@@ -1828,7 +1829,7 @@ window.__ModuleLoader__.load({
       };
 
       const removeBundle = async (bundle) => {
-        if (!bundle || bundle.name === '@local/featured-market') return;
+        if (!bundle || SELF_NAMES.has(bundle.name)) return;
         if (confirmRemove !== bundle.name) {
           setConfirmRemove(bundle.name);
           setTimeout(() => {
@@ -2178,7 +2179,7 @@ window.__ModuleLoader__.load({
                         {
                           type: 'button',
                           className: 'fm-link-btn' + (confirmRemove === bundle.name ? ' is-danger' : ''),
-                          disabled: bundle.name === '@local/featured-market',
+                          disabled: SELF_NAMES.has(bundle.name),
                           onClick: () => removeBundle(bundle)
                         },
                         confirmRemove === bundle.name ? t('remove.confirm') : t('remove.action')
@@ -2192,9 +2193,9 @@ window.__ModuleLoader__.load({
                           'aria-label': bundle.title || bundle.name,
                           title: bundle.enabled ? t('toggle.on') : t('toggle.off'),
                           className: 'fm-switch' + (bundle.enabled ? ' is-on' : ''),
-                          disabled: Boolean(toggling[bundle.name]) || bundle.name === '@local/featured-market',
+                          disabled: Boolean(toggling[bundle.name]) || SELF_NAMES.has(bundle.name),
                           onClick: () =>
-                            bundle.name === '@local/featured-market'
+                            SELF_NAMES.has(bundle.name)
                               ? setToast({ kind: 'error', text: t('toggle.self') })
                               : toggleBundle(bundle)
                         },
