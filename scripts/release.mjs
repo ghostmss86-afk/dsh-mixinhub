@@ -29,6 +29,10 @@ let readme = readFileSync('README.md', 'utf8');
 readme = readme.replace(/badge\/version-[0-9]+\.[0-9]+\.[0-9]+-/, `badge/version-${version}-`);
 readme = readme.replace(/\*\*Version:\*\* `[^`]+`/, `**Version:** \`${version}\``);
 readme = readme.replace(/\| Version \| `[^`]+` \|/, `| Version | \`${version}\` |`);
+readme = readme.replace(
+  /\| \*\*dsh-featured-market\*\* \(this\) \| `[^`]+` \|/,
+  `| **dsh-featured-market** (this) | \`${version}\` |`
+);
 writeFileSync('README.md', readme);
 
 let llms = readFileSync('llms.txt', 'utf8');

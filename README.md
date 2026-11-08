@@ -259,7 +259,7 @@ deliberately included so the comparison is checkable.
 
 | Product | Version | Adoption | Best for | Trade-off |
 |---|---|---|---|---|
-| **dsh-featured-market** (this) | `1.5.2` | New: 0 npm downloads, 0 GitHub stars | A 30-second install decision, bilingual copy, 2–3 way comparison, directional compatibility, README summary, update alerts | New and small; no backup, comments or diagnostics |
+| **dsh-featured-market** (this) | `1.5.3` | New: 0 npm downloads, 0 GitHub stars | A 30-second install decision, bilingual copy, 2–3 way comparison, directional compatibility, README summary, update alerts | New and small; no backup, comments or diagnostics |
 | [**dsh-market**](https://awesome-dsh-plugin.com/p/dsh-market/dsh-market/) | `1.73.15` | 1,042,362 downloads, 10,295 stars | All-in-one management: broad catalog, install/update/uninstall, backups, comments, diagnostics, recovery | Larger surface area; more settings and more ways to fail |
 | [**dsh-m**](https://awesome-dsh-plugin.com/p/iasiv5/dsh-m/) | `0.12.10` | 40,278 downloads, 31 stars | Power users and teams that want custom featured sections, exact versions with integrity, CLI and Agent tools, update all | More setup; assumes you care about pinning and CLI workflows |
 | [**dsh-pick**](https://awesome-dsh-plugin.com/p/AIcivilization/dsh-pick/) | `0.5.3` | 3,339 downloads, 0 stars | Guided buying advice and AI tools over the official index | Narrower day-to-day management |
