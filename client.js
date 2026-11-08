@@ -1604,9 +1604,19 @@ window.__ModuleLoader__.load({
       const searchRef = useRef(null);
       const importRef = useRef(null);
 
-      const fetchSnapshot = async () => {
+      const fetchSnapshot = async (attempt = 0) => {
         const response = await fetch(`${API}/snapshot`, { cache: 'no-store' });
-        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        if (!response.ok) {
+          // A freshly started Host can briefly answer before its plugin routes
+          // are mounted. Retry the transient 404/405 instead of flashing the
+          // full-screen failure state.
+          const transient = response.status === 404 || response.status === 405 || response.status >= 500;
+          if (transient && attempt < 2) {
+            await new Promise((resolve) => setTimeout(resolve, 600 * (attempt + 1)));
+            return fetchSnapshot(attempt + 1);
+          }
+          throw new Error(`HTTP ${response.status}`);
+        }
         return response.json();
       };
 

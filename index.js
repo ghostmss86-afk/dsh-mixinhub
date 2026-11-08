@@ -468,9 +468,9 @@ export function apply(ctx) {
     }
   }
 
-  const webServer = get('webServer');
-  if (!webServer || typeof webServer.register !== 'function') return;
-
+  // Routes are mounted through ctx.inject so a cold start waits for the
+  // browser carrier instead of silently skipping registration.
+  const mountRoutes = (webServer, effect) => {
   const send = (res, status, body) => {
     res.statusCode = status;
     res.setHeader('content-type', 'application/json; charset=utf-8');
@@ -492,7 +492,25 @@ export function apply(ctx) {
       request.on('error', () => resolve({}));
     });
 
-  ctx.effect(() =>
+  // Lightweight liveness probe. It answers even while the catalog snapshot is
+  // still being read, so a cold start can be distinguished from a dead route.
+  effect(() =>
+    webServer.register({
+      kind: 'exact',
+      path: '/featured-market/health',
+      handler: (request, response) => {
+        if (request.method !== 'GET') return send(response, 405, { error: 'method-not-allowed' });
+        send(response, 200, {
+          ok: true,
+          ready: Boolean(snapshot && snapshot.entries),
+          entries: snapshot && Array.isArray(snapshot.entries) ? snapshot.entries.length : 0,
+          refreshing
+        });
+      }
+    })
+  );
+
+  effect(() =>
     webServer.register({
       kind: 'exact',
       path: '/featured-market/snapshot',
@@ -503,7 +521,7 @@ export function apply(ctx) {
     })
   );
 
-  ctx.effect(() =>
+  effect(() =>
     webServer.register({
       kind: 'exact',
       path: '/featured-market/refresh',
@@ -515,7 +533,7 @@ export function apply(ctx) {
     })
   );
 
-  ctx.effect(() =>
+  effect(() =>
     webServer.register({
       kind: 'exact',
       path: '/featured-market/search',
@@ -542,7 +560,7 @@ export function apply(ctx) {
     })
   );
 
-  ctx.effect(() =>
+  effect(() =>
     webServer.register({
       kind: 'exact',
       path: '/featured-market/plugin',
@@ -602,7 +620,7 @@ export function apply(ctx) {
     })
   );
 
-  ctx.effect(() =>
+  effect(() =>
     webServer.register({
       kind: 'exact',
       path: '/featured-market/bundles',
@@ -624,7 +642,7 @@ export function apply(ctx) {
     })
   );
 
-  ctx.effect(() =>
+  effect(() =>
     webServer.register({
       kind: 'exact',
       path: '/featured-market/toggle',
@@ -653,7 +671,7 @@ export function apply(ctx) {
     })
   );
 
-  ctx.effect(() =>
+  effect(() =>
     webServer.register({
       kind: 'exact',
       path: '/featured-market/updates',
@@ -666,7 +684,7 @@ export function apply(ctx) {
     })
   );
 
-  ctx.effect(() =>
+  effect(() =>
     webServer.register({
       kind: 'exact',
       path: '/featured-market/update',
@@ -699,7 +717,7 @@ export function apply(ctx) {
     })
   );
 
-  ctx.effect(() =>
+  effect(() =>
     webServer.register({
       kind: 'exact',
       path: '/featured-market/remove',
@@ -728,7 +746,7 @@ export function apply(ctx) {
     })
   );
 
-  ctx.effect(() =>
+  effect(() =>
     webServer.register({
       kind: 'exact',
       path: '/featured-market/install',
@@ -798,4 +816,20 @@ export function apply(ctx) {
       }
     })
   );
+
+  };
+
+  if (typeof ctx.inject === 'function') {
+    ctx.inject(['webServer'], (sub) => {
+      const server = sub && sub.webServer;
+      if (server && typeof server.register === 'function') {
+        mountRoutes(server, (callback, name) => sub.effect(callback, name));
+      }
+    });
+  } else {
+    const server = get('webServer');
+    if (server && typeof server.register === 'function') {
+      mountRoutes(server, ctx.effect.bind(ctx));
+    }
+  }
 }

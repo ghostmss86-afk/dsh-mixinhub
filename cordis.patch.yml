@@ -1,3 +1,7 @@
 - insert:
     - id: featured-market
       name: 'dsh-featured-market'
+      # The plugin registers HTTP routes during apply(). Wait for the browser
+      # carrier service, otherwise a cold start can apply before webServer
+      # exists and silently skip every route (404/405 until a manual reload).
+      inject: [webServer]
