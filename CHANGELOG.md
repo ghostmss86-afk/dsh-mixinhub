@@ -4,6 +4,12 @@ All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project uses
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.6.3] - 2026-11-08
+
+### Changed
+
+- Keep the market below host-critical dialogs while retaining the mask-resistant store entry point.
+
 ## [1.6.2] - 2026-11-08
 
 ### Changed
