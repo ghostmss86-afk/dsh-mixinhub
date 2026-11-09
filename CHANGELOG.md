@@ -4,6 +4,15 @@ All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project uses
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.6.7] - 2026-11-09
+
+### Changed
+
+- One-command releases now rebuild the three static pages from `docs-src/` before
+  the web catalog, and the docs guard fails the release when README, CHANGELOG,
+  `docs-src/changelog.md` or a rendered page is out of sync. No more manual
+  reminders to update the README on every version.
+
 ## [1.6.6] - 2026-11-09
 
 ### Added

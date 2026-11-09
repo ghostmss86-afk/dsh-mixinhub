@@ -5,7 +5,7 @@
  * Fails when the packaged version, README and CHANGELOG disagree, so a release
  * cannot ship with stale documentation.
  */
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 
@@ -31,6 +31,8 @@ const requiredHeadings = [
 ];
 
 const llms = read('llms.txt');
+const docsChangelog = read('docs-src/changelog.md');
+const docsPages = ['docs/about.html', 'docs/guide.html', 'docs/changelog.html'];
 
 const checks = [
   ['package name', pkg.name === 'dsh-featured-market', pkg.name],
@@ -42,6 +44,8 @@ const checks = [
   ['llms.txt version', llms.includes(`Version: ${version}`), version],
   ['llms.txt install command', llms.includes('dsh plugin add dsh-featured-market'), 'missing'],
   ['docs/llms.txt mirror', read('docs/llms.txt') === llms, 'stale'],
+  ['docs-src/changelog.md entry', docsChangelog.includes(`## v${version} `), version],
+  ...docsPages.map((page) => [`static page ${page}`, existsSync(join(root, page)), 'missing']),
   ...requiredHeadings.map((heading) => [
     `README section ${heading}`,
     readme.includes(heading),
@@ -56,7 +60,7 @@ for (const [label, ok, detail] of checks) {
 }
 
 if (failed) {
-  console.error('\nDocumentation is out of sync. Update README.md and CHANGELOG.md together with the version.');
+  console.error('\nDocumentation is out of sync. Update README.md, CHANGELOG.md and docs-src/changelog.md together with the version.');
   process.exit(1);
 }
 
