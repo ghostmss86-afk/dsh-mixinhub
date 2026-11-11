@@ -4,6 +4,12 @@ All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project uses
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.7.2] - 2026-11-11
+
+### Changed
+
+- Add a one-click Discover index source and copy the saved list as Markdown
+
 ## [1.7.1] - 2026-11-11
 
 ### Changed
