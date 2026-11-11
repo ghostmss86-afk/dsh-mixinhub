@@ -1,6 +1,6 @@
 {
   "name": "dsh-featured-market",
-  "version": "1.6.8",
+  "version": "1.7.0",
   "description": "Curated plugin market for DeepSeek Harness: daily heat leaderboard, bilingual notes, side-by-side comparison, directional compatibility advice, README summaries and a local maintainer dashboard for stars, downloads and feedback.",
   "type": "module",
   "license": "MIT",

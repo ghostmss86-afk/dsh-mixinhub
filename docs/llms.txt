@@ -6,7 +6,7 @@
 > `engines.dsh` compatibility advice, README summaries and a one-click update
 > flow. It is a web client plugin, not a plugin runtime or a hosted marketplace.
 
-Version: 1.6.8
+Version: 1.7.0
 Last verified: 2026-11-09
 License: MIT
 Plugin index (format 1): https://cdn.jsdelivr.net/gh/ghostmss86-afk/dsh-featured-market@main/docs/index.json

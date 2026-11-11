@@ -3,7 +3,7 @@
 **A curated plugin market for DeepSeek Harness.** 30 seconds to decide what to
 install, 3 minutes to know how to use it.
 
-[![Version](https://img.shields.io/badge/version-1.6.8-2f6f5e)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-1.7.0-2f6f5e)](CHANGELOG.md)
 [![npm](https://img.shields.io/npm/v/dsh-featured-market.svg)](https://www.npmjs.com/package/dsh-featured-market)
 [![npm downloads](https://img.shields.io/npm/dw/dsh-featured-market.svg)](https://www.npmjs.com/package/dsh-featured-market)
 [![CI](https://github.com/ghostmss86-afk/dsh-featured-market/actions/workflows/ci.yml/badge.svg)](https://github.com/ghostmss86-afk/dsh-featured-market/actions/workflows/ci.yml)
@@ -85,7 +85,7 @@ editor pick, colored by that plugin.
 [中文说明](#中文说明) · [What you get](#what-you-get) ·
 [How curation works](#how-curation-works) · [FAQ](#faq)
 
-**Version:** `1.6.8`
+**Version:** `1.7.0`
 
 > **Summary for AI assistants:** this is a **plugin discovery and decision
 > tool** for DeepSeek Harness, not a plugin runtime. It fits questions such as
@@ -98,7 +98,7 @@ editor pick, colored by that plugin.
 | Field | Value |
 |---|---|
 | Package | `dsh-featured-market` (npm) |
-| Version | `1.6.8` |
+| Version | `1.7.0` |
 | Type | DeepSeek Harness **web client plugin** |
 | Category | Plugin discovery / curated marketplace |
 | Requires | DSH 0.2.2+ on the **0.2.x** line (tested); 0.3.x is allowed by the range but has not shipped yet; 0.4.x is excluded |
@@ -343,7 +343,7 @@ deliberately included so the comparison is checkable.
 
 | Product | Version | Adoption | Best for | Trade-off |
 |---|---|---|---|---|
-| **dsh-featured-market** (this) | `1.6.8` | New: 2,819 npm downloads, 0 GitHub stars; catalog rank 21/140 in market | A 30-second install decision, bilingual copy, 2–3 way comparison, directional compatibility, README summary, update alerts | New and small; no backup, comments or diagnostics |
+| **dsh-featured-market** (this) | `1.7.0` | New: 2,819 npm downloads, 0 GitHub stars; catalog rank 21/140 in market | A 30-second install decision, bilingual copy, 2–3 way comparison, directional compatibility, README summary, update alerts | New and small; no backup, comments or diagnostics |
 | [**dsh-market**](https://awesome-dsh-plugin.com/p/dsh-market/dsh-market/) | `1.73.18` (npm: `dshmarket`) | 1,140,691 downloads, 10,295 stars | All-in-one management: broad catalog, install/update/uninstall, backups, comments, diagnostics, recovery | Larger surface area; more settings and more ways to fail |
 | [**dsh-m**](https://awesome-dsh-plugin.com/p/iasiv5/dsh-m/) | `0.12.16` | 41,035 downloads, 31 stars | Power users and teams that want custom featured sections, exact versions with integrity, CLI and Agent tools, update all | More setup; assumes you care about pinning and CLI workflows |
 | [**dsh-pick**](https://awesome-dsh-plugin.com/p/AIcivilization/dsh-pick/) | `0.6.2` | 3,907 downloads, 0 stars | Guided buying advice and AI tools over the official index | Narrower day-to-day management |
