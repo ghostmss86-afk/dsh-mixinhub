@@ -75,6 +75,17 @@ also ships inside the npm package, if you prefer an immutable, versioned URL:
 a market, a picker or an Agent tool, you can point at it instead of rebuilding
 the npm scan yourself. MIT licensed; no attribution required, a link is nice.
 
+**In DSH itself:** open **Plugins → Discover → Index sources** and add the URL
+above. On dsh 0.2.1+ that makes the same 2,300+ entries searchable from the host's
+own Discover tab and from the `plugin_market` agent tool. The panel also has a
+one-click **Add to Discover** button in its footer when the source is not
+configured yet; removing the source in Discover is respected and it is not added
+back automatically.
+
+The index is validated against the official parser on every release
+(`@deepseek-ai/dsh-plugin-market-index`, `parseMarketIndex`): a malformed entry
+fails the build instead of shipping.
+
 **Public catalog (no install needed):**
 <https://ghostmss86-afk.github.io/dsh-featured-market/> — search, browse and copy
 install commands on any device. It opens with a rotating poster of the day's
@@ -522,6 +533,10 @@ Not affiliated with DeepSeek. DeepSeek Harness is a separate project.
 ---
 
 ## 中文说明
+
+**在 DSH 里直接用：** 打开 **插件 → 发现 → 索引源**，把上面那条索引地址加进去
+（需要 dsh 0.2.1+）。之后「发现」页和 `plugin_market` 工具就能搜到同样这批条目。
+面板底部在未配置时会显示「加入『发现』索引」按钮；你在「发现」里删掉后不会被自动加回。
 
 **一句话：30 秒内决定该装哪个插件，并且知道装完怎么用。**
 

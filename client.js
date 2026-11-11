@@ -182,6 +182,10 @@ window.__ModuleLoader__.load({
       'note.placeholder': '写一句「我为什么装它」，只保存在这台设备上。',
       'note.saved': '自动保存 · 仅本机可见',
       'backup.export': '导出清单',
+      'share.copy': '复制清单',
+      'share.copied': '清单已复制，可直接粘贴分享',
+      'share.failed': '复制失败，请手动选择文本',
+      'share.title': '我收藏的 DSH 插件',
       'backup.import': '导入清单',
       'backup.exported': '清单已导出',
       'backup.imported': '已导入，新增 {n} 个收藏',
@@ -247,6 +251,9 @@ window.__ModuleLoader__.load({
       'footer.catalog': '社区插件',
       'footer.accepted': '达到收录标准',
       'footer.next': '下次自动更新',
+      'footer.addSource': '加入「发现」索引',
+      'source.added': '已加入「发现」索引。打开 插件 → 发现 即可选它。',
+      'source.failed': '加入失败',
       'footer.stale': '上次同步失败，展示缓存数据',
       'footer.updated': '热度更新于',
       'install.ok': '安装完成',
@@ -434,6 +441,10 @@ window.__ModuleLoader__.load({
       'note.placeholder': 'Why did you install this? Stored only on this device.',
       'note.saved': 'Saved automatically · private to this device',
       'backup.export': 'Export',
+      'share.copy': 'Copy list',
+      'share.copied': 'List copied — paste it anywhere',
+      'share.failed': 'Could not copy; select the text manually',
+      'share.title': 'DSH plugins I saved',
       'backup.import': 'Import',
       'backup.exported': 'List exported',
       'backup.imported': 'Imported, {n} new saved plugins',
@@ -499,6 +510,9 @@ window.__ModuleLoader__.load({
       'footer.catalog': 'Community plugins',
       'footer.accepted': 'Meet the curation bar',
       'footer.next': 'Next auto update',
+      'footer.addSource': 'Add to Discover',
+      'source.added': 'Added as a Discover index source. Open Plugins → Discover to use it.',
+      'source.failed': 'Could not add the index source',
       'footer.stale': 'Last sync failed, showing cached data',
       'footer.updated': 'Heat updated',
       'install.ok': 'Installed',
@@ -949,6 +963,8 @@ window.__ModuleLoader__.load({
 .fm-foot{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:10px 22px;border-top:1px solid var(--dsw-alias-border-l1);background:var(--dsw-alias-bg-layer-1);font-size:11px;color:var(--dsw-alias-label-secondary);}
 .fm-foot-group{display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
 .fm-foot b{font-weight:700;color:var(--dsw-alias-label-primary);}
+.fm-linkbtn{border:0;background:none;padding:0;font:inherit;color:var(--dsw-alias-brand-primary);cursor:pointer;text-decoration:underline;text-underline-offset:2px;}
+.fm-linkbtn:hover{opacity:.8;}
 .fm-warn{color:var(--dsw-alias-state-warn-primary);}
 .fm-toast{position:absolute;left:50%;bottom:58px;transform:translateX(-50%);display:flex;align-items:center;gap:7px;max-width:80%;padding:8px 14px;border-radius:10px;font-size:12px;font-weight:600;color:var(--dsw-alias-label-primary);background:var(--dsw-alias-bg-overlay);border:1px solid var(--dsw-alias-border-l2);box-shadow:0 10px 30px rgba(0,0,0,.24);z-index:5;}
 .fm-toast.is-error{color:var(--dsw-alias-state-error-primary);}
@@ -2330,8 +2346,37 @@ window.__ModuleLoader__.load({
       const [jobs, setJobs] = useState({});
       const [toast, setToast] = useState(null);
       const panelRef = useRef(null);
+      const [sourceInfo, setSourceInfo] = useState(null);
       const searchRef = useRef(null);
       const importRef = useRef(null);
+
+      useEffect(() => {
+        let alive = true;
+        fetch(`${API}/source`, { cache: 'no-store' })
+          .then((response) => (response.ok ? response.json() : null))
+          .then((info) => { if (alive && info) setSourceInfo(info); })
+          .catch(() => {});
+        return () => { alive = false; };
+      }, []);
+
+      const addIndexSource = async () => {
+        try {
+          const response = await fetch(`${API}/source`, {
+            method: 'POST',
+            headers: writeHeaders(),
+            body: JSON.stringify({ add: true })
+          });
+          const body = await response.json().catch(() => null);
+          if (response.ok) {
+            if (body) setSourceInfo(body);
+            setToast({ kind: 'ok', text: t('source.added') });
+          } else {
+            setToast({ kind: 'error', text: `${t('source.failed')}${body && body.message ? ` · ${body.message}` : ''}` });
+          }
+        } catch {
+          setToast({ kind: 'error', text: t('source.failed') });
+        }
+      };
 
       const fetchSnapshot = async (attempt = 0) => {
         const response = await fetch(`${API}/snapshot`, { cache: 'no-store' });
@@ -2595,6 +2640,29 @@ window.__ModuleLoader__.load({
           setToast({ kind: 'ok', text: t('backup.exported') });
         } catch {
           setToast({ kind: 'error', text: t('backup.failed') });
+        }
+      };
+
+      const copyList = async () => {
+        const items = Object.values(favorites).filter(Boolean);
+        if (!items.length) {
+          setToast({ kind: 'error', text: t('favorites.empty') });
+          return;
+        }
+        const lines = [`## ${t('share.title')}`, ''];
+        items.forEach((entry) => {
+          const title = titleText(entry.title, lang) || entry.name;
+          const blurb = (lang === 'zh' ? entry.descriptionZh : entry.descriptionEn) || entry.descriptionEn || entry.descriptionZh || '';
+          lines.push(`- **${title}** — ${blurb}`);
+          if (entry.command) lines.push(`  \`${entry.command}\``);
+        });
+        lines.push('', `Index: ${'https://cdn.jsdelivr.net/gh/ghostmss86-afk/dsh-featured-market@main/docs/index.json'}`);
+        const text = lines.join('\n');
+        try {
+          await navigator.clipboard.writeText(text);
+          setToast({ kind: 'ok', text: t('share.copied') });
+        } catch {
+          setToast({ kind: 'error', text: t('share.failed') });
         }
       };
 
@@ -2913,6 +2981,7 @@ window.__ModuleLoader__.load({
               'div',
               { className: 'fm-result-tools' },
               h('div', { className: 'fm-section-desc' }, t('favorites.count').replace('{n}', items.length)),
+              h('button', { type: 'button', className: 'fm-btn is-small', onClick: copyList }, t('share.copy')),
               h('button', { type: 'button', className: 'fm-btn is-small', onClick: exportList }, t('backup.export')),
               h('button', { type: 'button', className: 'fm-btn is-small', onClick: () => importRef.current && importRef.current.click() }, t('backup.import')),
               h('input', {
@@ -3304,6 +3373,9 @@ window.__ModuleLoader__.load({
                   : null,
                 data && data.ready
                   ? h('span', null, `${t('footer.accepted')} `, h('b', null, compact(data.accepted || 0)))
+                  : null,
+                sourceInfo && sourceInfo.available && !sourceInfo.added
+                  ? h('button', { className: 'fm-linkbtn', onClick: addIndexSource }, t('footer.addSource'))
                   : null
               ),
               h(

@@ -62,6 +62,13 @@ export function apply(ctx) {
   const get = (name) => (typeof ctx.get === 'function' ? ctx.get(name) : undefined);
 
   const PROJECTS_PATH = path.join(os.homedir(), '.dsh', 'featured-market', 'projects.json');
+  // The same format-1 document this plugin publishes is also a valid DSH
+  // Discover index source. Registering it once (never again after the user
+  // removes it) is how a reader can find the bilingual entries without
+  // copying a URL.
+  const INDEX_SOURCE_URL = 'https://cdn.jsdelivr.net/gh/ghostmss86-afk/dsh-featured-market@main/docs/index.json';
+  const INDEX_SOURCE_PATH = path.join(os.homedir(), '.dsh', 'featured-market', 'index-source.json');
+
   const PROJECT_TTL_MS = 5 * 60 * 1000;
   const MAX_PROJECTS = 12;
 
@@ -833,6 +840,72 @@ export function apply(ctx) {
 
   // Routes are mounted through ctx.inject so a cold start waits for the
   // browser carrier instead of silently skipping registration.
+  const readIndexSourceState = () => {
+    try {
+      const raw = JSON.parse(fs.readFileSync(INDEX_SOURCE_PATH, 'utf8'));
+      return raw && typeof raw === 'object' ? raw : {};
+    } catch {
+      return {};
+    }
+  };
+
+  const writeIndexSourceState = (value) => {
+    try {
+      fs.mkdirSync(path.dirname(INDEX_SOURCE_PATH), { recursive: true });
+      fs.writeFileSync(INDEX_SOURCE_PATH, JSON.stringify({ ...readIndexSourceState(), ...value }));
+    } catch {
+      /* a state file failure only costs one extra offer next boot */
+    }
+  };
+
+  const indexSourceService = () => {
+    const market = get('pluginMarket');
+    if (!market || typeof market.listIndexes !== 'function' || typeof market.setIndexes !== 'function') return null;
+    return market;
+  };
+
+  const configuredIndexUrls = async (market) => {
+    const list = await market.listIndexes();
+    return (Array.isArray(list) ? list : [])
+      .map((item) => (typeof item === 'string' ? item : item && item.url))
+      .filter((url) => typeof url === 'string' && url);
+  };
+
+  const indexSourceStatus = async () => {
+    const market = indexSourceService();
+    if (!market) return { available: false, added: false, url: INDEX_SOURCE_URL };
+    try {
+      const urls = await configuredIndexUrls(market);
+      return { available: true, added: urls.includes(INDEX_SOURCE_URL), url: INDEX_SOURCE_URL };
+    } catch {
+      return { available: false, added: false, url: INDEX_SOURCE_URL };
+    }
+  };
+
+  const ensureIndexSource = async ({ force = false } = {}) => {
+    const market = indexSourceService();
+    if (!market) return { status: 'unavailable', url: INDEX_SOURCE_URL };
+    try {
+      const urls = await configuredIndexUrls(market);
+      if (urls.includes(INDEX_SOURCE_URL)) {
+        writeIndexSourceState({ added: true, addedAt: new Date().toISOString() });
+        return { status: 'present', url: INDEX_SOURCE_URL };
+      }
+      // The user deleted the source on purpose: offer it again only when the
+      // panel button asks explicitly.
+      if (!force && readIndexSourceState().added) return { status: 'skipped', url: INDEX_SOURCE_URL };
+      await market.setIndexes([...urls, INDEX_SOURCE_URL]);
+      writeIndexSourceState({ added: true, addedAt: new Date().toISOString() });
+      return { status: 'added', url: INDEX_SOURCE_URL };
+    } catch (error) {
+      return {
+        status: 'failed',
+        url: INDEX_SOURCE_URL,
+        message: error && error.message ? error.message : String(error)
+      };
+    }
+  };
+
   const mountRoutes = (webServer, effect) => {
   const send = (res, status, body) => {
     res.statusCode = status;
@@ -1271,6 +1344,21 @@ export function apply(ctx) {
         } catch (error) {
           send(response, 500, { error: error && error.message ? error.message : 'remove-failed' });
         }
+      }
+    })
+  );
+
+  effect(() =>
+    webServer.register({
+      kind: 'exact',
+      path: '/featured-market/source',
+      handler: async (request, response) => {
+        if (request.method === 'GET') return send(response, 200, await indexSourceStatus());
+        if (request.method !== 'POST') return send(response, 405, { error: 'method-not-allowed' });
+        if (!authorizeWrite(request, response)) return;
+        const result = await ensureIndexSource({ force: true });
+        const status = result.status === 'added' || result.status === 'present' ? 200 : 502;
+        send(response, status, { ...(await indexSourceStatus()), result: result.status, message: result.message || null });
       }
     })
   );
