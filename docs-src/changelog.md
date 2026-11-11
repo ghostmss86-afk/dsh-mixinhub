@@ -1,7 +1,7 @@
 ---
 title: 更新日志
 type: changelog
-status: 1.6.5
+status: 1.9.0
 ---
 
 # 更新日志
@@ -11,6 +11,14 @@ status: 1.6.5
 ## 版本策略
 
 > **语义化版本**：修 bug 升补丁位，加功能升次版本，破坏性改动升主版本。每次发版同步更新 README、llms.txt 和这个页面。
+
+## v1.9.0 — 2026.11.12
+
+**全渠道改名 `dsh-mixinhub`。**
+
+- npm 包、GitHub 仓库与插件入口统一为 `dsh-mixinhub`；旧包 `dsh-featured-market` 标记弃用并指向新包，旧仓库地址自动跳转。
+- 已注册的旧索引源在启动时迁移到新 URL；`~/.dsh/featured-market/` 下的项目与索引状态、localStorage 键名保持不变，升级不丢数据。
+- README、指南、llms.txt 与所有安装命令改用新名，市场检索词从 `dsh-featured-market` 变为 `dsh-mixinhub`。
 
 ## v1.8.0 — 2026.11.12
 

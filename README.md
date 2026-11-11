@@ -1,12 +1,12 @@
-# dsh-featured-market
+# dsh-mixinhub
 
 **A curated plugin market for DeepSeek Harness.** 30 seconds to decide what to
 install, 3 minutes to know how to use it.
 
 [![Version](https://img.shields.io/badge/version-1.8.0-2f6f5e)](CHANGELOG.md)
-[![npm](https://img.shields.io/npm/v/dsh-featured-market.svg)](https://www.npmjs.com/package/dsh-featured-market)
-[![npm downloads](https://img.shields.io/npm/dw/dsh-featured-market.svg)](https://www.npmjs.com/package/dsh-featured-market)
-[![CI](https://github.com/ghostmss86-afk/dsh-featured-market/actions/workflows/ci.yml/badge.svg)](https://github.com/ghostmss86-afk/dsh-featured-market/actions/workflows/ci.yml)
+[![npm](https://img.shields.io/npm/v/dsh-mixinhub.svg)](https://www.npmjs.com/package/dsh-mixinhub)
+[![npm downloads](https://img.shields.io/npm/dw/dsh-mixinhub.svg)](https://www.npmjs.com/package/dsh-mixinhub)
+[![CI](https://github.com/ghostmss86-afk/dsh-mixinhub/actions/workflows/ci.yml/badge.svg)](https://github.com/ghostmss86-afk/dsh-mixinhub/actions/workflows/ci.yml)
 [![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 [![Platform](https://img.shields.io/badge/DSH-web%20client-4b5563)](https://github.com/deepseek-ai/deepseek-harness)
 [![Topic](https://img.shields.io/badge/topic-dsh--plugin-c0392b)](https://github.com/topics/dsh-plugin)
@@ -14,7 +14,7 @@ install, 3 minutes to know how to use it.
 ## Quick start
 
 ```bash
-dsh plugin add dsh-featured-market
+dsh plugin add dsh-mixinhub
 ```
 
 Then click the store icon at the **bottom-left** of the Harness window. In the
@@ -46,7 +46,7 @@ and what happens if I do?"*
 
 ## Compared with dsh-market
 
-| | dsh-featured-market | [dsh-market](https://awesome-dsh-plugin.com/p/dsh-market/dsh-market/) |
+| | dsh-mixinhub | [dsh-market](https://awesome-dsh-plugin.com/p/dsh-market/dsh-market/) |
 |---|---|---|
 | Best at | **Deciding** what to install | **Managing** everything installed |
 | Install base | 2,819 npm downloads in the first 3 days | ~1.14M downloads, 12k stars |
@@ -65,13 +65,13 @@ Every release publishes a **format-1 index** that other markets and tools can
 consume directly:
 
 ```
-https://cdn.jsdelivr.net/gh/ghostmss86-afk/dsh-featured-market@main/docs/index.json
+https://cdn.jsdelivr.net/gh/ghostmss86-afk/dsh-mixinhub@main/docs/index.json
 ```
 
 It lists every entry that is a real `dsh.bundle` package, with bilingual
 descriptions, category, repository, latest version and engines. The same file
 also ships inside the npm package, if you prefer an immutable, versioned URL:
-`https://cdn.jsdelivr.net/npm/dsh-featured-market@latest/docs/index.json`. If you maintain
+`https://cdn.jsdelivr.net/npm/dsh-mixinhub@latest/docs/index.json`. If you maintain
 a market, a picker or an Agent tool, you can point at it instead of rebuilding
 the npm scan yourself. MIT licensed; no attribution required, a link is nice.
 
@@ -87,13 +87,13 @@ The index is validated against the official parser on every release
 fails the build instead of shipping.
 
 **Public catalog (no install needed):**
-<https://ghostmss86-afk.github.io/dsh-featured-market/> — search, browse and copy
+<https://ghostmss86-afk.github.io/dsh-mixinhub/> — search, browse and copy
 install commands on any device. It opens with a rotating poster of the day's
 editor pick, colored by that plugin.
 
-**Long-form pages:** [About](https://ghostmss86-afk.github.io/dsh-featured-market/about.html) ·
-[Guide](https://ghostmss86-afk.github.io/dsh-featured-market/guide.html) ·
-[Changelog](https://ghostmss86-afk.github.io/dsh-featured-market/changelog.html)
+**Long-form pages:** [About](https://ghostmss86-afk.github.io/dsh-mixinhub/about.html) ·
+[Guide](https://ghostmss86-afk.github.io/dsh-mixinhub/guide.html) ·
+[Changelog](https://ghostmss86-afk.github.io/dsh-mixinhub/changelog.html)
 
 [中文说明](#中文说明) · [What you get](#what-you-get) ·
 [How curation works](#how-curation-works) · [FAQ](#faq)
@@ -110,7 +110,7 @@ editor pick, colored by that plugin.
 
 | Field | Value |
 |---|---|
-| Package | `dsh-featured-market` (npm) |
+| Package | `dsh-mixinhub` (npm) |
 | Version | `1.8.0` |
 | Type | DeepSeek Harness **web client plugin** |
 | Category | Plugin discovery / curated marketplace |
@@ -119,14 +119,14 @@ editor pick, colored by that plugin.
 | Adoption | 2,819 npm downloads in the first three days (as of 2026-11-12); new project, API may still change |
 | Last verified | 2026-11-12 |
 | Coverage | 10,446 catalog entries → 2,224 accepted (as of 2026-11-12) → top 220 in the main lists |
-| Install (npm) | `dsh plugin add dsh-featured-market` |
-| Install (GitHub) | `dsh plugin add github:ghostmss86-afk/dsh-featured-market` |
-| Public catalog | <https://ghostmss86-afk.github.io/dsh-featured-market/> |
-| Plugin index | <https://cdn.jsdelivr.net/gh/ghostmss86-afk/dsh-featured-market@main/docs/index.json> |
-| Source | <https://github.com/ghostmss86-afk/dsh-featured-market> |
+| Install (npm) | `dsh plugin add dsh-mixinhub` |
+| Install (GitHub) | `dsh plugin add github:ghostmss86-afk/dsh-mixinhub` |
+| Public catalog | <https://ghostmss86-afk.github.io/dsh-mixinhub/> |
+| Plugin index | <https://cdn.jsdelivr.net/gh/ghostmss86-afk/dsh-mixinhub@main/docs/index.json> |
+| Source | <https://github.com/ghostmss86-afk/dsh-mixinhub> |
 | Agent tool | `featured_market_search` |
 | AI index | [llms.txt](llms.txt) — concise, machine-readable project summary |
-| Official catalog | [Listed 2026-11-10](https://awesome-dsh-plugin.com/p/ghostmss86-afk/dsh-featured-market/) — rank 21 of 140 in the market category |
+| Official catalog | [Listed 2026-11-10](https://awesome-dsh-plugin.com/p/ghostmss86-afk/dsh-mixinhub/) — rank 21 of 140 in the market category |
 
 ---
 
@@ -198,10 +198,10 @@ by the range but has not shipped or been tested yet, and **0.4.x is excluded**.
 
 ### From npm (recommended)
 
-Published as `dsh-featured-market`:
+Published as `dsh-mixinhub`:
 
 ```bash
-dsh plugin add dsh-featured-market
+dsh plugin add dsh-mixinhub
 ```
 
 ### From GitHub
@@ -209,10 +209,10 @@ dsh plugin add dsh-featured-market
 Use this when you want the repository directly, or npm is unreachable:
 
 ```bash
-dsh plugin add github:ghostmss86-afk/dsh-featured-market
+dsh plugin add github:ghostmss86-afk/dsh-mixinhub
 ```
 
-Release tarballs are attached to every [release](https://github.com/ghostmss86-afk/dsh-featured-market/releases).
+Release tarballs are attached to every [release](https://github.com/ghostmss86-afk/dsh-mixinhub/releases).
 
 Then reload the Harness window. The storefront button appears in the lower-left
 sidebar, next to **Skins & Wallpapers** (`皮肤和壁纸`).
@@ -359,7 +359,7 @@ deliberately included so the comparison is checkable.
 
 | Product | Version | Adoption | Best for | Trade-off |
 |---|---|---|---|---|
-| **dsh-featured-market** (this) | `1.8.0` | New: 2,819 npm downloads, 0 GitHub stars; catalog rank 21/140 in market | A 30-second install decision, bilingual copy, 2–3 way comparison, directional compatibility, README summary, update alerts | New and small; no backup, comments or diagnostics |
+| **dsh-mixinhub** (this) | `1.8.0` | New: 2,819 npm downloads, 0 GitHub stars; catalog rank 21/140 in market | A 30-second install decision, bilingual copy, 2–3 way comparison, directional compatibility, README summary, update alerts | New and small; no backup, comments or diagnostics |
 | [**dsh-market**](https://awesome-dsh-plugin.com/p/dsh-market/dsh-market/) | `1.73.18` (npm: `dshmarket`) | 1,140,691 downloads, 10,295 stars | All-in-one management: broad catalog, install/update/uninstall, backups, comments, diagnostics, recovery | Larger surface area; more settings and more ways to fail |
 | [**dsh-m**](https://awesome-dsh-plugin.com/p/iasiv5/dsh-m/) | `0.12.16` | 41,035 downloads, 31 stars | Power users and teams that want custom featured sections, exact versions with integrity, CLI and Agent tools, update all | More setup; assumes you care about pinning and CLI workflows |
 | [**dsh-pick**](https://awesome-dsh-plugin.com/p/AIcivilization/dsh-pick/) | `0.6.2` | 3,907 downloads, 0 stars | Guided buying advice and AI tools over the official index | Narrower day-to-day management |
@@ -421,7 +421,7 @@ every `/featured-market/*` route missing until the plugin was toggled off and on
 If you still see it:
 
 1. Confirm the installed version is **1.5.1 or newer**:
-   `npm view dsh-featured-market version`.
+   `npm view dsh-mixinhub version`.
 2. Reload the Harness window (**Cmd+R** on macOS, **Ctrl+R** elsewhere).
 3. Open `/featured-market/health` in the same browser tab. A healthy Host returns
    `{"ok":true,"ready":true,"entries":<n>,"refreshing":false}`.
@@ -433,7 +433,7 @@ error, so a one-second startup race no longer becomes a full-screen failure.
 
 ### The storefront button is missing
 
-Check that `dsh-featured-market` is enabled in the plugin manager, then reload
+Check that `dsh-mixinhub` is enabled in the plugin manager, then reload
 the window. The button lives in the lower-left sidebar, next to **Skins &
 Wallpapers** (`皮肤和壁纸`).
 
@@ -454,7 +454,7 @@ For a quick, reproducible check:
 
 ```bash
 # published version
-npm view dsh-featured-market version
+npm view dsh-mixinhub version
 
 # health of the running local Host (use the port in your DSH URL)
 curl -s http://127.0.0.1:<PORT>/featured-market/health
@@ -467,7 +467,7 @@ Expected health response:
 ```
 
 The public catalog is independently reachable at
-<https://ghostmss86-afk.github.io/dsh-featured-market/>; it returns HTTP 200 and
+<https://ghostmss86-afk.github.io/dsh-mixinhub/>; it returns HTTP 200 and
 a `catalog.json` with all accepted entries and bilingual descriptions
 even when the local Harness is closed. The first screen is a rotating
 editor-pick poster (gradient built from the featured plugin's hue) followed by
@@ -546,7 +546,7 @@ Not affiliated with DeepSeek. DeepSeek Harness is a separate project.
 这是一个给 DeepSeek Harness 用的精选插件市场，入口在左下角「皮肤和壁纸」旁边。
 
 公开目录页（只读，手机/其他电脑可直接打开）：
-<https://ghostmss86-afk.github.io/dsh-featured-market/>
+<https://ghostmss86-afk.github.io/dsh-mixinhub/>
 
 打开就是一张轮播的精选海报：背景渐变取自置顶插件的颜色，配大字首字母水印、
 双语简介、下载/星标/热度，下面还有四张同色系的「编辑精选」卡片，和插件面板
@@ -606,16 +606,16 @@ DeepSeek Harness 里，GitHub 仓库和公开目录页只负责分发和浏览�
 
 ### 安装
 
-推荐用 npm，包名 `dsh-featured-market`：
+推荐用 npm，包名 `dsh-mixinhub`：
 
 ```bash
-dsh plugin add dsh-featured-market
+dsh plugin add dsh-mixinhub
 ```
 
 也可以直接从 GitHub 安装：
 
 ```bash
-dsh plugin add github:ghostmss86-afk/dsh-featured-market
+dsh plugin add github:ghostmss86-afk/dsh-mixinhub
 ```
 
 Release tarball 同样可用。

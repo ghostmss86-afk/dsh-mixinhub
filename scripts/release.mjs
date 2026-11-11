@@ -30,8 +30,8 @@ readme = readme.replace(/badge\/version-[0-9]+\.[0-9]+\.[0-9]+-/, `badge/version
 readme = readme.replace(/\*\*Version:\*\* `[^`]+`/, `**Version:** \`${version}\``);
 readme = readme.replace(/\| Version \| `[^`]+` \|/, `| Version | \`${version}\` |`);
 readme = readme.replace(
-  /\| \*\*dsh-featured-market\*\* \(this\) \| `[^`]+` \|/,
-  `| **dsh-featured-market** (this) | \`${version}\` |`
+  /\| \*\*dsh-mixinhub\*\* \(this\) \| `[^`]+` \|/,
+  `| **dsh-mixinhub** (this) | \`${version}\` |`
 );
 writeFileSync('README.md', readme);
 
@@ -61,7 +61,7 @@ run('git', ['push', 'origin', `v${version}`]);
 // Edge nodes can answer the first purge with the previous copy, so ask twice
 // with a short gap; the second pass is what the next hour of readers sees.
 async function purge(path) {
-  const url = `https://purge.jsdelivr.net/gh/ghostmss86-afk/dsh-featured-market@main/${path}`;
+  const url = `https://purge.jsdelivr.net/gh/ghostmss86-afk/dsh-mixinhub@main/${path}`;
   try {
     const res = await fetch(url, { signal: AbortSignal.timeout(15000) });
     console.log(`jsdelivr purge ${path}: ${res.status}`);

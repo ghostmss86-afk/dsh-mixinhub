@@ -1,5 +1,5 @@
 window.__ModuleLoader__.load({
-  id: 'dsh-featured-market',
+  id: 'dsh-mixinhub',
   factory(require) {
     const React = require('react');
     const h = React.createElement;
@@ -13,7 +13,7 @@ window.__ModuleLoader__.load({
       'content-type': 'application/json',
       'x-featured-market-token': writeToken
     });
-    const SELF_NAMES = new Set(['dsh-featured-market', '@local/featured-market']);
+    const SELF_NAMES = new Set(['dsh-mixinhub', 'dsh-featured-market', '@local/featured-market']);
 
     const ZH = {
       'nav.label': '精选市场',
@@ -2656,7 +2656,7 @@ window.__ModuleLoader__.load({
           lines.push(`- **${title}** — ${blurb}`);
           if (entry.command) lines.push(`  \`${entry.command}\``);
         });
-        lines.push('', `Index: ${'https://cdn.jsdelivr.net/gh/ghostmss86-afk/dsh-featured-market@main/docs/index.json'}`);
+        lines.push('', `Index: ${'https://cdn.jsdelivr.net/gh/ghostmss86-afk/dsh-mixinhub@main/docs/index.json'}`);
         const text = lines.join('\n');
         try {
           await navigator.clipboard.writeText(text);

@@ -16,10 +16,10 @@ import { fileURLToPath } from 'node:url';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const CATALOG = join(ROOT, 'docs/catalog.json');
-const SELF = 'dsh-featured-market';
+const SELF = 'dsh-mixinhub';
 const CACHE = join(ROOT, 'data/index-cache.json');
 const OUT = join(ROOT, 'docs/index.json');
-const SITE = 'https://ghostmss86-afk.github.io/dsh-featured-market/';
+const SITE = 'https://ghostmss86-afk.github.io/dsh-mixinhub/';
 
 const TTL = 12 * 60 * 60 * 1000;
 const CONCURRENCY = 4;
@@ -179,8 +179,8 @@ const index = {
   format: 1,
   title: { en: 'Featured Plugin Market', zh: '精选插件市场' },
   description: {
-    en: 'A curated DeepSeek Harness plugin index: every entry is installable, bilingual, and ranked by a published heat formula. Maintained by dsh-featured-market.',
-    zh: '一份经过筛选的 DeepSeek Harness 插件索引：全部可安装、中英双语、热度公式公开。由 dsh-featured-market 维护。',
+    en: 'A curated DeepSeek Harness plugin index: every entry is installable, bilingual, and ranked by a published heat formula. Maintained by dsh-mixinhub.',
+    zh: '一份经过筛选的 DeepSeek Harness 插件索引：全部可安装、中英双语、热度公式公开。由 dsh-mixinhub 维护。',
   },
   metadata: {
     categories: Object.fromEntries(

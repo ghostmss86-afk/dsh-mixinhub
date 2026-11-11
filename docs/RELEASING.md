@@ -9,7 +9,7 @@ release and publishes to npm.
 - Add an npm automation token as the `NPM_TOKEN` repository secret. Without
   it the release still succeeds; only the npm step is skipped with a notice.
 - The official-market entry points at the stable asset
-  `releases/latest/download/dsh-featured-market.tgz`, so a new release does not
+  `releases/latest/download/dsh-mixinhub.tgz`, so a new release does not
   require editing the market entry.
 
 ## Release
@@ -32,7 +32,7 @@ The script:
 
 - re-runs the checks,
 - creates the GitHub Release with the versioned tarball and the stable
-  `dsh-featured-market.tgz`,
+  `dsh-mixinhub.tgz`,
 - publishes to npm when `NPM_TOKEN` is configured.
 
 ## README policy

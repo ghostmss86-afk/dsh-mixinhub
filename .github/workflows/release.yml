@@ -22,13 +22,13 @@ jobs:
       - name: Pack
         run: |
           npm pack
-          cp dsh-featured-market-*.tgz dsh-featured-market.tgz
+          cp dsh-mixinhub-*.tgz dsh-mixinhub.tgz
       - name: Create GitHub Release
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           gh release create "$GITHUB_REF_NAME" \
-            dsh-featured-market-*.tgz dsh-featured-market.tgz \
+            dsh-mixinhub-*.tgz dsh-mixinhub.tgz \
             --generate-notes
       - name: Publish to npm
         env:

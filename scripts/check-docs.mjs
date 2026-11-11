@@ -37,14 +37,14 @@ const indexFile = join(root, 'docs/index.json');
 const pluginIndex = existsSync(indexFile) ? JSON.parse(readFileSync(indexFile, 'utf8')) : null;
 
 const checks = [
-  ['package name', pkg.name === 'dsh-featured-market', pkg.name],
+  ['package name', pkg.name === 'dsh-mixinhub', pkg.name],
   ['license field', pkg.license === 'MIT', pkg.license],
   ['repository field', Boolean(pkg.repository?.url), 'missing'],
   ['README version line', readme.includes(`**Version:** \`${version}\``), version],
   ['README version badge', readme.includes(`version-${version}-`), version],
   ['CHANGELOG entry', changelog.includes(`## [${version}]`), version],
   ['llms.txt version', llms.includes(`Version: ${version}`), version],
-  ['llms.txt install command', llms.includes('dsh plugin add dsh-featured-market'), 'missing'],
+  ['llms.txt install command', llms.includes('dsh plugin add dsh-mixinhub'), 'missing'],
   ['docs/llms.txt mirror', read('docs/llms.txt') === llms, 'stale'],
   ['docs-src/changelog.md entry', docsChangelog.includes(`## v${version} `), version],
   ...docsPages.map((page) => [`static page ${page}`, existsSync(join(root, page)), 'missing']),

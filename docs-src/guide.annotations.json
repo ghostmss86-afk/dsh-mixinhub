@@ -38,7 +38,7 @@
       "line": 84,
       "label": "三分钟速查",
       "items": [
-        { "title": "装", "desc": "dsh plugin add dsh-featured-market" },
+        { "title": "装", "desc": "dsh plugin add dsh-mixinhub" },
         { "title": "开", "desc": "点左下角商店图标" },
         { "title": "选", "desc": "精选 → 搜索 → 对比 → 看兼容性" },
         { "title": "问", "desc": "直接对 Agent 说「帮我找几个做记忆管理的插件」" }

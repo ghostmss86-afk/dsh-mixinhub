@@ -66,27 +66,44 @@ export function apply(ctx) {
   // Discover index source. Registering it once (never again after the user
   // removes it) is how a reader can find the bilingual entries without
   // copying a URL.
-  const INDEX_SOURCE_URL = 'https://cdn.jsdelivr.net/gh/ghostmss86-afk/dsh-featured-market@main/docs/index.json';
+  const INDEX_SOURCE_URL = 'https://cdn.jsdelivr.net/gh/ghostmss86-afk/dsh-mixinhub@main/docs/index.json';
+  // The pre-rename URL still points at the old repository. It is migrated on
+  // boot so a registered source does not silently stop updating.
+  const LEGACY_INDEX_SOURCE_URL = 'https://cdn.jsdelivr.net/gh/ghostmss86-afk/dsh-featured-market@main/docs/index.json';
+  const LEGACY_REPO = 'ghostmss86-afk/dsh-featured-market';
+  const LEGACY_NPM = 'dsh-featured-market';
+  const SELF_REPO = 'ghostmss86-afk/dsh-mixinhub';
   const INDEX_SOURCE_PATH = path.join(os.homedir(), '.dsh', 'featured-market', 'index-source.json');
 
   const PROJECT_TTL_MS = 5 * 60 * 1000;
   const MAX_PROJECTS = 12;
 
   const defaultProject = () => ({
-    id: 'ghostmss86-afk/dsh-featured-market',
+    id: SELF_REPO,
     title: '精选插件市场',
-    repo: 'ghostmss86-afk/dsh-featured-market',
-    npm: 'dsh-featured-market',
+    repo: SELF_REPO,
+    npm: 'dsh-mixinhub',
     addedAt: new Date().toISOString(),
     lastSeenFeedbackAt: new Date().toISOString(),
     history: []
   });
 
+  // Projects saved before the rename still point at the old repository. Map
+  // them on read so npm/GitHub stats keep working without losing history.
+  const migrateProject = (project) => {
+    if (!project || typeof project !== 'object') return project;
+    const next = { ...project };
+    if (next.repo === LEGACY_REPO) next.repo = SELF_REPO;
+    if (next.npm === LEGACY_NPM) next.npm = 'dsh-mixinhub';
+    if (next.id === LEGACY_REPO) next.id = SELF_REPO;
+    return next;
+  };
+
   function loadProjects() {
     try {
       const parsed = JSON.parse(fs.readFileSync(PROJECTS_PATH, 'utf8'));
       const list = Array.isArray(parsed) ? parsed : parsed && parsed.projects;
-      if (Array.isArray(list) && list.length) return list.slice(0, MAX_PROJECTS);
+      if (Array.isArray(list) && list.length) return list.slice(0, MAX_PROJECTS).map(migrateProject);
     } catch {
       /* first run or unreadable file: fall back to the user's own project */
     }
@@ -122,7 +139,7 @@ export function apply(ctx) {
   async function githubJson(url, timeout = 12000) {
     const headers = {
       accept: 'application/vnd.github+json',
-      'user-agent': 'dsh-featured-market'
+      'user-agent': 'dsh-mixinhub'
     };
     const token = githubToken();
     if (token) headers.authorization = `Bearer ${token}`;
@@ -887,14 +904,18 @@ export function apply(ctx) {
     if (!market) return { status: 'unavailable', url: INDEX_SOURCE_URL };
     try {
       const urls = await configuredIndexUrls(market);
-      if (urls.includes(INDEX_SOURCE_URL)) {
+      const active = urls.filter((url) => url !== LEGACY_INDEX_SOURCE_URL);
+      if (active.includes(INDEX_SOURCE_URL)) {
+        if (active.length !== urls.length) await market.setIndexes(active);
         writeIndexSourceState({ added: true, addedAt: new Date().toISOString() });
         return { status: 'present', url: INDEX_SOURCE_URL };
       }
       // The user deleted the source on purpose: offer it again only when the
-      // panel button asks explicitly.
-      if (!force && readIndexSourceState().added) return { status: 'skipped', url: INDEX_SOURCE_URL };
-      await market.setIndexes([...urls, INDEX_SOURCE_URL]);
+      // panel button asks explicitly. A legacy URL means the rename needs the
+      // one-time swap regardless of that state.
+      const legacyRegistered = urls.includes(LEGACY_INDEX_SOURCE_URL);
+      if (!force && !legacyRegistered && readIndexSourceState().added) return { status: 'skipped', url: INDEX_SOURCE_URL };
+      await market.setIndexes([...active, INDEX_SOURCE_URL]);
       writeIndexSourceState({ added: true, addedAt: new Date().toISOString() });
       return { status: 'added', url: INDEX_SOURCE_URL };
     } catch (error) {

@@ -1,17 +1,17 @@
 {
-  "name": "dsh-featured-market",
+  "name": "dsh-mixinhub",
   "version": "1.8.0",
   "description": "Curated plugin market for DeepSeek Harness: daily heat leaderboard, bilingual notes, side-by-side comparison, directional compatibility advice, README summaries and a local maintainer dashboard for stars, downloads and feedback.",
   "type": "module",
   "license": "MIT",
   "author": "ghostmss86-afk",
-  "homepage": "https://ghostmss86-afk.github.io/dsh-featured-market/",
+  "homepage": "https://ghostmss86-afk.github.io/dsh-mixinhub/",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ghostmss86-afk/dsh-featured-market.git"
+    "url": "git+https://github.com/ghostmss86-afk/dsh-mixinhub.git"
   },
   "bugs": {
-    "url": "https://github.com/ghostmss86-afk/dsh-featured-market/issues"
+    "url": "https://github.com/ghostmss86-afk/dsh-mixinhub/issues"
   },
   "keywords": [
     "dsh",

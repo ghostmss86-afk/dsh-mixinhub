@@ -8385,7 +8385,7 @@
       "zh": "将 markdown 变成微信公众号草稿：将每个 CSS 规则内联到其元素上，因为编辑器会丢弃 `<style>` 块和类名，上传每个位置",
       "en": "Turns markdown into a WeChat Official Account (微信公众号) draft: inlines every CSS rule onto its element because the editor discards `<style>` blocks and class names, uploads each loca"
     },
-    "dsh-featured-market": {
+    "dsh-mixinhub": {
       "zh": "精心策划的 DeepSeek Harness 插件市场，包含每日热度排行榜、双语描述、2-3 个插件比较、兼容性检查和 README 摘要。",
       "en": "Curated DeepSeek Harness plugin market with a daily heat leaderboard, bilingual descriptions, 2-3 plugin comparison, compatibility checks and README summaries."
     },

@@ -1,4 +1,4 @@
-# dsh-featured-market
+# dsh-mixinhub
 
 > Curated, bilingual plugin market for DeepSeek Harness. It helps a user decide
 > which plugin to install in about 30 seconds: daily heat leaderboard, full-text
@@ -9,7 +9,7 @@
 Version: 1.8.0
 Last verified: 2026-11-09
 License: MIT
-Plugin index (format 1): https://cdn.jsdelivr.net/gh/ghostmss86-afk/dsh-featured-market@main/docs/index.json
+Plugin index (format 1): https://cdn.jsdelivr.net/gh/ghostmss86-afk/dsh-mixinhub@main/docs/index.json
 
 ## Fit
 
@@ -34,15 +34,15 @@ Plugin index (format 1): https://cdn.jsdelivr.net/gh/ghostmss86-afk/dsh-featured
 
 ## Facts
 
-- Package: `dsh-featured-market` (npm)
-- Repository: https://github.com/ghostmss86-afk/dsh-featured-market
-- Public catalog: https://ghostmss86-afk.github.io/dsh-featured-market/ — opens with a rotating poster-style editor pick (two-tone gradient from the featured plugin's hue, initials watermark, bilingual copy, stats, install command) and four color-matched editor-pick cards; same first screen as the in-app panel
-- About page: https://ghostmss86-afk.github.io/dsh-featured-market/about.html — Chinese long-form product explanation, heat formula, compatibility table, competitor comparison
-- Guide page: https://ghostmss86-afk.github.io/dsh-featured-market/guide.html — install, open, six tabs, four-step selection, comparison, notes, Agent tool, skills
-- Changelog page: https://ghostmss86-afk.github.io/dsh-featured-market/changelog.html — every release from 1.0.0 to current, in Chinese
+- Package: `dsh-mixinhub` (npm)
+- Repository: https://github.com/ghostmss86-afk/dsh-mixinhub
+- Public catalog: https://ghostmss86-afk.github.io/dsh-mixinhub/ — opens with a rotating poster-style editor pick (two-tone gradient from the featured plugin's hue, initials watermark, bilingual copy, stats, install command) and four color-matched editor-pick cards; same first screen as the in-app panel
+- About page: https://ghostmss86-afk.github.io/dsh-mixinhub/about.html — Chinese long-form product explanation, heat formula, compatibility table, competitor comparison
+- Guide page: https://ghostmss86-afk.github.io/dsh-mixinhub/guide.html — install, open, six tabs, four-step selection, comparison, notes, Agent tool, skills
+- Changelog page: https://ghostmss86-afk.github.io/dsh-mixinhub/changelog.html — every release from 1.0.0 to current, in Chinese
 - Runtime: DeepSeek Harness `>=0.2.2-0 <0.3.0-0 || >=0.3.0-0 <0.4.0-0`; 0.2.x tested, 0.3.x allowed but not shipped/tested, 0.4.x excluded
-- Install: `dsh plugin add dsh-featured-market`
-- GitHub install: `dsh plugin add github:ghostmss86-afk/dsh-featured-market`
+- Install: `dsh plugin add dsh-mixinhub`
+- GitHub install: `dsh plugin add github:ghostmss86-afk/dsh-mixinhub`
 - Agent tool: `featured_market_search` (`query`, optional `category`, `limit` 1–8)
 - Data source: https://awesome-dsh-plugin.com/catalog.json
 - Coverage: 10,400+ catalog entries, 2,200+ accepted; main lists show top 220, search and the public catalog cover all accepted entries
@@ -65,8 +65,8 @@ Featured shows 14 (max two per category); the leaderboard shows 30.
 
 ## Links
 
-- README: https://github.com/ghostmss86-afk/dsh-featured-market#readme
-- npm: https://www.npmjs.com/package/dsh-featured-market
-- Releases: https://github.com/ghostmss86-afk/dsh-featured-market/releases
-- Public llms.txt: https://ghostmss86-afk.github.io/dsh-featured-market/llms.txt
+- README: https://github.com/ghostmss86-afk/dsh-mixinhub#readme
+- npm: https://www.npmjs.com/package/dsh-mixinhub
+- Releases: https://github.com/ghostmss86-afk/dsh-mixinhub/releases
+- Public llms.txt: https://ghostmss86-afk.github.io/dsh-mixinhub/llms.txt
 - Official market: PR submitted, awaiting review (not listed as of 2026-11-09): https://github.com/awesome-dsh-plugin/awesome-dsh-plugin/pull/13286

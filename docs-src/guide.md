@@ -14,13 +14,13 @@ status: 1.6.5
 
 ```bash
 # npm（推荐）
-dsh plugin add dsh-featured-market
+dsh plugin add dsh-mixinhub
 
 # GitHub
-dsh plugin add github:ghostmss86-afk/dsh-featured-market
+dsh plugin add github:ghostmss86-afk/dsh-mixinhub
 ```
 
-也可以在本机的插件市场里搜 `dsh-featured-market`，或者在官方目录 `awesome-dsh-plugin.com` 的 market 分类里找到它。装完重启一次 DSH，左下角会出现一个商店图标。
+也可以在本机的插件市场里搜 `dsh-mixinhub`，或者在官方目录 `awesome-dsh-plugin.com` 的 market 分类里找到它。装完重启一次 DSH，左下角会出现一个商店图标。
 
 ## 打开
 
