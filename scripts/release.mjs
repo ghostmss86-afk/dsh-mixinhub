@@ -58,7 +58,9 @@ run('git', ['push', 'origin', 'main']);
 run('git', ['push', 'origin', `v${version}`]);
 
 // jsDelivr caches branch URLs; ask it to re-read the index we just pushed.
-for (const path of ['docs/index.json', 'docs/catalog.json']) {
+// Edge nodes can answer the first purge with the previous copy, so ask twice
+// with a short gap; the second pass is what the next hour of readers sees.
+async function purge(path) {
   const url = `https://purge.jsdelivr.net/gh/ghostmss86-afk/dsh-featured-market@main/${path}`;
   try {
     const res = await fetch(url, { signal: AbortSignal.timeout(15000) });
@@ -67,4 +69,7 @@ for (const path of ['docs/index.json', 'docs/catalog.json']) {
     console.log(`jsdelivr purge ${path} skipped: ${err.message}`);
   }
 }
+for (const path of ['docs/index.json', 'docs/catalog.json']) await purge(path);
+await new Promise((resolve) => setTimeout(resolve, 4000));
+for (const path of ['docs/index.json', 'docs/catalog.json']) await purge(path);
 console.log(`\nreleased v${version}: GitHub Actions will build the release and publish to npm (when NPM_TOKEN is set).`);
