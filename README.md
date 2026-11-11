@@ -44,24 +44,24 @@ every release, readable on a phone without the Harness.
 | Category | Plugin discovery / curated marketplace |
 | Requires | DSH 0.2.2+ on the **0.2.x** line (tested); 0.3.x is allowed by the range but has not shipped yet; 0.4.x is excluded |
 | License | MIT |
-| Maturity | **New** — first published 2026-11-08; 0 npm downloads and 0 GitHub stars as of 2026-11-09 |
-| Last verified | 2026-11-09 |
-| Coverage | 9,463 catalog entries → 2,147 accepted → top 220 in the main lists |
+| Maturity | **New** — first published 2026-11-08; 2,819 npm downloads in the first three days (as of 2026-11-12); 0 GitHub stars |
+| Last verified | 2026-11-12 |
+| Coverage | 10,446 catalog entries → 2,224 accepted (as of 2026-11-12) → top 220 in the main lists |
 | Install (npm) | `dsh plugin add dsh-featured-market` |
 | Install (GitHub) | `dsh plugin add github:ghostmss86-afk/dsh-featured-market` |
 | Public catalog | <https://ghostmss86-afk.github.io/dsh-featured-market/> |
 | Source | <https://github.com/ghostmss86-afk/dsh-featured-market> |
 | Agent tool | `featured_market_search` |
 | AI index | [llms.txt](llms.txt) — concise, machine-readable project summary |
-| Official catalog | Submitted 2026-11-08, awaiting review; not listed yet |
+| Official catalog | [Listed 2026-11-10](https://awesome-dsh-plugin.com/p/ghostmss86-afk/dsh-featured-market/) — rank 21 of 140 in the market category |
 
 ### Project maturity
 
 This is a new project, not a battle-tested incumbent. It was first published on
-2026-11-08; as of 2026-11-09 it has **0 npm downloads and 0 GitHub stars**, and
-the API and curation rules may still change. It is also not yet listed in the
-public Awesome DSH Plugin catalog (submission pending). That is a real
-trade-off, so it is stated here instead of being hidden.
+2026-11-08 and was accepted into the public Awesome DSH Plugin catalog on
+2026-11-10; as of 2026-11-12 it has **2,819 npm downloads in its first three
+days and 0 GitHub stars**, and the API and curation rules may still change.
+That is a real trade-off, so it is stated here instead of being hidden.
 
 Use it when the decision workflow is the bottleneck. If you need the most widely
 used, most battle-tested manager with a large install base, choose
@@ -163,7 +163,7 @@ sidebar, next to **Skins & Wallpapers** (`皮肤和壁纸`).
 |---|---|
 | **Featured** | Up to 14 editorially ordered picks, at most two per category. |
 | **Heat leaderboard** | Top 30 by a transparent score, with seven-day trend and “rising today”. |
-| **Search** | Search names, owners and bilingual descriptions across the full accepted index (2,147 today); the panel returns up to 48 matches per query, then refine by category or sort. |
+| **Search** | Search names, owners and bilingual descriptions across the full accepted index (about 2,200 today); the panel returns up to 48 matches per query, then refine by category or sort. |
 | **Detail page** | Bilingual description, “what it can do”, four-step usage, compatibility, README summary, source links, install command. |
 | **Compare** | Put 2–3 plugins side by side across nine decision rows. |
 | **Compatibility** | Directional advice from the package's own `engines.dsh` range, not a guessed yes/no. |
@@ -210,9 +210,9 @@ At the time of writing, the pipeline looks like this:
 
 | Stage | Rule |
 |---|---|
-| Source | ~9,400 catalog entries |
-| Accepted | 2,147 npm packages that declare a DSH bundle, have a real description, and clear a minimum download/star bar |
-| Search API | All accepted entries (2,147 today) |
+| Source | ~10,400 catalog entries |
+| Accepted | ~2,200 npm packages that declare a DSH bundle, have a real description, and clear a minimum download/star bar |
+| Search API | All accepted entries (about 2,200 today) |
 | Main lists | Top 220 by heat |
 | Featured | 14 picks, at most 2 per category |
 | Leaderboard | Top 30, with trend |
@@ -296,10 +296,10 @@ deliberately included so the comparison is checkable.
 
 | Product | Version | Adoption | Best for | Trade-off |
 |---|---|---|---|---|
-| **dsh-featured-market** (this) | `1.6.7` | New: 0 npm downloads, 0 GitHub stars | A 30-second install decision, bilingual copy, 2–3 way comparison, directional compatibility, README summary, update alerts | New and small; no backup, comments or diagnostics |
-| [**dsh-market**](https://awesome-dsh-plugin.com/p/dsh-market/dsh-market/) | `1.73.15` (npm: `dshmarket`) | 1,042,362 downloads, 10,295 stars | All-in-one management: broad catalog, install/update/uninstall, backups, comments, diagnostics, recovery | Larger surface area; more settings and more ways to fail |
-| [**dsh-m**](https://awesome-dsh-plugin.com/p/iasiv5/dsh-m/) | `0.12.10` | 40,278 downloads, 31 stars | Power users and teams that want custom featured sections, exact versions with integrity, CLI and Agent tools, update all | More setup; assumes you care about pinning and CLI workflows |
-| [**dsh-pick**](https://awesome-dsh-plugin.com/p/AIcivilization/dsh-pick/) | `0.5.3` | 3,339 downloads, 0 stars | Guided buying advice and AI tools over the official index | Narrower day-to-day management |
+| **dsh-featured-market** (this) | `1.6.7` | New: 2,819 npm downloads, 0 GitHub stars; catalog rank 21/140 in market | A 30-second install decision, bilingual copy, 2–3 way comparison, directional compatibility, README summary, update alerts | New and small; no backup, comments or diagnostics |
+| [**dsh-market**](https://awesome-dsh-plugin.com/p/dsh-market/dsh-market/) | `1.73.18` (npm: `dshmarket`) | 1,140,691 downloads, 10,295 stars | All-in-one management: broad catalog, install/update/uninstall, backups, comments, diagnostics, recovery | Larger surface area; more settings and more ways to fail |
+| [**dsh-m**](https://awesome-dsh-plugin.com/p/iasiv5/dsh-m/) | `0.12.16` | 41,035 downloads, 31 stars | Power users and teams that want custom featured sections, exact versions with integrity, CLI and Agent tools, update all | More setup; assumes you care about pinning and CLI workflows |
+| [**dsh-pick**](https://awesome-dsh-plugin.com/p/AIcivilization/dsh-pick/) | `0.6.2` | 3,907 downloads, 0 stars | Guided buying advice and AI tools over the official index | Narrower day-to-day management |
 
 The underlying catalog data is also published as
 [`dsh-plugin-catalog`](https://www.npmjs.com/package/dsh-plugin-catalog); it is a
@@ -405,7 +405,7 @@ Expected health response:
 
 The public catalog is independently reachable at
 <https://ghostmss86-afk.github.io/dsh-featured-market/>; it returns HTTP 200 and
-a `catalog.json` with all 2,147 accepted entries and bilingual descriptions
+a `catalog.json` with all accepted entries and bilingual descriptions
 even when the local Harness is closed. The first screen is a rotating
 editor-pick poster (gradient built from the featured plugin's hue) followed by
 four color-matched editor-pick cards, both bilingual and driven by the same
@@ -492,7 +492,7 @@ Not affiliated with DeepSeek. DeepSeek Harness is a separate project.
 
 ### 它解决什么问题
 
-插件目录擅长「列全」，不擅长「帮你选」。面对九千多个包和一堆下载量，你仍然
+插件目录擅长「列全」，不擅长「帮你选」。面对一万多个包和一堆下载量，你仍然
 不知道：它兼容吗？到底能做什么？会不会把我的环境搞坏？
 
 这个插件反着做：
@@ -560,7 +560,7 @@ Release tarball 同样可用。
 
 - 精选推荐：最多 14 个，每个分类最多 2 个。
 - 热度榜：前 30 名，含 7 日趋势与「今日飙升」。
-- 全量检索：覆盖 2,147 条已收录插件，按分类筛选，支持热度 / 下载 / 星标 / 最新排序。
+- 全量检索：覆盖 2,200+ 条已收录插件，按分类筛选，支持热度 / 下载 / 星标 / 最新排序。
 - 详情页：双语说明、「它能做什么」、四步用法、兼容性、README 摘要、来源链接。
 - 并排对比：2–3 款，九个决策维度。
 - 方向性兼容建议：区分「环境太旧」「超过上限」「未声明」「不兼容」。

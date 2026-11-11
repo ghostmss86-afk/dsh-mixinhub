@@ -44,7 +44,7 @@ License: MIT
 - GitHub install: `dsh plugin add github:ghostmss86-afk/dsh-featured-market`
 - Agent tool: `featured_market_search` (`query`, optional `category`, `limit` 1–8)
 - Data source: https://awesome-dsh-plugin.com/catalog.json
-- Coverage: 9,463 catalog entries, 2,147 accepted; main lists show top 220, search and the public catalog cover all 2,147
+- Coverage: 10,400+ catalog entries, 2,200+ accepted; main lists show top 220, search and the public catalog cover all accepted entries
 - Maturity: new project, first published 2026-11-08; 0 npm downloads and 0 GitHub stars as of 2026-11-09
 - Refresh: plugin catalog daily at 04:00 local time; dashboard metrics every 5 minutes
 - Dashboard: up to 12 GitHub repos/npm packages; stars, 30-day downloads, forks,
