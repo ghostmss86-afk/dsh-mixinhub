@@ -69,7 +69,9 @@ https://cdn.jsdelivr.net/gh/ghostmss86-afk/dsh-featured-market@main/docs/index.j
 ```
 
 It lists every entry that is a real `dsh.bundle` package, with bilingual
-descriptions, category, repository, latest version and engines. If you maintain
+descriptions, category, repository, latest version and engines. The same file
+also ships inside the npm package, if you prefer an immutable, versioned URL:
+`https://cdn.jsdelivr.net/npm/dsh-featured-market@latest/docs/index.json`. If you maintain
 a market, a picker or an Agent tool, you can point at it instead of rebuilding
 the npm scan yourself. MIT licensed; no attribution required, a link is nice.
 

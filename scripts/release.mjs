@@ -56,4 +56,15 @@ run('git', ['commit', '-m', `chore(release): v${version}`]);
 run('git', ['tag', `v${version}`]);
 run('git', ['push', 'origin', 'main']);
 run('git', ['push', 'origin', `v${version}`]);
+
+// jsDelivr caches branch URLs; ask it to re-read the index we just pushed.
+for (const path of ['docs/index.json', 'docs/catalog.json']) {
+  const url = `https://purge.jsdelivr.net/gh/ghostmss86-afk/dsh-featured-market@main/${path}`;
+  try {
+    const res = await fetch(url, { signal: AbortSignal.timeout(15000) });
+    console.log(`jsdelivr purge ${path}: ${res.status}`);
+  } catch (err) {
+    console.log(`jsdelivr purge ${path} skipped: ${err.message}`);
+  }
+}
 console.log(`\nreleased v${version}: GitHub Actions will build the release and publish to npm (when NPM_TOKEN is set).`);
