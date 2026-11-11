@@ -45,6 +45,28 @@ if (!snapshot) {
   snapshot = buildSnapshot(catalog, null, loadSeedTranslations());
 }
 
+// The community catalog still lists this project under its pre-rename package
+// name. Rewrite that one entry so this market's own pages and index show the
+// new name before the external crawl catches up. Remove after
+// awesome-dsh-plugin re-reads ghostmss86-afk/dsh-mixinhub.
+const RENAMED = { 'dsh-featured-market': 'dsh-mixinhub' };
+const seedTranslations = loadSeedTranslations();
+const renameEntry = (entry) => {
+  const name = entry && RENAMED[entry.name];
+  if (!name) return entry;
+  const swap = (value) => (typeof value === 'string' ? value.split('dsh-featured-market').join('dsh-mixinhub') : value);
+  const seed = seedTranslations[name] || {};
+  return {
+    ...entry,
+    name,
+    spec: swap(entry.spec),
+    command: swap(entry.command),
+    href: swap(entry.href),
+    descriptionZh: entry.descriptionZh || seed.zh || '',
+    descriptionEn: entry.descriptionEn || seed.en || entry.description || ''
+  };
+};
+
 const source = Array.isArray(snapshot.index) && snapshot.index.length ? snapshot.index : snapshot.entries;
 const now = new Date();
 const localMinute = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
@@ -57,7 +79,7 @@ const payload = {
   accepted: snapshot.accepted || snapshot.entries.length,
   categories: snapshot.categories || [],
   featured: (snapshot.featured || []).map((item) => (typeof item === 'string' ? item : item && item.name)).filter(Boolean),
-  entries: source.map(pick)
+  entries: source.map(renameEntry).map(pick)
 };
 
 fs.mkdirSync(path.dirname(output), { recursive: true });
