@@ -773,7 +773,7 @@ export function apply(ctx) {
         tools.register({
           name: 'featured_market_search',
           description:
-            'Search the Featured Plugin Market: the full accepted index of DeepSeek Harness plugins with bilingual descriptions, a heat score (downloads + stars + freshness), and an install command. Check /featured-market/health for the current accepted count. Featured entries are hand-checked; other descriptions are machine translated. Use whenever the user asks for a DSH plugin, extension, tool, theme, or a recommendation, or asks what a plugin does.',
+            'Search the Featured Plugin Market: the full accepted index of DeepSeek Harness plugins with bilingual descriptions, a heat score (downloads + stars + freshness), and an install command. Every result includes the install command. Featured entries are hand-checked; other descriptions are machine translated. Use whenever the user asks for a DSH plugin, extension, tool, theme, or a recommendation, or asks what a plugin does.',
           parameters: {
             type: 'object',
             properties: {
@@ -931,6 +931,33 @@ export function apply(ctx) {
   // All mutating routes require the per-process token that only the same-origin
   // client can read from the snapshot. This blocks CSRF from other pages that
   // can reach localhost; the token is not a substitute for OS-level isolation.
+
+  // Every route is an exact registration on the bare webServer, so it never
+  // passed through the host's own fence and browser login. Ask the host's
+  // connection service for the verdict it would give its own API: a status
+  // code refuses the request, undefined admits it. A host that publishes no
+  // gate is treated as refusing rather than as open.
+  const admissionRejection = (request) => {
+    const connection = ctx.get('connection');
+    const gate = connection && connection.requestRejection;
+    if (typeof gate !== 'function') return 503;
+    try {
+      const rejection = gate.call(connection, request);
+      return typeof rejection === 'number' ? rejection : undefined;
+    } catch {
+      return 503;
+    }
+  };
+
+  const admit = (request, response) => {
+    const rejection = admissionRejection(request);
+    if (rejection) {
+      send(response, rejection, { error: 'unadmitted' });
+      return false;
+    }
+    return true;
+  };
+
   const authorizeWrite = (request, response) => {
     const token = request.headers['x-featured-market-token'];
     if (typeof token !== 'string' || token !== WRITE_TOKEN) {
@@ -963,6 +990,7 @@ export function apply(ctx) {
       kind: 'exact',
       path: '/featured-market/projects',
       handler: async (request, response) => {
+        if (!admit(request, response)) return;
         const url = new URL(request.url || '/', 'http://localhost');
         if (request.method === 'GET') {
           const force = url.searchParams.get('force') === '1';
@@ -1020,6 +1048,7 @@ export function apply(ctx) {
       kind: 'exact',
       path: '/featured-market/projects/refresh',
       handler: async (request, response) => {
+        if (!admit(request, response)) return;
         if (request.method !== 'POST') return send(response, 405, { error: 'method-not-allowed' });
         if (!authorizeWrite(request, response)) return;
         const body = await readBody(request);
@@ -1041,6 +1070,7 @@ export function apply(ctx) {
       kind: 'exact',
       path: '/featured-market/projects/seen',
       handler: async (request, response) => {
+        if (!admit(request, response)) return;
         if (request.method !== 'POST') return send(response, 405, { error: 'method-not-allowed' });
         if (!authorizeWrite(request, response)) return;
         const body = await readBody(request);
@@ -1060,6 +1090,7 @@ export function apply(ctx) {
       kind: 'exact',
       path: '/featured-market/projects/remove',
       handler: async (request, response) => {
+        if (!admit(request, response)) return;
         if (request.method !== 'POST') return send(response, 405, { error: 'method-not-allowed' });
         if (!authorizeWrite(request, response)) return;
         const body = await readBody(request);
@@ -1081,6 +1112,7 @@ export function apply(ctx) {
       kind: 'exact',
       path: '/featured-market/health',
       handler: (request, response) => {
+        if (!admit(request, response)) return;
         if (request.method !== 'GET') return send(response, 405, { error: 'method-not-allowed' });
         send(response, 200, {
           ok: true,
@@ -1097,6 +1129,7 @@ export function apply(ctx) {
       kind: 'exact',
       path: '/featured-market/snapshot',
       handler: async (request, response) => {
+        if (!admit(request, response)) return;
         if (request.method !== 'GET') return send(response, 405, { error: 'method-not-allowed' });
         send(response, 200, publicSnapshot(await bundles()));
       }
@@ -1108,6 +1141,7 @@ export function apply(ctx) {
       kind: 'exact',
       path: '/featured-market/refresh',
       handler: async (request, response) => {
+        if (!admit(request, response)) return;
         if (request.method !== 'POST') return send(response, 405, { error: 'method-not-allowed' });
         if (!authorizeWrite(request, response)) return;
         await refresh();
@@ -1121,6 +1155,7 @@ export function apply(ctx) {
       kind: 'exact',
       path: '/featured-market/search',
       handler: async (request, response) => {
+        if (!admit(request, response)) return;
         if (request.method !== 'GET') return send(response, 405, { error: 'method-not-allowed' });
         const url = new URL(request.url || '/', 'http://localhost');
         const query = (url.searchParams.get('q') || '').trim().toLowerCase();
@@ -1148,6 +1183,7 @@ export function apply(ctx) {
       kind: 'exact',
       path: '/featured-market/plugin',
       handler: async (request, response) => {
+        if (!admit(request, response)) return;
         if (request.method !== 'GET') return send(response, 405, { error: 'method-not-allowed' });
         const url = new URL(request.url || '/', 'http://localhost');
         const name = (url.searchParams.get('name') || '').trim();
@@ -1208,6 +1244,7 @@ export function apply(ctx) {
       kind: 'exact',
       path: '/featured-market/skills',
       handler: (request, response) => {
+        if (!admit(request, response)) return;
         if (request.method !== 'GET' && request.method !== 'HEAD') return send(response, 405, { error: 'method-not-allowed' });
         try {
           const items = readSkills();
@@ -1224,6 +1261,7 @@ export function apply(ctx) {
       kind: 'exact',
       path: '/featured-market/bundles',
       handler: async (request, response) => {
+        if (!admit(request, response)) return;
         if (request.method !== 'GET') return send(response, 405, { error: 'method-not-allowed' });
         const installed = await bundles();
         send(response, 200, {
@@ -1246,6 +1284,7 @@ export function apply(ctx) {
       kind: 'exact',
       path: '/featured-market/toggle',
       handler: async (request, response) => {
+        if (!admit(request, response)) return;
         if (request.method !== 'POST') return send(response, 405, { error: 'method-not-allowed' });
         if (!authorizeWrite(request, response)) return;
         const body = await readBody(request);
@@ -1276,6 +1315,7 @@ export function apply(ctx) {
       kind: 'exact',
       path: '/featured-market/updates',
       handler: async (request, response) => {
+        if (!admit(request, response)) return;
         if (request.method !== 'GET') return send(response, 405, { error: 'method-not-allowed' });
         const url = new URL(request.url || '/', 'http://localhost');
         const force = url.searchParams.get('force') === '1';
@@ -1289,6 +1329,7 @@ export function apply(ctx) {
       kind: 'exact',
       path: '/featured-market/update',
       handler: async (request, response) => {
+        if (!admit(request, response)) return;
         if (request.method !== 'POST') return send(response, 405, { error: 'method-not-allowed' });
         if (!authorizeWrite(request, response)) return;
         const body = await readBody(request);
@@ -1323,6 +1364,7 @@ export function apply(ctx) {
       kind: 'exact',
       path: '/featured-market/remove',
       handler: async (request, response) => {
+        if (!admit(request, response)) return;
         if (request.method !== 'POST') return send(response, 405, { error: 'method-not-allowed' });
         if (!authorizeWrite(request, response)) return;
         const body = await readBody(request);
@@ -1353,6 +1395,7 @@ export function apply(ctx) {
       kind: 'exact',
       path: '/featured-market/source',
       handler: async (request, response) => {
+        if (!admit(request, response)) return;
         if (request.method === 'GET') return send(response, 200, await indexSourceStatus());
         if (request.method !== 'POST') return send(response, 405, { error: 'method-not-allowed' });
         if (!authorizeWrite(request, response)) return;
@@ -1368,6 +1411,7 @@ export function apply(ctx) {
       kind: 'exact',
       path: '/featured-market/install',
       handler: async (request, response) => {
+        if (!admit(request, response)) return;
         if (request.method === 'GET') {
           const url = new URL(request.url || '/', 'http://localhost');
           const id = url.searchParams.get('id') || '';

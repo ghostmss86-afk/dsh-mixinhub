@@ -326,11 +326,14 @@ uses the local snapshot; installing still requires your confirmation.
 - No account, cloud sync or analytics service is involved.
 - Local storage keys: `dsh.featured-market.lang`,
   `dsh.featured-market.favorites`, `dsh.featured-market.notes`.
-- Mutating routes (install, update, remove, toggle, refresh) require a
-  per-process write token returned by the same-origin snapshot. Requests
-  without the token, or with a foreign `Origin`, get HTTP 403. This blocks
-  drive-by CSRF from other web pages; a local process that can already read
-  your files can still call the API by design.
+- Every route, read or write, asks the host's own connection service first
+  (`connection.requestRejection`). A request the host would refuse for its own
+  API never reaches market code: it gets the host's status, 401 or 403. When
+  DSH's browser login is on, so is this.
+- Mutating routes (install, update, remove, toggle, refresh) additionally
+  require a per-process write token returned by the same-origin snapshot.
+  Requests without the token, or with a foreign `Origin`, get HTTP 403. This
+  blocks drive-by CSRF from other web pages.
 
 ## How it compares
 
@@ -650,6 +653,9 @@ Release tarball 同样可用。
 
 不埋点、不上传收藏和备注、不需要账号。网络请求只到公开目录、npm registry、
 unpkg/jsDelivr（README）和翻译服务。收藏与备注存在浏览器 localStorage。
+
+所有接口（读和写）都先问宿主自己的连接服务（`requestRejection`）：宿主会拒绝的
+请求到不了市场代码，直接返回宿主的 401/403。写接口再加一层同源写令牌。
 
 ### 边界
 

@@ -4,6 +4,19 @@ All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project uses
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.8.0] - 2026-11-12
+
+### Security
+
+- Every route, read or write, now asks the host's connection service
+  (`connection.requestRejection`) before running, so a request the host would
+  refuse for its own API never reaches market code. Previously these routes
+  were exact registrations on the bare web server and bypassed the host's
+  browser login, which on a tunnelled or proxied port meant anyone who could
+  reach it could install or remove plugins.
+- A host that publishes no gate is treated as refusing (503) rather than as
+  open. Hosts from 0.2.x publish one.
+
 ## [1.7.3] - 2026-11-11
 
 ### Changed
