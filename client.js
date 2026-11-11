@@ -2646,7 +2646,7 @@ window.__ModuleLoader__.load({
       const copyList = async () => {
         const items = Object.values(favorites).filter(Boolean);
         if (!items.length) {
-          setToast({ kind: 'error', text: t('favorites.empty') });
+          setToast({ kind: 'error', text: t('empty.favorites') });
           return;
         }
         const lines = [`## ${t('share.title')}`, ''];
