@@ -9,6 +9,7 @@
 Version: 1.6.8
 Last verified: 2026-11-09
 License: MIT
+Plugin index (format 1): https://cdn.jsdelivr.net/gh/ghostmss86-afk/dsh-featured-market@main/docs/index.json
 
 ## Fit
 

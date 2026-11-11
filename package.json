@@ -38,23 +38,26 @@
     "./icon": "./icon.svg"
   },
   "files": [
-    "index.js",
-    "client.js",
-    "lib/*.js",
-    "data/*.json",
-    "cordis.patch.yml",
-    "locale/*.json",
-    "icon.svg",
     "CHANGELOG.md",
+    "client.js",
+    "cordis.patch.yml",
+    "data/*.json",
+    "docs/index.json",
     "icon-180.png",
-    "llms.txt"
+    "icon.svg",
+    "index.js",
+    "lib/*.js",
+    "llms.txt",
+    "locale/*.json",
+    "!data/index-cache.json"
   ],
   "scripts": {
     "check": "node --check index.js && node --check client.js && node scripts/check-docs.mjs",
     "pack:check": "npm pack --dry-run",
     "release": "node scripts/release.mjs",
     "build:web": "node scripts/build-web.mjs",
-    "build:docs": "node scripts/build-docs.mjs"
+    "build:docs": "node scripts/build-docs.mjs",
+    "build:index": "node scripts/build-index.mjs"
   },
   "publishConfig": {
     "access": "public"

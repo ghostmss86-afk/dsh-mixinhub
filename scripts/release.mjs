@@ -49,6 +49,7 @@ if (!changelog.includes(`## [${version}]`)) {
 
 run('npm', ['run', 'build:docs']);
 run('npm', ['run', 'build:web']);
+run('npm', ['run', 'build:index']);
 run('npm', ['run', 'check']);
 run('git', ['add', '-A']);
 run('git', ['commit', '-m', `chore(release): v${version}`]);

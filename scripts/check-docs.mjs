@@ -33,6 +33,8 @@ const requiredHeadings = [
 const llms = read('llms.txt');
 const docsChangelog = read('docs-src/changelog.md');
 const docsPages = ['docs/about.html', 'docs/guide.html', 'docs/changelog.html'];
+const indexFile = join(root, 'docs/index.json');
+const pluginIndex = existsSync(indexFile) ? JSON.parse(readFileSync(indexFile, 'utf8')) : null;
 
 const checks = [
   ['package name', pkg.name === 'dsh-featured-market', pkg.name],
@@ -46,6 +48,9 @@ const checks = [
   ['docs/llms.txt mirror', read('docs/llms.txt') === llms, 'stale'],
   ['docs-src/changelog.md entry', docsChangelog.includes(`## v${version} `), version],
   ...docsPages.map((page) => [`static page ${page}`, existsSync(join(root, page)), 'missing']),
+  ['plugin index exists', Boolean(pluginIndex), 'missing'],
+  ['plugin index format', pluginIndex?.format === 1, pluginIndex?.format],
+  ['plugin index size', (pluginIndex?.plugins?.length || 0) > 500, pluginIndex?.plugins?.length],
   ...requiredHeadings.map((heading) => [
     `README section ${heading}`,
     readme.includes(heading),

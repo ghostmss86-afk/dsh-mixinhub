@@ -363,6 +363,8 @@ function open(name) {
 
 $('lang').addEventListener('click', () => { state.lang = state.lang === 'zh' ? 'en' : 'zh'; localStorage.setItem('fm.public.lang', state.lang); applyLang(); });
 $('q').addEventListener('input', (e) => { state.q = e.target.value.trim(); render(); });
+  const initial = new URLSearchParams(location.search).get('q');
+  if (initial) { state.q = initial.trim(); $('q').value = state.q; }
 $('cat').addEventListener('change', (e) => { state.cat = e.target.value; render(); });
 $('sort').addEventListener('change', (e) => { state.sort = e.target.value; render(); });
 $('close').addEventListener('click', () => $('detail').close());

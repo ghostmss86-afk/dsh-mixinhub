@@ -4,6 +4,25 @@ All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project uses
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.7.0] - 2026-11-12
+
+### Added
+
+- **Published plugin index (`docs/index.json`, format 1).** Every release now
+  emits a machine-readable index of all verified `dsh.bundle` packages with
+  bilingual descriptions, category, repository, latest version and engines, so
+  other markets and Agent tools can consume this catalog directly.
+- `npm run build:index` builds the index from the public catalog and caches npm
+  metadata in `data/index-cache.json` (12 h TTL, throttled for registry limits).
+- The release pipeline now rebuilds the index after the catalog; `npm run check`
+  fails if the index is missing, not format 1, or has fewer than 500 plugins.
+
+### Changed
+
+- README first screen now leads with install, "what makes it different" and a
+  direct comparison with dsh-market, followed by the index-source callout.
+  Adoption data moved out of the headline and into Quick facts.
+
 ## [1.6.8] - 2026-11-11
 
 ### Changed

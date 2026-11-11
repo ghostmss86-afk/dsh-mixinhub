@@ -1,29 +1,88 @@
 # dsh-featured-market
 
-**A curated plugin market for DeepSeek Harness.** It answers one question in
-about 30 seconds: *which plugin should I install, and how do I actually use it?*
-
-**Public catalog (read-only, works on any device):**
-<https://ghostmss86-afk.github.io/dsh-featured-market/> — browse, search and
-copy install commands without opening the Harness. It opens with a rotating,
-poster-style editor pick whose color is taken from that plugin, plus four
-color-matched "editor picks" cards — the same first screen as the in-app panel,
-so the web catalog is not a plain list.
-
-**Static reading pages:** [About](https://ghostmss86-afk.github.io/dsh-featured-market/about.html) ·
-[Guide](https://ghostmss86-afk.github.io/dsh-featured-market/guide.html) ·
-[Changelog](https://ghostmss86-afk.github.io/dsh-featured-market/changelog.html) —
-long-form, typographic versions of the product story, the usage walkthrough and
-every release, readable on a phone without the Harness.
+**A curated plugin market for DeepSeek Harness.** 30 seconds to decide what to
+install, 3 minutes to know how to use it.
 
 [![Version](https://img.shields.io/badge/version-1.6.8-2f6f5e)](CHANGELOG.md)
 [![npm](https://img.shields.io/npm/v/dsh-featured-market.svg)](https://www.npmjs.com/package/dsh-featured-market)
+[![npm downloads](https://img.shields.io/npm/dw/dsh-featured-market.svg)](https://www.npmjs.com/package/dsh-featured-market)
 [![CI](https://github.com/ghostmss86-afk/dsh-featured-market/actions/workflows/ci.yml/badge.svg)](https://github.com/ghostmss86-afk/dsh-featured-market/actions/workflows/ci.yml)
 [![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 [![Platform](https://img.shields.io/badge/DSH-web%20client-4b5563)](https://github.com/deepseek-ai/deepseek-harness)
 [![Topic](https://img.shields.io/badge/topic-dsh--plugin-c0392b)](https://github.com/topics/dsh-plugin)
 
-[中文说明](#中文说明) · [Install](#install) · [What you get](#what-you-get) ·
+## Quick start
+
+```bash
+dsh plugin add dsh-featured-market
+```
+
+Then click the store icon at the **bottom-left** of the Harness window. In the
+plugin manager you can also search for **Featured** and enable it there.
+
+No account, no telemetry, no network calls except npm and the public catalog.
+Works offline after the first snapshot.
+
+## What makes it different
+
+Most markets answer *"what exists?"*. This one answers *"what should I install,
+and what happens if I do?"*
+
+- **Compare 2–3 plugins side by side.** Nine fields in one table — heat,
+  downloads, stars, category, compatibility, package size, first seen,
+  description, install command. No other DSH market does this.
+- **A heat score you can audit.** 52% downloads + 33% stars + 15% freshness
+  (240-day decay), with the formula shown in the panel, not hidden in a backend.
+- **Compatibility advice before you install.** Not just yes/no: *your Harness is
+  older than the plugin requires*, *the author declared no range*, or *the
+  declared range is unreadable*.
+- **Everything in Chinese and English.** 2,200+ accepted entries, both
+  descriptions written or reviewed, not machine-dumped.
+- **Read-only skills tab.** 500+ installed skills, what each one does, when it
+  triggers, and a sentence you can say to the Agent. Skills have no button
+  anywhere else — this is the map.
+- **Your own project dashboard.** Stars, downloads, issues and catalog rank for
+  up to 12 repos you care about, with a 7-day trend.
+
+## Compared with dsh-market
+
+| | dsh-featured-market | [dsh-market](https://awesome-dsh-plugin.com/p/dsh-market/dsh-market/) |
+|---|---|---|
+| Best at | **Deciding** what to install | **Managing** everything installed |
+| Install base | 2,819 npm downloads in the first 3 days | ~1.14M downloads, 12k stars |
+| Side-by-side compare | ✅ up to 3 plugins, 9 fields | ❌ |
+| Heat formula explained | ✅ in-panel | ❌ opaque |
+| Chinese descriptions | ✅ 2,200+ entries | partial |
+| Backup / restore / WebDAV | ❌ | ✅ |
+| When to choose it | You keep asking "which one?" | You want one place to run everything |
+
+They can be installed together — this one adds a second entry point and does not
+touch the other's data.
+
+## Use it as a plugin index
+
+Every release publishes a **format-1 index** that other markets and tools can
+consume directly:
+
+```
+https://cdn.jsdelivr.net/gh/ghostmss86-afk/dsh-featured-market@main/docs/index.json
+```
+
+It lists every entry that is a real `dsh.bundle` package, with bilingual
+descriptions, category, repository, latest version and engines. If you maintain
+a market, a picker or an Agent tool, you can point at it instead of rebuilding
+the npm scan yourself. MIT licensed; no attribution required, a link is nice.
+
+**Public catalog (no install needed):**
+<https://ghostmss86-afk.github.io/dsh-featured-market/> — search, browse and copy
+install commands on any device. It opens with a rotating poster of the day's
+editor pick, colored by that plugin.
+
+**Long-form pages:** [About](https://ghostmss86-afk.github.io/dsh-featured-market/about.html) ·
+[Guide](https://ghostmss86-afk.github.io/dsh-featured-market/guide.html) ·
+[Changelog](https://ghostmss86-afk.github.io/dsh-featured-market/changelog.html)
+
+[中文说明](#中文说明) · [What you get](#what-you-get) ·
 [How curation works](#how-curation-works) · [FAQ](#faq)
 
 **Version:** `1.6.8`
@@ -44,29 +103,17 @@ every release, readable on a phone without the Harness.
 | Category | Plugin discovery / curated marketplace |
 | Requires | DSH 0.2.2+ on the **0.2.x** line (tested); 0.3.x is allowed by the range but has not shipped yet; 0.4.x is excluded |
 | License | MIT |
-| Maturity | **New** — first published 2026-11-08; 2,819 npm downloads in the first three days (as of 2026-11-12); 0 GitHub stars |
+| Adoption | 2,819 npm downloads in the first three days (as of 2026-11-12); new project, API may still change |
 | Last verified | 2026-11-12 |
 | Coverage | 10,446 catalog entries → 2,224 accepted (as of 2026-11-12) → top 220 in the main lists |
 | Install (npm) | `dsh plugin add dsh-featured-market` |
 | Install (GitHub) | `dsh plugin add github:ghostmss86-afk/dsh-featured-market` |
 | Public catalog | <https://ghostmss86-afk.github.io/dsh-featured-market/> |
+| Plugin index | <https://cdn.jsdelivr.net/gh/ghostmss86-afk/dsh-featured-market@main/docs/index.json> |
 | Source | <https://github.com/ghostmss86-afk/dsh-featured-market> |
 | Agent tool | `featured_market_search` |
 | AI index | [llms.txt](llms.txt) — concise, machine-readable project summary |
 | Official catalog | [Listed 2026-11-10](https://awesome-dsh-plugin.com/p/ghostmss86-afk/dsh-featured-market/) — rank 21 of 140 in the market category |
-
-### Project maturity
-
-This is a new project, not a battle-tested incumbent. It was first published on
-2026-11-08 and was accepted into the public Awesome DSH Plugin catalog on
-2026-11-10; as of 2026-11-12 it has **2,819 npm downloads in its first three
-days and 0 GitHub stars**, and the API and curation rules may still change.
-That is a real trade-off, so it is stated here instead of being hidden.
-
-Use it when the decision workflow is the bottleneck. If you need the most widely
-used, most battle-tested manager with a large install base, choose
-[`dsh-market`](https://awesome-dsh-plugin.com/p/dsh-market/dsh-market/) instead.
-The two can be installed together.
 
 ---
 
