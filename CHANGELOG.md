@@ -4,6 +4,12 @@ All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project uses
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.9.0] - 2026-11-11
+
+### Changed
+
+- 全渠道改名 dsh-mixinhub：旧包弃用并指向新包，索引源与项目记录自动迁移，README/llms/文档/安装命令统一
+
 ## [1.8.0] - 2026-11-12
 
 ### Security
