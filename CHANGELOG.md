@@ -4,6 +4,12 @@ All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project uses
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.7.1] - 2026-11-11
+
+### Changed
+
+- Keep the public catalog lede accurate and land ?q= deep links on the results grid
+
 ## [1.7.0] - 2026-11-12
 
 ### Added
