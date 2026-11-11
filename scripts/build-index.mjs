@@ -16,6 +16,7 @@ import { fileURLToPath } from 'node:url';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const CATALOG = join(ROOT, 'docs/catalog.json');
+const SELF = 'dsh-featured-market';
 const CACHE = join(ROOT, 'data/index-cache.json');
 const OUT = join(ROOT, 'docs/index.json');
 const SITE = 'https://ghostmss86-afk.github.io/dsh-featured-market/';
@@ -48,6 +49,7 @@ function loadJson(file, fallback) {
 }
 
 const catalog = JSON.parse(readFileSync(CATALOG, 'utf8'));
+const selfVersion = JSON.parse(readFileSync(join(ROOT, 'package.json'), 'utf8')).version;
 const cache = loadJson(CACHE, {});
 const entries = (catalog.entries || []).slice(0, LIMIT);
 
@@ -135,6 +137,8 @@ async function worker() {
       stats.cached += 1;
     }
 
+    if (pkg === SELF) record = { ...record, version: selfVersion, hasBundle: true };
+
     if (!record || record.missing) { stats.missing += 1; continue; }
     if (record.error && !record.version) { stats.error += 1; continue; }
     if (!record.hasBundle) { stats.notBundle += 1; continue; }
@@ -155,7 +159,7 @@ async function worker() {
         sortKeys: {},
       },
       versions: [{
-        version: record.version,
+        version: pkg === SELF ? selfVersion : record.version,
         publishTimestamp: publishTimestamp(entry),
         source: { type: 'npm' },
         engines: record.engines || {},
