@@ -142,7 +142,7 @@
   <section class="hero">
     <div class="eyebrow" id="eyebrow">CURATED FOR DEEPSEEK HARNESS</div>
     <h1 id="headline">30 秒，找到该装的那个插件。</h1>
-    <p class="lede" id="lede">按真实热度、下载与星标排序，每个插件都有中英双语说明和安装命令。本页收录完整 2,147 条，和插件内搜索一致。</p>
+    <p class="lede" id="lede">按真实热度、下载与星标排序，每个插件都有中英双语说明和安装命令。本页收录完整目录，和插件内搜索一致。</p>
     <div class="stats">
       <div class="stat"><b id="s1">—</b><span id="s1l">全部收录</span></div>
       <div class="stat"><b id="s2">—</b><span id="s2l">累计下载</span></div>
@@ -291,8 +291,8 @@ function applyLang() {
   $('eyebrow').textContent = zh ? '为 DEEPSEEK HARNESS 精选' : 'CURATED FOR DEEPSEEK HARNESS';
   $('headline').textContent = zh ? '30 秒，找到该装的那个插件。' : 'Find the plugin worth installing in 30 seconds.';
   $('lede').textContent = zh
-    ? `按真实热度、下载与星标排序，每个插件都有中英双语说明和安装命令。本页收录完整 ${state.data ? state.data.accepted : 2147} 条，和插件内搜索一致。`
-    : `Ranked by real heat, downloads and stars. All ${state.data ? state.data.accepted : 2147} accepted plugins are listed here, the same set the in-plugin search uses.`;
+    ? `按真实热度、下载与星标排序，每个插件都有中英双语说明和安装命令。${state.data ? `本页收录完整 ${state.data.accepted} 条目录，` : ''}和插件内搜索一致。`
+    : `Ranked by real heat, downloads and stars. ${state.data ? `All ${state.data.accepted} accepted plugins are listed here, ` : ''}the same set the in-plugin search uses.`;
   $('s1l').textContent = zh ? '全部收录' : 'all accepted';
   $('s2l').textContent = zh ? '累计下载' : 'total downloads';
   $('s3l').textContent = zh ? '数据更新' : 'last refresh';
@@ -364,7 +364,11 @@ function open(name) {
 $('lang').addEventListener('click', () => { state.lang = state.lang === 'zh' ? 'en' : 'zh'; localStorage.setItem('fm.public.lang', state.lang); applyLang(); });
 $('q').addEventListener('input', (e) => { state.q = e.target.value.trim(); render(); });
   const initial = new URLSearchParams(location.search).get('q');
-  if (initial) { state.q = initial.trim(); $('q').value = state.q; }
+  if (initial) {
+    state.q = initial.trim();
+    $('q').value = state.q;
+    addEventListener('load', () => setTimeout(() => document.getElementById('grid')?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 400));
+  }
 $('cat').addEventListener('change', (e) => { state.cat = e.target.value; render(); });
 $('sort').addEventListener('change', (e) => { state.sort = e.target.value; render(); });
 $('close').addEventListener('click', () => $('detail').close());
