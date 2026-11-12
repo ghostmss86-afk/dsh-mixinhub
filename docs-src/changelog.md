@@ -221,7 +221,7 @@ status: 1.9.0
 6. **1.6.5** 能看见技能。
 7. **1.6.6** 能读。
 
-完整英文日志在 [GitHub 仓库](https://github.com/ghostmss86-afk/dsh-featured-market/blob/main/CHANGELOG.md)。
+完整英文日志在 [GitHub 仓库](https://github.com/ghostmss86-afk/dsh-mixinhub/blob/main/CHANGELOG.md)。
 
 ---
 
