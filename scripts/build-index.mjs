@@ -137,7 +137,11 @@ async function worker() {
       stats.cached += 1;
     }
 
-    if (pkg === SELF) record = { ...record, version: selfVersion, hasBundle: true };
+    // The market's own package is always listed: at release time its new
+    // version is not on npm yet, so a cached 404 must not hide it.
+    if (pkg === SELF) {
+      record = { ...(record || {}), missing: false, error: null, version: selfVersion, hasBundle: true };
+    }
 
     if (!record || record.missing) { stats.missing += 1; continue; }
     if (record.error && !record.version) { stats.error += 1; continue; }

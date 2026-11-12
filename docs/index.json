@@ -48606,6 +48606,34 @@
    ]
   },
   {
+   "name": "dsh-mixinhub",
+   "title": "ghostmss86-afk/dsh-mixinhub",
+   "description": {
+    "en": "Curated DeepSeek Harness plugin market with a daily heat leaderboard, bilingual descriptions, 2-3 plugin comparison, compatibility checks and README summaries.",
+    "zh": "精心策划的 DeepSeek Harness 插件市场，包含每日热度排行榜、双语描述、2-3 个插件比较、兼容性检查和 README 摘要。"
+   },
+   "homepage": "https://ghostmss86-afk.github.io/dsh-mixinhub/?q=dsh-mixinhub",
+   "repository": {
+    "url": "https://www.npmjs.com/package/dsh-mixinhub"
+   },
+   "metadata": {
+    "category": "market",
+    "keywords": [],
+    "labels": [],
+    "sortKeys": {}
+   },
+   "versions": [
+    {
+     "version": "1.9.0",
+     "publishTimestamp": 1794268800,
+     "source": {
+      "type": "npm"
+     },
+     "engines": {}
+    }
+   ]
+  },
+  {
    "name": "dsh-mmx-bridge",
    "title": "welsione/dsh-mmx-bridge",
    "description": {
